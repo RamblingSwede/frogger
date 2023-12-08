@@ -1,16 +1,16 @@
 import pygame
 import sys
 
-
-SCREENWIDTH, SCREENHEIGHT = 1280, 720
+SIZE = 32 
+SCREENWIDTH, SCREENHEIGHT = SIZE * 40, 720
 FPS = 60
 
 class Frog: 
     def __init__(self):
         self.image = pygame.image.load("./resources/frog_placeholder.png").convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.x = 50
-        self.rect.y = 50
+        self.rect.x = SCREENWIDTH / 2 
+        self.rect.y = SCREENHEIGHT - SIZE 
 
 class Game:
     def __init__(self):
@@ -19,6 +19,12 @@ class Game:
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))   
         self.frog = Frog()
+
+    def out_of_bounds(self, dx, dy): 
+        x = self.frog.rect.x + dx 
+        y = self.frog.rect.y + dy 
+        print(y) 
+        return x >= SCREENWIDTH or x < 0 or y >= SCREENHEIGHT or y < 0 
         
     def run(self):
         while True:
@@ -30,13 +36,17 @@ class Game:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_a:
-                        self.frog.rect.x -= 32
+                        if not self.out_of_bounds(-32, 0): 
+                            self.frog.rect.x -= 32
                     if event.key == pygame.K_d:
-                        self.frog.rect.x += 32
+                        if not self.out_of_bounds(32, 0): 
+                            self.frog.rect.x += 32
                     if event.key == pygame.K_w:
-                        self.frog.rect.y -= 32
+                        if not self.out_of_bounds(0, -32): 
+                            self.frog.rect.y -= 32
                     if event.key == pygame.K_s:
-                        self.frog.rect.y += 32
+                        if not self.out_of_bounds(0, 32): 
+                            self.frog.rect.y += 32
 
             pygame.display.update()
             self.clock.tick(60)
