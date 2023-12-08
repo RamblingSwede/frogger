@@ -36,17 +36,17 @@ class Game:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_a:
-                        if not self.out_of_bounds(-32, 0): 
-                            self.frog.rect.x -= 32
+                        if not self.out_of_bounds(-SIZE, 0): 
+                            self.frog.rect.x -= SIZE
                     if event.key == pygame.K_d:
-                        if not self.out_of_bounds(32, 0): 
-                            self.frog.rect.x += 32
+                        if not self.out_of_bounds(SIZE, 0): 
+                            self.frog.rect.x += SIZE
                     if event.key == pygame.K_w:
-                        if not self.out_of_bounds(0, -32): 
-                            self.frog.rect.y -= 32
+                        if not self.out_of_bounds(0, -SIZE): 
+                            self.frog.rect.y -= SIZE
                     if event.key == pygame.K_s:
-                        if not self.out_of_bounds(0, 32): 
-                            self.frog.rect.y += 32
+                        if not self.out_of_bounds(0, SIZE): 
+                            self.frog.rect.y += SIZE
 
             pygame.display.update()
             self.clock.tick(60)
