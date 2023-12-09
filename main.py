@@ -43,7 +43,6 @@ class Game:
                             self.frog.velY += self.frog.velocity
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_a:
-                            self.last = pygame.time.get_ticks()
                             self.frog.velX = 0
                     if event.key == pygame.K_d:
                             self.frog.velX = 0
