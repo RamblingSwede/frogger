@@ -13,13 +13,12 @@ class Game:
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))   
         self.frog = Frog()
-        self.velx,self.vely = 0, 0
         
     def run(self):
         while True:
             self.screen.fill('Black')
             self.screen.blit(self.frog.image, self.frog.rect)
-            
+
             if self.frog.rect.x >= SCREENWIDTH - SIZE:
                   self.frog.rect.x = SCREENWIDTH - SIZE
             if self.frog.rect.x <= 0:
@@ -34,26 +33,27 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_a:
-                            self.velx -= 5
-                    if event.key == pygame.K_d:
-                            self.velx += 5
-                    if event.key == pygame.K_w:
-                            self.vely -= 5
-                    if event.key == pygame.K_s:                    
-                            self.vely += 5
+                    if event.key == pygame.K_a and self.frog.velY == 0:
+                            self.frog.velX -= self.frog.velocity
+                    if event.key == pygame.K_d and self.frog.velY == 0:
+                            self.frog.velX += self.frog.velocity
+                    if event.key == pygame.K_w and self.frog.velX == 0:
+                            self.frog.velY -= self.frog.velocity
+                    if event.key == pygame.K_s and self.frog.velX == 0:                    
+                            self.frog.velY += self.frog.velocity
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_a:
-                            self.velx = 0
+                            self.last = pygame.time.get_ticks()
+                            self.frog.velX = 0
                     if event.key == pygame.K_d:
-                            self.velx = 0
+                            self.frog.velX = 0
                     if event.key == pygame.K_w:
-                            self.vely = 0
+                            self.frog.velY = 0
                     if event.key == pygame.K_s:
-                            self.vely = 0
+                            self.frog.velY = 0
 
-            self.frog.rect.x += self.velx
-            self.frog.rect.y += self.vely
+            self.frog.rect.x += self.frog.velX
+            self.frog.rect.y += self.frog.velY
             pygame.display.update()
             self.clock.tick(FPS)
 
