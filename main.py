@@ -1,16 +1,10 @@
+from entities import Frog
 import pygame
 import sys
 
 SIZE = 32 
 SCREENWIDTH, SCREENHEIGHT = SIZE * 40, 720
 FPS = 60
-
-class Frog: 
-    def __init__(self):
-        self.image = pygame.image.load("./resources/frog_placeholder.png").convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.x = SCREENWIDTH / 2 
-        self.rect.y = SCREENHEIGHT - SIZE 
 
 class Game:
     def __init__(self):
@@ -19,36 +13,48 @@ class Game:
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))   
         self.frog = Frog()
-
-    def out_of_bounds(self, dx, dy): 
-        x = self.frog.rect.x + dx 
-        y = self.frog.rect.y + dy 
-        print(y) 
-        return x >= SCREENWIDTH or x < 0 or y >= SCREENHEIGHT or y < 0 
+        self.velx,self.vely = 0, 0
         
     def run(self):
         while True:
             self.screen.fill('Black')
             self.screen.blit(self.frog.image, self.frog.rect)
+            
+            if self.frog.rect.x >= SCREENWIDTH - SIZE:
+                  self.frog.rect.x = SCREENWIDTH - SIZE
+            if self.frog.rect.x <= 0:
+                  self.frog.rect.x = 0
+            if self.frog.rect.y >= SCREENHEIGHT - SIZE:
+                  self.frog.rect.y = SCREENHEIGHT - SIZE
+            if self.frog.rect.y <= 0:
+                  self.frog.rect.y = 0
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_a:
-                        if not self.out_of_bounds(-SIZE, 0): 
-                            self.frog.rect.x -= SIZE
+                            self.velx -= 5
                     if event.key == pygame.K_d:
-                        if not self.out_of_bounds(SIZE, 0): 
-                            self.frog.rect.x += SIZE
+                            self.velx += 5
                     if event.key == pygame.K_w:
-                        if not self.out_of_bounds(0, -SIZE): 
-                            self.frog.rect.y -= SIZE
+                            self.vely -= 5
+                    if event.key == pygame.K_s:                    
+                            self.vely += 5
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_a:
+                            self.velx = 0
+                    if event.key == pygame.K_d:
+                            self.velx = 0
+                    if event.key == pygame.K_w:
+                            self.vely = 0
                     if event.key == pygame.K_s:
-                        if not self.out_of_bounds(0, SIZE): 
-                            self.frog.rect.y += SIZE
+                            self.vely = 0
 
+            self.frog.rect.x += self.velx
+            self.frog.rect.y += self.vely
             pygame.display.update()
-            self.clock.tick(60)
+            self.clock.tick(FPS)
 
 Game().run()
