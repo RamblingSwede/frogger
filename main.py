@@ -1,9 +1,9 @@
-from entities import Frog
+from entities import *
 import pygame
 import sys
 
 SIZE = 32 
-SCREENWIDTH, SCREENHEIGHT = SIZE * 14, SIZE * 9 
+SCREENWIDTH, SCREENHEIGHT = SIZE * 14, SIZE * 11 
 FPS = 60
 
 class Game:
@@ -11,14 +11,19 @@ class Game:
         pygame.init()
         pygame.display.set_caption('Frogger')
         self.clock = pygame.time.Clock()
-        self.screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))   
+        self.screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
+        self.background = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
         self.frog = Frog(SCREENWIDTH, SCREENHEIGHT, SIZE)
+        self.update_display() 
+
+    def update_display(self): 
+        self.screen.fill('Black')
+        self.background.fill(self.screen) 
+        self.screen.blit(self.frog.image, self.frog.rect)
         
     def run(self):
         while True:
-            self.screen.fill('White')
-            self.screen.blit(self.frog.image, self.frog.rect)
-
+            self.update_display() 
             if self.frog.rect.x >= SCREENWIDTH - SIZE:
                   self.frog.rect.x = SCREENWIDTH - SIZE
             if self.frog.rect.x <= 0:
