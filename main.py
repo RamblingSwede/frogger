@@ -3,7 +3,7 @@ import pygame
 import sys
 
 SIZE = 32 
-SCREENWIDTH, SCREENHEIGHT = SIZE * 40, 720
+SCREENWIDTH, SCREENHEIGHT = SIZE * 14, SIZE * 9 
 FPS = 60
 
 class Game:
@@ -12,11 +12,11 @@ class Game:
         pygame.display.set_caption('Frogger')
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))   
-        self.frog = Frog()
+        self.frog = Frog(SCREENWIDTH, SCREENHEIGHT, SIZE)
         
     def run(self):
         while True:
-            self.screen.fill('Black')
+            self.screen.fill('White')
             self.screen.blit(self.frog.image, self.frog.rect)
 
             if self.frog.rect.x >= SCREENWIDTH - SIZE:
