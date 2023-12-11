@@ -10,10 +10,10 @@ class Game:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption('Frogger')
-        self.clock = pygame.time.Clock()
-        self.screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
+        self.clock      = pygame.time.Clock()
+        self.screen     = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
         self.background = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
-        self.frog = Frog(SCREENWIDTH, SCREENHEIGHT, SIZE)
+        self.frog       = Frog(SCREENWIDTH, SCREENHEIGHT, SIZE)
         self.update_display() 
 
     def update_display(self): 
