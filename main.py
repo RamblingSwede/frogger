@@ -18,8 +18,8 @@ class Game:
 
     def update_display(self): 
         self.screen.fill('Black')
-        self.background.fill(self.screen) 
-        self.screen.blit(self.frog.image, self.frog.rect)
+        self.background.draw(self.screen) 
+        self.frog.draw(self.screen) 
         
     def run(self):
         while True:

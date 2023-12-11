@@ -9,6 +9,9 @@ class Frog:
         self.velocity = 5
         self.velX,self.velY = 0, 0
 
+    def draw(self, screen): 
+        screen.blit(self.image, self.rect)
+
 class Background: 
     RIVER_SIZE = 5 
 
@@ -20,7 +23,7 @@ class Background:
         self.height = height
         self.size = size 
 
-    def fill(self, screen): 
+    def draw(self, screen): 
         self.draw_safe_platforms(screen) 
         self.draw_river(screen) 
         self.draw_finish_platform(screen) 
