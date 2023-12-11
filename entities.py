@@ -44,3 +44,22 @@ class Background:
     def draw_finish_platform(self, screen): 
         self.finish_platform = self.finish_platform_image.get_rect() 
         screen.blit(self.finish_platform_image, self.finish_platform)
+
+class Floater: 
+    def __init__(self, velocity, height, offset, image): 
+        self.velocity = velocity
+        self.image = image 
+        self.rect = self.image.get_rect()
+        self.rect.x = 0 
+        self.rect.y = height
+        self.offset = offset 
+        self.count = 0 
+    
+    def update_location(self): 
+        if (self.count == self.offset): 
+            self.rect.x += self.velocity 
+            self.count = 0 
+        self.count += 1 
+
+    def draw(self, screen): 
+        screen.blit(self.image, self.rect) 
