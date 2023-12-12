@@ -24,9 +24,9 @@ class Game:
         self.movementX      = [False, False]
         self.movementY      = [False, False]
         self.spawn_floaters()
+        self.spawn_vehicles() 
 
     def spawn_floaters(self): 
-        #self.floater_group.add(Floater(choice(['log_small','log_medium', 'log_large', 'lily_medium', 'lily_large']), SCREENWIDTH, SIZE))
         log_small_x = randint(-SIZE * 4, -SIZE * 2)
         log_medium_x = randint(-SIZE * 10, -SIZE * 4)
         log_large_x = randint(-SIZE * 8, -SIZE * 3)
@@ -51,6 +51,19 @@ class Game:
         self.floater_group.add(Floater('lily_large', SCREENWIDTH, SIZE, lily_large_x + SIZE * 10))
         self.floater_group.add(Floater('lily_large', SCREENWIDTH, SIZE, lily_large_x + SIZE * 15))
 
+    def spawn_vehicles(self): 
+        car_x = randint(SIZE * 2, SIZE * 8)
+        tractor_x = randint(SIZE * 2, SIZE * 8)
+        truck_x = randint(SIZE * 6, SIZE * 10)
+        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
+        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 5))
+        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 10))
+        self.vehicle_group.add(Vehicle('tractor', SCREENWIDTH, SCREENHEIGHT, SIZE, tractor_x))
+        self.vehicle_group.add(Vehicle('tractor', SCREENWIDTH, SCREENHEIGHT, SIZE, tractor_x - SIZE * 4))
+        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x))
+        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 6))
+        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 10))
+
     def collision(self):
         if pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False):
             print('Collision')
@@ -61,7 +74,7 @@ class Game:
     def update_display(self): 
         self.screen.fill('Black')
         self.background.draw(self.screen) 
-        self.vehicle_group.update(SCREENWIDTH, SIZE)
+        self.vehicle_group.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.vehicle_group)
         self.vehicle_group.draw(self.screen)
         self.floater_group.update(SCREENWIDTH, SIZE, self.floater_group)
         self.floater_group.draw(self.screen)
@@ -92,9 +105,9 @@ class Game:
                         self.movementY[1] = False
                     if event.key == pygame.K_s:
                         self.movementY[0] = False
-                if event.type == self.timer:
-                    print('Spawning vehicle') 
-                    self.vehicle_group.add(Vehicle(choice(['car','truck', 'tractor']), SCREENWIDTH, SCREENHEIGHT, SIZE))
+                #if event.type == self.timer:
+                    #print('Spawning vehicle') 
+                    #self.vehicle_group.add(Vehicle(choice(['car','truck', 'tractor']), SCREENWIDTH, SCREENHEIGHT, SIZE))
                     #self.floater_group.add(Floater(choice(['log_small','log_medium', 'log_large', 'lily_medium', 'lily_large']), SCREENWIDTH, SIZE))
             self.collision()
             self.update_display() 

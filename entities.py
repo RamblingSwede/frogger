@@ -73,7 +73,6 @@ class Background:
 class Floater(pygame.sprite.Sprite): 
     def __init__(self, type, width, size, start_x):
         super().__init__()
-        from random import randint
         self.type = type 
         self.count = 0 
         if self.type == 'log_small':
@@ -93,7 +92,7 @@ class Floater(pygame.sprite.Sprite):
             self.rect.y = size 
             self.velocity = 1
             self.offset = 2 
-            self.delay = -self.width * 3 - size 
+            self.delay = -(self.width * 3 + size)
         if self.type == 'log_large':
             self.image = pygame.image.load("./resources/log_4_placeholder.png")
             self.rect = self.image.get_rect()
@@ -121,7 +120,6 @@ class Floater(pygame.sprite.Sprite):
             self.velocity = -1
             self.offset = 2 
             self.delay = width + self.width 
-        
 
     def update(self, width, size, group):
         if self.count == self.offset: 
@@ -144,40 +142,54 @@ class Floater(pygame.sprite.Sprite):
             return False 
 
 class Vehicle(pygame.sprite.Sprite): 
-    def __init__(self, type, width, height, size):
+    def __init__(self, type, width, height, size, start_x):
         super().__init__()
-        from random import randint
+        self.type = type 
         self.count = 0 
         if type == 'car':
             self.image = pygame.image.load("./resources/car_placeholder.png")
             self.rect = self.image.get_rect()
-            self.rect.x = width + randint(size, size * 4)
+            self.width = size 
+            self.rect.x = start_x
             self.rect.y = height - size * 2
             self.velocity = -1
             self.offset = 1 
+            self.delay = width + self.width * 3 
         if type == 'tractor':
             self.image = pygame.image.load("./resources/tractor_placeholder.png")
             self.rect  = self.image.get_rect()
-            self.rect.x = -randint(size, size * 4)
+            self.width = size 
+            self.rect.x = start_x
             self.rect.y = height - size * 3
             self.velocity = 2 
             self.offset = 1 
+            self.delay = -self.width * 8 
         if type == 'truck':
             self.image = pygame.image.load("./resources/truck_placeholder.png")
             self.rect = self.image.get_rect()
-            self.rect.x = width + randint(size * 2, size * 8)
+            self.width = size * 2
+            self.rect.x = start_x
             self.rect.y = height - size * 4
             self.velocity = -1
             self.offset = 2 
-        
+            self.delay = width + self.width * 2
 
-    def update(self, width, size):
+    def update(self, width, height, size, group):
         if self.count == self.offset: 
             self.rect.x += self.velocity
-            self.destroy(width, size)
             self.count = 0 
+            if self.destroy(width, size): 
+                group.add(Vehicle(self.type, width, height, size, self.delay))
         self.count += 1 
 
     def destroy(self, width, size):
-        if self.rect.x <= -130 or self.rect.x >= width + size * 8:
-            self.kill()
+        if self.velocity > 0: 
+            if self.rect.x >= width: 
+                self.kill()
+                return True 
+            return False
+        else: 
+            if self.rect.x <= -self.width: 
+                self.kill() 
+                return True
+            return False 
