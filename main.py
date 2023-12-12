@@ -29,8 +29,10 @@ class Game:
     def update_display(self): 
         self.screen.fill('Black')
         self.background.draw(self.screen) 
-        self.frog.draw(self.screen) 
+        self.floaters.update_locations() 
         self.floaters.draw(self.screen) 
+        self.frog.update_position() 
+        self.frog.draw(self.screen) 
         
     def run(self):
         while True:
@@ -65,10 +67,6 @@ class Game:
                             self.frog.velY = 0
                     if event.key == pygame.K_s:
                             self.frog.velY = 0
-
-            self.frog.rect.x += self.frog.velX
-            self.frog.rect.y += self.frog.velY
-            self.floaters.update_locations() 
 
             self.update_display() 
             pygame.display.update()
