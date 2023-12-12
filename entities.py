@@ -9,6 +9,10 @@ class Frog:
         self.velocity       = 5
         self.velX,self.velY = 0, 0
 
+    def update_position(self): 
+        self.rect.x += self.velX
+        self.rect.y += self.velY
+
     def draw(self, screen): 
         screen.blit(self.image, self.rect)
 
