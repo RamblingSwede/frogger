@@ -1,20 +1,41 @@
 import pygame
 
-class Frog: 
+class Frog(pygame.sprite.Sprite): 
     def __init__(self, width, height, size):
+        super().__init__()
         self.image          = pygame.image.load("./resources/frog_placeholder.png").convert_alpha()
         self.rect           = self.image.get_rect()
         self.rect.x         = width / 2 
         self.rect.y         = height - size 
-        self.velocity       = 5
+        self.velocity       = 2
         self.velX,self.velY = 0, 0
 
-    def update_position(self): 
+    def update(self, width, height, size, movementX = (0,0), movementY = (0,0)): 
+        self.out_of_bounds(width, height, size)
+        if movementX[0] and self.velY == 0:
+            self.velX = - self.velocity
+        elif movementX[1] and self.velY == 0:
+            self.velX = + self.velocity
+        else:
+            self.velX = 0
+        if movementY[1] and self.velX == 0:
+            self.velY = - self.velocity
+        elif movementY[0] and self.velX == 0:
+            self.velY = + self.velocity
+        else:
+            self.velY = 0
         self.rect.x += self.velX
         self.rect.y += self.velY
 
-    def draw(self, screen): 
-        screen.blit(self.image, self.rect)
+    def out_of_bounds(self, width, height, size):
+        if self.rect.x >= width - size:
+            self.rect.x = width - size
+        if self.rect.x <= 0:
+                self.rect.x = 0
+        if self.rect.y >= height - size:
+                self.rect.y = height - size
+        if self.rect.y <= 0:
+                self.rect.y = 0
 
 class Background: 
     RIVER_SIZE = 5 
@@ -82,18 +103,25 @@ class Vehicle(pygame.sprite.Sprite):
             self.rect = self.image.get_rect()
             self.rect.x = width + randint(size, size * 4)
             self.rect.y = height - size * 2
+            self.velocity = 1
         if type == 'tractor':
             self.image = pygame.image.load("./resources/tractor_placeholder.png")
             self.rect  = self.image.get_rect()
             self.rect.x = 0 - randint(size,size * 4)
             self.rect.y = height - size * 3
+            self.velocity = -1
         if type == 'truck':
             self.image = pygame.image.load("./resources/truck_placeholder.png")
             self.rect = self.image.get_rect()
             self.rect.x = width + randint(size * 2, size * 8 )
             self.rect.y = height - size * 4
+            self.velocity = 1
         
-        self.velocity = 1
 
-    def update(self):
+    def update(self, width, size):
         self.rect.x -= self.velocity
+        self.destroy(width, size)
+
+    def destroy(self, width, size):
+        if self.rect.x <= -130 or self.rect.x >= width + size * 8:
+            self.kill()
