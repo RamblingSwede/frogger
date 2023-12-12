@@ -46,18 +46,23 @@ class Background:
         screen.blit(self.finish_platform_image, self.finish_platform)
 
 class Floater: 
-    def __init__(self, velocity, height, offset, image): 
+    def __init__(self, x, height, width, delay, velocity, offset, image): 
         self.velocity = velocity
         self.image = image 
         self.rect = self.image.get_rect()
-        self.rect.x = 0 
+        self.rect.x = x 
         self.rect.y = height
+        self.width = width 
         self.offset = offset 
+        self.delay = delay 
         self.count = 0 
     
     def update_location(self): 
-        if (self.count == self.offset): 
-            self.rect.x += self.velocity 
+        if self.count == self.offset: 
+            if self.rect.x >= self.width: 
+                self.rect.x = 0 - self.delay 
+            else: 
+                self.rect.x += self.velocity 
             self.count = 0 
         self.count += 1 
 
