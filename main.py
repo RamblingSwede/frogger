@@ -36,15 +36,16 @@ class Game:
         if pygame.sprite.spritecollide(self.frog.sprite,self.vehicle_group, False):
             print('Collision')
 
+    # Frog must be added last so that it is the most forward object on the display 
     def update_display(self): 
         self.screen.fill('Black')
         self.background.draw(self.screen) 
         self.vehicle_group.draw(self.screen)
         self.vehicle_group.update(SCREENWIDTH, SIZE)
-        self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, (self.movementX[0], self.movementX[1]), (self.movementY[0], self.movementY[1]))
-        self.frog.draw(self.screen)  
         self.floaters.update_locations() 
         self.floaters.draw(self.screen) 
+        self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, (self.movementX[0], self.movementX[1]), (self.movementY[0], self.movementY[1]))
+        self.frog.draw(self.screen)  
 
     def run(self):
         while True:
