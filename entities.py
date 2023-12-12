@@ -84,7 +84,7 @@ class Floater(pygame.sprite.Sprite):
             self.rect.y = size * 4 
             self.velocity = 1
             self.offset = 3
-            self.delay = -self.width * 2
+            self.delay = -self.width
         if self.type == 'log_medium':
             self.image = pygame.image.load("./resources/log_3_placeholder.png")
             self.rect  = self.image.get_rect()
@@ -92,8 +92,8 @@ class Floater(pygame.sprite.Sprite):
             self.rect.x = start_x
             self.rect.y = size 
             self.velocity = 1
-            self.offset = 2
-            self.delay = -self.width 
+            self.offset = 2 
+            self.delay = -self.width * 3 - size 
         if self.type == 'log_large':
             self.image = pygame.image.load("./resources/log_4_placeholder.png")
             self.rect = self.image.get_rect()
@@ -102,7 +102,7 @@ class Floater(pygame.sprite.Sprite):
             self.rect.y = size * 3 
             self.velocity = 1
             self.offset = 1
-            self.delay = -self.width 
+            self.delay = -(self.width + size) * 2
         if self.type == 'lily_medium':
             self.image = pygame.image.load("./resources/lily_2_placeholder.png")
             self.rect = self.image.get_rect()
@@ -111,7 +111,7 @@ class Floater(pygame.sprite.Sprite):
             self.rect.y = size * 2
             self.velocity = -1
             self.offset = 1 
-            self.delay = width + self.width
+            self.delay = width + self.width * 2
         if self.type == 'lily_large':
             self.image = pygame.image.load("./resources/lily_3_placeholder.png")
             self.rect = self.image.get_rect()
@@ -120,7 +120,7 @@ class Floater(pygame.sprite.Sprite):
             self.rect.y = size * 5
             self.velocity = -1
             self.offset = 2 
-            self.delay = width + self.width / 3
+            self.delay = width + self.width 
         
 
     def update(self, width, size, group):
