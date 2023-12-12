@@ -71,57 +71,77 @@ class Background:
         screen.blit(self.finish_platform_image, self.finish_platform)
 
 class Floater(pygame.sprite.Sprite): 
-    def __init__(self, type, width, size):
+    def __init__(self, type, width, size, start_x):
         super().__init__()
         from random import randint
+        self.type = type 
         self.count = 0 
-        if type == 'log_small':
+        if self.type == 'log_small':
             self.image = pygame.image.load("./resources/log_2_placeholder.png")
             self.rect = self.image.get_rect()
-            self.rect.x = -randint(size, size * 2)
+            self.width = 2 * size 
+            self.rect.x = start_x
             self.rect.y = size * 4 
             self.velocity = 1
             self.offset = 3
-        if type == 'log_medium':
+            self.delay = -self.width * 2
+        if self.type == 'log_medium':
             self.image = pygame.image.load("./resources/log_3_placeholder.png")
             self.rect  = self.image.get_rect()
-            self.rect.x = -randint(size * 2, size * 4)
+            self.width = 3 * size 
+            self.rect.x = start_x
             self.rect.y = size 
             self.velocity = 1
             self.offset = 2
-        if type == 'log_large':
+            self.delay = -self.width 
+        if self.type == 'log_large':
             self.image = pygame.image.load("./resources/log_4_placeholder.png")
             self.rect = self.image.get_rect()
-            self.rect.x = -randint(size * 3, size * 6)
+            self.width = 4 * size 
+            self.rect.x = start_x
             self.rect.y = size * 3 
             self.velocity = 1
             self.offset = 1
-        if type == 'lily_medium':
+            self.delay = -self.width 
+        if self.type == 'lily_medium':
             self.image = pygame.image.load("./resources/lily_2_placeholder.png")
             self.rect = self.image.get_rect()
-            self.rect.x = width + randint(0, size * 2)
+            self.width = 2 * size 
+            self.rect.x = start_x
             self.rect.y = size * 2
             self.velocity = -1
-            self.offset = 1
-        if type == 'lily_large':
+            self.offset = 1 
+            self.delay = width + self.width
+        if self.type == 'lily_large':
             self.image = pygame.image.load("./resources/lily_3_placeholder.png")
             self.rect = self.image.get_rect()
-            self.rect.x = width + randint(0, size * 3)
+            self.width = 3 * size 
+            self.rect.x = start_x
             self.rect.y = size * 5
             self.velocity = -1
             self.offset = 2 
+            self.delay = width + self.width / 3
         
 
-    def update(self, width, size):
+    def update(self, width, size, group):
         if self.count == self.offset: 
             self.rect.x += self.velocity
-            self.destroy(width, size)
             self.count = 0 
+            if self.destroy(width, size): 
+                group.add(Floater(self.type, width, size, self.delay))
         self.count += 1 
 
     def destroy(self, width, size):
-        if self.rect.x <= -130 or self.rect.x >= width + size * 8:
-            self.kill()
+        if self.velocity > 0: 
+            if self.rect.x >= width: 
+                self.kill()
+                return True 
+            return False
+        else: 
+            if self.rect.x <= -self.width: 
+                self.kill() 
+                return True
+            return False 
 
 class Vehicle(pygame.sprite.Sprite): 
     def __init__(self, type, width, height, size):

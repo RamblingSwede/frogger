@@ -23,21 +23,30 @@ class Game:
         pygame.time.set_timer(self.timer, 2000)
         self.movementX      = [False, False]
         self.movementY      = [False, False]
+        self.spawn_floaters()
+
+    def spawn_floaters(self): 
+        #self.floater_group.add(Floater(choice(['log_small','log_medium', 'log_large', 'lily_medium', 'lily_large']), SCREENWIDTH, SIZE))
+        self.floater_group.add(Floater('log_small', SCREENWIDTH, SIZE, randint(-SIZE * 4, -SIZE * 2)))
+        self.floater_group.add(Floater('log_medium', SCREENWIDTH, SIZE, randint(-SIZE * 10, -SIZE * 4)))
+        self.floater_group.add(Floater('log_large', SCREENWIDTH, SIZE, randint(-SIZE * 8, -SIZE * 3)))
+        self.floater_group.add(Floater('lily_medium', SCREENWIDTH, SIZE, randint(SIZE * 9, SCREENWIDTH + SIZE * 4)))
+        self.floater_group.add(Floater('lily_large', SCREENWIDTH, SIZE, randint(SIZE * 6, SCREENWIDTH + SIZE * 2)))
 
     def collision(self):
-        if pygame.sprite.spritecollide(self.frog.sprite,self.vehicle_group, False):
+        if pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False):
             print('Collision')
-        elif pygame.sprite.spritecollide(self.frog.sprite,self.floater_group, False):
+        elif pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
             print('Collision')
 
     # Frog must be added last so that it is the most forward object on the display 
     def update_display(self): 
         self.screen.fill('Black')
         self.background.draw(self.screen) 
-        self.vehicle_group.draw(self.screen)
         self.vehicle_group.update(SCREENWIDTH, SIZE)
+        self.vehicle_group.draw(self.screen)
+        self.floater_group.update(SCREENWIDTH, SIZE, self.floater_group)
         self.floater_group.draw(self.screen)
-        self.floater_group.update(SCREENWIDTH, SIZE)
         self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, (self.movementX[0], self.movementX[1]), (self.movementY[0], self.movementY[1]))
         self.frog.draw(self.screen)  
 
@@ -66,8 +75,9 @@ class Game:
                     if event.key == pygame.K_s:
                         self.movementY[0] = False
                 if event.type == self.timer:
+                    print('Spawning vehicle') 
                     self.vehicle_group.add(Vehicle(choice(['car','truck', 'tractor']), SCREENWIDTH, SCREENHEIGHT, SIZE))
-                    self.floater_group.add(Floater(choice(['log_small','log_medium', 'log_large', 'lily_medium', 'lily_large']), SCREENWIDTH, SIZE))
+                    #self.floater_group.add(Floater(choice(['log_small','log_medium', 'log_large', 'lily_medium', 'lily_large']), SCREENWIDTH, SIZE))
             self.collision()
             self.update_display() 
             pygame.display.update()
