@@ -67,7 +67,7 @@ class Game:
                         self.movementY[0] = False
                 if event.type == self.timer:
                     self.vehicle_group.add(Vehicle(choice(['car','truck', 'tractor']), SCREENWIDTH, SCREENHEIGHT, SIZE))
-                    self.floater_group.add(Floater1(choice(['log_small','log_medium', 'log_large', 'lily_medium', 'lily_large']), SCREENWIDTH, SIZE))
+                    self.floater_group.add(Floater(choice(['log_small','log_medium', 'log_large', 'lily_medium', 'lily_large']), SCREENWIDTH, SIZE))
             self.collision()
             self.update_display() 
             pygame.display.update()
