@@ -72,3 +72,44 @@ class Floater:
 
     def draw(self, screen): 
         screen.blit(self.image, self.rect) 
+
+class Vehicle: 
+    def __init__(self, type, width, height, size):
+        from random import randint
+        if type == 'car':
+            self.image = pygame.image.load("./resources/car_placeholder.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = width + randint(size, size * 4)
+            self.rect.y = height - size * 2
+        if type == 'tractor':
+            self.image = pygame.image.load("./resources/tractor_placeholder.png")
+            self.rect  = self.image.get_rect()
+            self.rect.x = 0 - randint(size,size * 4)
+            self.rect.y = height - size * 3
+        if type == 'truck':
+            self.image = pygame.image.load("./resources/truck_placeholder.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = width + randint(size * 2, size * 8 )
+            self.rect.y = height - size * 4
+        
+        self.velocity = 1
+
+    def out_of_bounds(self, type, width, size):
+        if type == 'car':
+            if self.rect.x <= 0 - size:
+                self.rect.x = width + size
+        if type == 'tractor':
+            if self.rect.x >= width + size:
+                self.rect.x = 0 - size
+        if type == 'truck':
+            if self.rect.x <= 0 - size * 2:
+                self.rect.x = width + size *2
+        
+    def update_position(self,type): 
+        if type == 'tractor':
+            self.rect.x += self.velocity
+        else:
+            self.rect.x -= self.velocity
+    
+    def draw(self, screen): 
+        screen.blit(self.image, self.rect)

@@ -15,6 +15,9 @@ class Game:
         self.screen     = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
         self.background = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
         self.frog       = Frog(SCREENWIDTH, SCREENHEIGHT, SIZE) 
+        self.car        = Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE)
+        self.truck      = Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE)
+        self.tractor    = Vehicle('tractor', SCREENWIDTH, SCREENHEIGHT, SIZE)
         self.floaters   = self.add_river_floaters()
         self.update_display() 
 
@@ -33,6 +36,15 @@ class Game:
         self.floaters.draw(self.screen) 
         self.frog.update_position() 
         self.frog.draw(self.screen) 
+        self.car.out_of_bounds('car', SCREENWIDTH, SIZE)
+        self.car.update_position('car')
+        self.car.draw(self.screen)
+        self.truck.out_of_bounds('truck', SCREENWIDTH, SIZE)
+        self.truck.update_position('truck')
+        self.truck.draw(self.screen)
+        self.tractor.out_of_bounds('tractor', SCREENWIDTH, SIZE)
+        self.tractor.update_position('tractor')
+        self.tractor.draw(self.screen)
         
     def run(self):
         while True:
