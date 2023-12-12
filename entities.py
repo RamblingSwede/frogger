@@ -70,29 +70,58 @@ class Background:
         self.finish_platform = self.finish_platform_image.get_rect() 
         screen.blit(self.finish_platform_image, self.finish_platform)
 
-class Floater: 
-    def __init__(self, x, height, width, delay, velocity, offset, image): 
-        self.velocity = velocity
-        self.image = image 
-        self.rect = self.image.get_rect()
-        self.rect.x = x 
-        self.rect.y = height
-        self.width = width 
-        self.offset = offset 
-        self.delay = delay 
+class Floater(pygame.sprite.Sprite): 
+    def __init__(self, type, width, size):
+        super().__init__()
+        from random import randint
         self.count = 0 
-    
-    def update_location(self): 
+        if type == 'log_small':
+            self.image = pygame.image.load("./resources/log_2_placeholder.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = -randint(size, size * 2)
+            self.rect.y = size * 4 
+            self.velocity = 1
+            self.offset = 3
+        if type == 'log_medium':
+            self.image = pygame.image.load("./resources/log_3_placeholder.png")
+            self.rect  = self.image.get_rect()
+            self.rect.x = -randint(size * 2, size * 4)
+            self.rect.y = size 
+            self.velocity = 1
+            self.offset = 2
+        if type == 'log_large':
+            self.image = pygame.image.load("./resources/log_4_placeholder.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = -randint(size * 3, size * 6)
+            self.rect.y = size * 3 
+            self.velocity = 1
+            self.offset = 1
+        if type == 'lily_medium':
+            self.image = pygame.image.load("./resources/lily_2_placeholder.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = width + randint(0, size * 2)
+            self.rect.y = size * 2
+            self.velocity = -1
+            self.offset = 1
+        if type == 'lily_large':
+            self.image = pygame.image.load("./resources/lily_3_placeholder.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = width + randint(0, size * 3)
+            self.rect.y = size * 5
+            self.velocity = -1
+            self.offset = 2 
+        
+
+    def update(self, width, size):
         if self.count == self.offset: 
-            if self.rect.x >= self.width: 
-                self.rect.x = 0 - self.delay 
-            else: 
-                self.rect.x += self.velocity 
+            self.rect.x += self.velocity
+            self.destroy(width, size)
             self.count = 0 
         self.count += 1 
 
-    def draw(self, screen): 
-        screen.blit(self.image, self.rect) 
+    def destroy(self, width, size):
+        if self.rect.x <= -130 or self.rect.x >= width + size * 8:
+            self.kill()
 
 class Vehicle(pygame.sprite.Sprite): 
     def __init__(self, type, width, height, size):
@@ -104,27 +133,27 @@ class Vehicle(pygame.sprite.Sprite):
             self.rect = self.image.get_rect()
             self.rect.x = width + randint(size, size * 4)
             self.rect.y = height - size * 2
-            self.velocity = 1
+            self.velocity = -1
             self.offset = 1 
         if type == 'tractor':
             self.image = pygame.image.load("./resources/tractor_placeholder.png")
             self.rect  = self.image.get_rect()
-            self.rect.x = 0 - randint(size,size * 4)
+            self.rect.x = -randint(size, size * 4)
             self.rect.y = height - size * 3
-            self.velocity = -2 
+            self.velocity = 2 
             self.offset = 1 
         if type == 'truck':
             self.image = pygame.image.load("./resources/truck_placeholder.png")
             self.rect = self.image.get_rect()
-            self.rect.x = width + randint(size * 2, size * 8 )
+            self.rect.x = width + randint(size * 2, size * 8)
             self.rect.y = height - size * 4
-            self.velocity = 1
+            self.velocity = -1
             self.offset = 2 
         
 
     def update(self, width, size):
         if self.count == self.offset: 
-            self.rect.x -= self.velocity
+            self.rect.x += self.velocity
             self.destroy(width, size)
             self.count = 0 
         self.count += 1 
