@@ -32,6 +32,10 @@ class Game:
         lily_3 = Floater(0, 160, SCREENWIDTH, SIZE * 3, 1, 2, pygame.image.load("./resources/lily_3_placeholder.png").convert_alpha())
         return entity_list([log_2, log_3, log_4, lily_2, lily_3])
 
+    def collision(self):
+        if pygame.sprite.spritecollide(self.frog.sprite,self.vehicle_group, False):
+            print('Collision')
+
     def update_display(self): 
         self.screen.fill('Black')
         self.background.draw(self.screen) 
@@ -68,6 +72,7 @@ class Game:
                         self.movementY[0] = False
                 if event.type == self.vehicle_timer:
                     self.vehicle_group.add(Vehicle(choice(['car','truck', 'tractor']), SCREENWIDTH, SCREENHEIGHT, SIZE))
+            self.collision()
             self.update_display() 
             pygame.display.update()
             self.clock.tick(FPS)
