@@ -1,6 +1,6 @@
 class entity_list: 
-    def __init__(self):
-        self.entities = [] 
+    def __init__(self, entities=[]):
+        self.entities = entities
 
     def add(self, entity): 
         self.entities += entity 
