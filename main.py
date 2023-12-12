@@ -24,9 +24,7 @@ class Game:
         log_4 = Floater(0, 96, SCREENWIDTH, SIZE * 4, 1, 1, pygame.image.load("./resources/log_4_placeholder.png").convert_alpha())
         lily_2 = Floater(0, 64, SCREENWIDTH, SIZE * 2, 1, 1, pygame.image.load("./resources/lily_2_placeholder.png").convert_alpha())
         lily_3 = Floater(0, 160, SCREENWIDTH, SIZE * 3, 1, 2, pygame.image.load("./resources/lily_3_placeholder.png").convert_alpha())
-        floaters = entity_list()
-        floaters.add([log_2, log_3, log_4, lily_2, lily_3]) 
-        return floaters 
+        return entity_list([log_2, log_3, log_4, lily_2, lily_3])
 
     def update_display(self): 
         self.screen.fill('Black')
