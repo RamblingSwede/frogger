@@ -98,29 +98,36 @@ class Vehicle(pygame.sprite.Sprite):
     def __init__(self, type, width, height, size):
         super().__init__()
         from random import randint
+        self.count = 0 
         if type == 'car':
             self.image = pygame.image.load("./resources/car_placeholder.png")
             self.rect = self.image.get_rect()
             self.rect.x = width + randint(size, size * 4)
             self.rect.y = height - size * 2
             self.velocity = 1
+            self.offset = 1 
         if type == 'tractor':
             self.image = pygame.image.load("./resources/tractor_placeholder.png")
             self.rect  = self.image.get_rect()
             self.rect.x = 0 - randint(size,size * 4)
             self.rect.y = height - size * 3
-            self.velocity = -1
+            self.velocity = -2 
+            self.offset = 1 
         if type == 'truck':
             self.image = pygame.image.load("./resources/truck_placeholder.png")
             self.rect = self.image.get_rect()
             self.rect.x = width + randint(size * 2, size * 8 )
             self.rect.y = height - size * 4
             self.velocity = 1
+            self.offset = 2 
         
 
     def update(self, width, size):
-        self.rect.x -= self.velocity
-        self.destroy(width, size)
+        if self.count == self.offset: 
+            self.rect.x -= self.velocity
+            self.destroy(width, size)
+            self.count = 0 
+        self.count += 1 
 
     def destroy(self, width, size):
         if self.rect.x <= -130 or self.rect.x >= width + size * 8:
