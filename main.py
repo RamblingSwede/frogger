@@ -1,5 +1,6 @@
 from entities import *
 from entity_list import * 
+from random import randint, choice
 import pygame
 import sys
 
@@ -15,11 +16,12 @@ class Game:
         self.screen     = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
         self.background = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
         self.frog       = Frog(SCREENWIDTH, SCREENHEIGHT, SIZE) 
-        self.car        = Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE)
-        self.truck      = Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE)
-        self.tractor    = Vehicle('tractor', SCREENWIDTH, SCREENHEIGHT, SIZE)
         self.floaters   = self.add_river_floaters()
+        self.vehicle_group = pygame.sprite.Group()
+        self.vehicle_rect_list = []
         self.update_display() 
+        self.vehicle_timer = pygame.USEREVENT + 1
+        pygame.time.set_timer(self.vehicle_timer,1500)
 
     def add_river_floaters(self): 
         log_2 = Floater(0, 128, SCREENWIDTH, SIZE * 2, 1, 3, pygame.image.load("./resources/log_2_placeholder.png").convert_alpha())
@@ -32,20 +34,13 @@ class Game:
     def update_display(self): 
         self.screen.fill('Black')
         self.background.draw(self.screen) 
+        self.vehicle_group.draw(self.screen)
+        self.vehicle_group.update()
         self.floaters.update_locations() 
         self.floaters.draw(self.screen) 
         self.frog.update_position() 
         self.frog.draw(self.screen) 
-        self.car.out_of_bounds('car', SCREENWIDTH, SIZE)
-        self.car.update_position('car')
-        self.car.draw(self.screen)
-        self.truck.out_of_bounds('truck', SCREENWIDTH, SIZE)
-        self.truck.update_position('truck')
-        self.truck.draw(self.screen)
-        self.tractor.out_of_bounds('tractor', SCREENWIDTH, SIZE)
-        self.tractor.update_position('tractor')
-        self.tractor.draw(self.screen)
-        
+
     def run(self):
         while True:
             if self.frog.rect.x >= SCREENWIDTH - SIZE:
@@ -61,6 +56,8 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == self.vehicle_timer:
+                    self.vehicle_group.add(Vehicle(choice(['car','truck', 'tractor']), SCREENWIDTH, SCREENHEIGHT, SIZE))
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_a and self.frog.velY == 0:
                             self.frog.velX -= self.frog.velocity
