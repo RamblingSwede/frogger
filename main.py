@@ -19,11 +19,13 @@ class Game:
         self.update_display() 
 
     def add_river_floaters(self): 
-        log_2 = Floater(1, 128, 3, pygame.image.load("./resources/log_2_placeholder.png").convert_alpha())
-        log_3 = Floater(1, 32, 2, pygame.image.load("./resources/log_3_placeholder.png").convert_alpha())
-        log_4 = Floater(1, 96, 1, pygame.image.load("./resources/log_4_placeholder.png").convert_alpha())
+        log_2 = Floater(0, 128, SCREENWIDTH, SIZE * 2, 1, 3, pygame.image.load("./resources/log_2_placeholder.png").convert_alpha())
+        log_3 = Floater(0, 32, SCREENWIDTH, SIZE * 3, 1, 2, pygame.image.load("./resources/log_3_placeholder.png").convert_alpha())
+        log_4 = Floater(0, 96, SCREENWIDTH, SIZE * 4, 1, 1, pygame.image.load("./resources/log_4_placeholder.png").convert_alpha())
+        lily_2 = Floater(0, 64, SCREENWIDTH, SIZE * 2, 1, 1, pygame.image.load("./resources/lily_2_placeholder.png").convert_alpha())
+        lily_3 = Floater(0, 160, SCREENWIDTH, SIZE * 3, 1, 2, pygame.image.load("./resources/lily_3_placeholder.png").convert_alpha())
         floaters = entity_list()
-        floaters.add([log_2, log_3, log_4]) 
+        floaters.add([log_2, log_3, log_4, lily_2, lily_3]) 
         return floaters 
 
     def update_display(self): 
