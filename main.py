@@ -15,6 +15,7 @@ class Game:
         self.clock          = pygame.time.Clock()
         self.screen         = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
         self.background     = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
+        self.running        = True
         self.floater_group  = pygame.sprite.Group() 
         self.vehicle_group  = pygame.sprite.Group()
         self.frog           = pygame.sprite.GroupSingle()
@@ -66,12 +67,15 @@ class Game:
 
     def collision(self):
         if pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False):
-            pass
-        if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
-            platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
-            for platform in platforms:
-                if self.frog.sprite.rect.x in range(platform.rect.x, platform.rect.x + platform.width - SIZE) and self.frog.sprite.velX == 0 and self.frog.sprite.velY ==0:
-                    self.frog.sprite.match_speed(platform.offset, platform.velocity)
+            self.running = False
+        if self.frog.sprite.rect.y < 190:
+            if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
+                platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
+                for platform in platforms:
+                    if self.frog.sprite.rect.x in range(platform.rect.x, platform.rect.x + platform.width - SIZE) and self.frog.sprite.velX == 0 and self.frog.sprite.velY ==0:
+                        self.frog.sprite.match_speed(platform.offset, platform.velocity)
+            else:
+                self.running = False
 
 
                     
@@ -92,7 +96,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()        
-                if event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN and self.running:
                     if event.key == pygame.K_a:
                         self.movementX[0] = True
                     if event.key == pygame.K_d:
@@ -114,9 +118,10 @@ class Game:
                     #print('Spawning vehicle') 
                     #self.vehicle_group.add(Vehicle(choice(['car','truck', 'tractor']), SCREENWIDTH, SCREENHEIGHT, SIZE))
                     #self.floater_group.add(Floater(choice(['log_small','log_medium', 'log_large', 'lily_medium', 'lily_large']), SCREENWIDTH, SIZE))
-            self.collision()
-            self.update_display() 
-            pygame.display.update()
-            self.clock.tick(FPS)
+            if self.running:
+                self.collision()
+                self.update_display() 
+                pygame.display.update()
+                self.clock.tick(FPS)
 
 Game().run()
