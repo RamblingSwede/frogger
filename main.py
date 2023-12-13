@@ -72,7 +72,7 @@ class Game:
             if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
                 platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
                 for platform in platforms:
-                    if self.frog.sprite.rect.x in range(platform.rect.x, platform.rect.x + platform.width - SIZE) and self.frog.sprite.velX == 0 and self.frog.sprite.velY ==0:
+                    if self.frog.sprite.rect.x in range(platform.rect.x, platform.rect.x + platform.width):
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
             else:
                 self.running = False

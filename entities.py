@@ -6,27 +6,40 @@ class Frog(pygame.sprite.Sprite):
         self.image          = pygame.image.load("./resources/frog_placeholder.png").convert_alpha()
         self.rect           = self.image.get_rect()
         self.rect.x         = width / 2 
-        self.rect.y         = height - size 
-        self.velocity       = 2
+        self.rect.y         = height - size
+        self.timer          = 20
+        self.timerX         = self.timer
+        self.timerY         = self.timer
         self.count          = 0
-        self.velX,self.velY = 0, 0
 
     def update(self, width, height, size, movementX = (0,0), movementY = (0,0)): 
         self.out_of_bounds(width, height, size)
-        if movementX[0] and self.velY == 0:
-            self.velX = - self.velocity
+        if movementX[0] == True and movementY[0] == False and movementY[1] == False:
+            if self.timerX == self.timer:
+                self.timerX = 0
+                self.rect.x -= size
+            self.timerX += 1
         elif movementX[1] and self.velY == 0:
-            self.velX = + self.velocity
+            if self.timerX == self.timer:
+                self.timerX = 0
+                self.rect.x += size
+            self.timerX += 1
         else:
             self.velX = 0
+            self.timerX = self.timer
         if movementY[1] and self.velX == 0:
-            self.velY = - self.velocity
+            if self.timerY == self.timer:
+                self.timerY = 0
+                self.rect.y -= size
+            self.timerY += 1
         elif movementY[0] and self.velX == 0:
-            self.velY = + self.velocity
+            if self.timerY == self.timer:
+                self.timerY = 0
+                self.rect.y += size
+            self.timerY += 1
         else:
             self.velY = 0
-        self.rect.x += self.velX
-        self.rect.y += self.velY
+            self.timerY = self.timer
         
     def match_speed(self, offset, velocity):
         if self.count == offset: 
