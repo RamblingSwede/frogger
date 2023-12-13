@@ -68,13 +68,12 @@ class Game:
 
     def collision(self):
         if pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False):
-            print('Roadkill')
-            print('Lives left: ' + str(self.lives_left))
             if self.lives_left > 0:
                 self.frog.sprite.rect.x = SCREENWIDTH / 2
                 self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
                 self.lives_left -= 1
             else:
+                print('Press Space to restart')
                 self.running = False
         if self.frog.sprite.rect.y < 190 and self.frog.sprite.rect.y > 0:
             if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
@@ -83,22 +82,20 @@ class Game:
                     if self.frog.sprite.rect.x + SIZE in range(platform.rect.x + SIZE, platform.rect.x + platform.width):
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
                     else:
-                        print('Drowned')
-                        print('Lives left: ' + str(self.lives_left))
                         if self.lives_left > 0:
                             self.frog.sprite.rect.x = SCREENWIDTH / 2
                             self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
                             self.lives_left -= 1
                         else:
+                            print('Press Space to restart')
                             self.running = False
             else:
-                print('Drowned')
-                print('Lives left: ' + str(self.lives_left))
                 if self.lives_left > 0:
                     self.frog.sprite.rect.x = SCREENWIDTH / 2
                     self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
                     self.lives_left -= 1
                 else:
+                    print('Press Space to restart')
                     self.running = False
         if self.frog.sprite.rect.y == 0:
             pass
@@ -122,7 +119,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()        
-                if event.type == pygame.KEYDOWN and self.running:
+                if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_a:
                         self.movementX[0] = True
                     if event.key == pygame.K_d:
@@ -131,6 +128,12 @@ class Game:
                         self.movementY[1] = True
                     if event.key == pygame.K_s:
                         self.movementY[0] = True
+                    if event.key == pygame.K_SPACE:
+                        ##Only exists for debug, to be replaced with restart menu at some point
+                        self.running = True
+                        self.lives_left = 2
+                        self.frog.sprite.rect.x = SCREENWIDTH / 2
+                        self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_a:
                         self.movementX[0] = False
