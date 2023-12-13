@@ -19,7 +19,7 @@ class Frog(pygame.sprite.Sprite):
                 self.timerX = 0
                 self.rect.x -= size
             self.timerX += 1
-        elif movementX[1] and self.velY == 0:
+        elif movementX[1] == True and movementY[0] == False and movementY[1] == False:
             if self.timerX == self.timer:
                 self.timerX = 0
                 self.rect.x += size
@@ -27,12 +27,12 @@ class Frog(pygame.sprite.Sprite):
         else:
             self.velX = 0
             self.timerX = self.timer
-        if movementY[1] and self.velX == 0:
+        if movementY[1] == True and movementX[0] == False and movementX[1] == False:
             if self.timerY == self.timer:
                 self.timerY = 0
                 self.rect.y -= size
             self.timerY += 1
-        elif movementY[0] and self.velX == 0:
+        elif movementY[0] == True and movementX[0] == False and movementX[1] == False:
             if self.timerY == self.timer:
                 self.timerY = 0
                 self.rect.y += size

@@ -67,6 +67,7 @@ class Game:
 
     def collision(self):
         if pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False):
+            print('Roadkill')
             self.running = False
         if self.frog.sprite.rect.y < 190:
             if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
@@ -75,6 +76,7 @@ class Game:
                     if self.frog.sprite.rect.x + SIZE in range(platform.rect.x + SIZE, platform.rect.x + platform.width):
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
                     else:
+                        print('Drowned')
                         self.running = False
 
 
