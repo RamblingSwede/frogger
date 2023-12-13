@@ -16,6 +16,7 @@ class Game:
         self.screen         = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
         self.background     = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
         self.running        = True
+        self.lives_left     = 2
         self.floater_group  = pygame.sprite.Group() 
         self.vehicle_group  = pygame.sprite.Group()
         self.frog           = pygame.sprite.GroupSingle()
@@ -68,7 +69,13 @@ class Game:
     def collision(self):
         if pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False):
             print('Roadkill')
-            self.running = False
+            print('Lives left: ' + str(self.lives_left))
+            if self.lives_left > 0:
+                self.frog.sprite.rect.x = SCREENWIDTH / 2
+                self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
+                self.lives_left -= 1
+            else:
+                self.running = False
         if self.frog.sprite.rect.y < 190:
             if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
                 platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
@@ -77,7 +84,22 @@ class Game:
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
                     else:
                         print('Drowned')
-                        self.running = False
+                        print('Lives left: ' + str(self.lives_left))
+                        if self.lives_left > 0:
+                            self.frog.sprite.rect.x = SCREENWIDTH / 2
+                            self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
+                            self.lives_left -= 1
+                        else:
+                            self.running = False
+            else:
+                print('Drowned')
+                print('Lives left: ' + str(self.lives_left))
+                if self.lives_left > 0:
+                    self.frog.sprite.rect.x = SCREENWIDTH / 2
+                    self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
+                    self.lives_left -= 1
+                else:
+                    self.running = False
 
 
                     
