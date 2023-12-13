@@ -16,6 +16,7 @@ class Game:
         self.screen         = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
         self.background     = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
         self.running        = True
+        self.safe_frogs     = 0
         self.lives_left     = 2
         self.floater_group  = pygame.sprite.Group() 
         self.vehicle_group  = pygame.sprite.Group()
@@ -69,12 +70,10 @@ class Game:
     def collision(self):
         if pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False):
             if self.lives_left > 0:
-                self.frog.sprite.rect.x = SCREENWIDTH / 2
-                self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
                 self.lives_left -= 1
+                self.respawn()
             else:
-                print('Press Space to restart')
-                self.running = False
+                self.game_over()
         if self.frog.sprite.rect.y < 190 and self.frog.sprite.rect.y > 0:
             if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
                 platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
@@ -83,24 +82,36 @@ class Game:
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
                     else:
                         if self.lives_left > 0:
-                            self.frog.sprite.rect.x = SCREENWIDTH / 2
-                            self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
                             self.lives_left -= 1
+                            self.respawn()
                         else:
-                            print('Press Space to restart')
-                            self.running = False
+                            self.game_over()
             else:
                 if self.lives_left > 0:
-                    self.frog.sprite.rect.x = SCREENWIDTH / 2
-                    self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
                     self.lives_left -= 1
+                    self.respawn()
                 else:
-                    print('Press Space to restart')
-                    self.running = False
+                    self.game_over()
         if self.frog.sprite.rect.y == 0:
-            pass
+            if self.safe_frogs == 4:
+                self.level_completed()
+            else:
+                self.safe_frogs += 1
+                self.respawn()
 
+    def respawn(self):
+        self.frog.sprite.rect.x = SCREENWIDTH / 2
+        self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
+            
+    def game_over(self):
+        print('Out of lives')
+        print('Press Space to restart')
+        self.running = False
 
+    def level_completed(self):
+        print('Level completed')
+        print('Press Space to restart')
+        self.running = False
                     
     # Frog must be added last so that it is the most forward object on the display 
     def update_display(self): 
@@ -131,9 +142,9 @@ class Game:
                     if event.key == pygame.K_SPACE:
                         ##Only exists for debug, to be replaced with restart menu at some point
                         self.running = True
+                        self.safe_frogs = 0
                         self.lives_left = 2
-                        self.frog.sprite.rect.x = SCREENWIDTH / 2
-                        self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
+                        self.respawn()
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_a:
                         self.movementX[0] = False
