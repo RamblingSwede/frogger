@@ -76,7 +76,7 @@ class Game:
                 self.lives_left -= 1
             else:
                 self.running = False
-        if self.frog.sprite.rect.y < 190:
+        if self.frog.sprite.rect.y < 190 and self.frog.sprite.rect.y > 0:
             if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
                 platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
                 for platform in platforms:
@@ -100,6 +100,8 @@ class Game:
                     self.lives_left -= 1
                 else:
                     self.running = False
+        if self.frog.sprite.rect.y == 0:
+            pass
 
 
                     
