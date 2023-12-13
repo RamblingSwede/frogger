@@ -66,10 +66,15 @@ class Game:
 
     def collision(self):
         if pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False):
-            print('Collision')
-        elif pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
-            print('Collision')
+            pass
+        if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
+            platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
+            for platform in platforms:
+                if self.frog.sprite.rect.x in range(platform.rect.x, platform.rect.x + platform.width - SIZE) and self.frog.sprite.velX == 0 and self.frog.sprite.velY ==0:
+                    self.frog.sprite.match_speed(platform.offset, platform.velocity)
 
+
+                    
     # Frog must be added last so that it is the most forward object on the display 
     def update_display(self): 
         self.screen.fill('Black')

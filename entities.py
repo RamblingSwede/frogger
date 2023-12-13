@@ -8,6 +8,7 @@ class Frog(pygame.sprite.Sprite):
         self.rect.x         = width / 2 
         self.rect.y         = height - size 
         self.velocity       = 2
+        self.count          = 0
         self.velX,self.velY = 0, 0
 
     def update(self, width, height, size, movementX = (0,0), movementY = (0,0)): 
@@ -26,6 +27,14 @@ class Frog(pygame.sprite.Sprite):
             self.velY = 0
         self.rect.x += self.velX
         self.rect.y += self.velY
+        
+    def match_speed(self, offset, velocity):
+        if self.count == offset: 
+            self.rect.x += velocity
+            self.count = 0 
+        if self.count >= 3:
+            self.count = 0
+        self.count += 1 
 
     def out_of_bounds(self, width, height, size):
         if self.rect.x >= width - size:
