@@ -5,13 +5,14 @@ import pygame
 import sys
 
 SIZE = 32 
-SCREENWIDTH, SCREENHEIGHT = SIZE * 14, SIZE * 13
+SCREENWIDTH, SCREENHEIGHT = SIZE * 14, SIZE * 15
 FPS = 60
 
 class Game:
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption('Frogger')
+        pygame.display.set_caption('Frogger - Level 1')
+        self.level          = 1
         self.clock          = pygame.time.Clock()
         self.screen         = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
         self.background     = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
@@ -79,7 +80,7 @@ class Game:
                 self.respawn()
             else:
                 self.game_over()
-        if self.frog.sprite.rect.y < 190 and self.frog.sprite.rect.y > 0:
+        if self.frog.sprite.rect.y < 224 and self.frog.sprite.rect.y > 0 + SIZE:
             if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
                 platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
                 for platform in platforms:
@@ -97,7 +98,7 @@ class Game:
                     self.respawn()
                 else:
                     self.game_over()
-        if self.frog.sprite.rect.y == 0:
+        if self.frog.sprite.rect.y == 0 + SIZE:
             if self.safe_frogs == 4:
                 self.level_completed()
             else:
@@ -107,7 +108,7 @@ class Game:
     def respawn(self):
         pygame.time.set_timer(self.timer, 30000)
         self.frog.sprite.rect.x = SCREENWIDTH / 2
-        self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
+        self.frog.sprite.rect.y = SCREENHEIGHT - SIZE * 2
             
     def game_over(self):
         print('Out of lives')
@@ -116,8 +117,9 @@ class Game:
 
     def level_completed(self):
         print('Level completed')
-        print('Press Space to restart')
-        self.running = False
+        self.level += 1
+        pygame.display.set_caption('Frogger - Level ' + str(self.level))
+        self.respawn()
                     
     # Frog must be added last so that it is the most forward object on the display 
     def update_display(self): 
@@ -128,7 +130,7 @@ class Game:
         self.floater_group.update(SCREENWIDTH, SIZE, self.floater_group)
         self.floater_group.draw(self.screen)
         self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, (self.movementX[0], self.movementX[1]), (self.movementY[0], self.movementY[1]))
-        self.frog.draw(self.screen)  
+        self.frog.draw(self.screen)
 
     def run(self):
         while True:
@@ -148,6 +150,7 @@ class Game:
                     if event.key == pygame.K_SPACE:
                         ##Only exists for debug, to be replaced with restart menu at some point
                         self.running = True
+                        #self.level_completed()
                         self.safe_frogs = 0
                         self.lives_left = 2
                         self.respawn()
