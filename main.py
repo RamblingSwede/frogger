@@ -29,6 +29,7 @@ class Game:
         pygame.time.set_timer(self.timer, 30000)
         self.movementX      = [False, False]
         self.movementY      = [False, False]
+        self.start_time = int(pygame.time.get_ticks() / 1000)
         self.spawn_floaters()
         self.spawn_vehicles() 
 
@@ -137,6 +138,8 @@ class Game:
 
     def run(self):
         while True:
+            self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time
+            #print('Remaining time: ' + str(30 - self.current_time))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -153,6 +156,7 @@ class Game:
                     if event.key == pygame.K_SPACE:
                         ##Only exists for debug, to be replaced with restart menu at some point
                         self.running = True
+                        self.start_time = int(pygame.time.get_ticks() / 1000)
                         #self.level_completed()
                         self.safe_frogs = 0
                         self.lives_left = 2
