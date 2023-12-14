@@ -1,5 +1,6 @@
 from entities import *
 from entity_list import * 
+from utils import *
 from random import randint, choice
 import pygame
 import sys
@@ -16,6 +17,7 @@ class Game:
         self.clock          = pygame.time.Clock()
         self.screen         = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
         self.background     = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
+        self.ui             = UI(SCREENHEIGHT - SIZE)
         self.running        = True
         self.safe_frogs     = 0
         self.lives_left     = 2
@@ -107,11 +109,11 @@ class Game:
 
     def respawn(self):
         pygame.time.set_timer(self.timer, 30000)
+        self.ui.update(str(self.lives_left))
         self.frog.sprite.rect.x = SCREENWIDTH / 2
         self.frog.sprite.rect.y = SCREENHEIGHT - SIZE * 2
             
     def game_over(self):
-        print('Out of lives')
         print('Press Space to restart')
         self.running = False
 
@@ -131,6 +133,7 @@ class Game:
         self.floater_group.draw(self.screen)
         self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, (self.movementX[0], self.movementX[1]), (self.movementY[0], self.movementY[1]))
         self.frog.draw(self.screen)
+        self.ui.draw(self.screen)
 
     def run(self):
         while True:
