@@ -7,39 +7,39 @@ class Frog(pygame.sprite.Sprite):
         self.rect           = self.image.get_rect()
         self.rect.x         = width / 2 
         self.rect.y         = height - size
-        self.timer          = 20
-        self.timerX         = self.timer
-        self.timerY         = self.timer
+        self.hop_cooldown   = 20
+        self.hop_cooldownX  = self.hop_cooldown
+        self.hop_cooldownY  = self.hop_cooldown
         self.count          = 0
 
     def update(self, width, height, size, movementX = (0,0), movementY = (0,0)): 
         self.out_of_bounds(width, height, size)
         if movementX[0] == True and movementY[0] == False and movementY[1] == False:
-            if self.timerX == self.timer:
-                self.timerX = 0
+            if self.hop_cooldownX == self.hop_cooldown:
+                self.hop_cooldownX = 0
                 self.rect.x -= size
-            self.timerX += 1
+            self.hop_cooldownX += 1
         elif movementX[1] == True and movementY[0] == False and movementY[1] == False:
-            if self.timerX == self.timer:
-                self.timerX = 0
+            if self.hop_cooldownX == self.hop_cooldown:
+                self.hop_cooldownX = 0
                 self.rect.x += size
-            self.timerX += 1
+            self.hop_cooldownX += 1
         else:
             self.velX = 0
-            self.timerX = self.timer
+            self.hop_cooldownX = self.hop_cooldown
         if movementY[1] == True and movementX[0] == False and movementX[1] == False:
-            if self.timerY == self.timer:
-                self.timerY = 0
+            if self.hop_cooldownY == self.hop_cooldown:
+                self.hop_cooldownY = 0
                 self.rect.y -= size
-            self.timerY += 1
+            self.hop_cooldownY += 1
         elif movementY[0] == True and movementX[0] == False and movementX[1] == False:
-            if self.timerY == self.timer:
-                self.timerY = 0
+            if self.hop_cooldownY == self.hop_cooldown:
+                self.hop_cooldownY = 0
                 self.rect.y += size
-            self.timerY += 1
+            self.hop_cooldownY += 1
         else:
             self.velY = 0
-            self.timerY = self.timer
+            self.hop_cooldownY = self.hop_cooldown
         
     def match_speed(self, offset, velocity):
         if self.count == offset: 

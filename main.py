@@ -23,7 +23,7 @@ class Game:
         self.frog           = pygame.sprite.GroupSingle()
         self.frog.add(Frog(SCREENWIDTH, SCREENHEIGHT, SIZE)) 
         self.timer          = pygame.USEREVENT + 1
-        pygame.time.set_timer(self.timer, 2000)
+        pygame.time.set_timer(self.timer, 30000)
         self.movementX      = [False, False]
         self.movementY      = [False, False]
         self.spawn_floaters()
@@ -100,6 +100,7 @@ class Game:
                 self.respawn()
 
     def respawn(self):
+        pygame.time.set_timer(self.timer, 30000)
         self.frog.sprite.rect.x = SCREENWIDTH / 2
         self.frog.sprite.rect.y = SCREENHEIGHT - SIZE
             
@@ -154,7 +155,14 @@ class Game:
                         self.movementY[1] = False
                     if event.key == pygame.K_s:
                         self.movementY[0] = False
-                #if event.type == self.timer:
+                if event.type == self.timer:
+                    if self.lives_left > 0:
+                        print('Ran out of time')
+                        self.lives_left -= 1
+                        self.respawn()
+                    else:
+                        print('Ran out of time')
+                        self.game_over()
                     #print('Spawning vehicle') 
                     #self.vehicle_group.add(Vehicle(choice(['car','truck', 'tractor']), SCREENWIDTH, SCREENHEIGHT, SIZE))
                     #self.floater_group.add(Floater(choice(['log_small','log_medium', 'log_large', 'lily_medium', 'lily_large']), SCREENWIDTH, SIZE))
