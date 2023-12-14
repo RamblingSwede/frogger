@@ -177,6 +177,15 @@ class Vehicle(pygame.sprite.Sprite):
             self.velocity = -1
             self.offset = 1 
             self.delay = width + self.width * 3 
+        if type == 'car2':
+            self.image = pygame.image.load("./resources/car_placeholder.png")
+            self.rect = self.image.get_rect()
+            self.width = size 
+            self.rect.x = start_x
+            self.rect.y = height - size * 5
+            self.velocity = 1
+            self.offset = 1 
+            self.delay = -self.width * 8 
         if type == 'tractor':
             self.image = pygame.image.load("./resources/tractor_placeholder.png")
             self.rect  = self.image.get_rect()
@@ -186,6 +195,15 @@ class Vehicle(pygame.sprite.Sprite):
             self.velocity = 2 
             self.offset = 1 
             self.delay = -self.width * 8 
+        if type == 'tractor2':
+            self.image = pygame.image.load("./resources/tractor_placeholder.png")
+            self.rect  = self.image.get_rect()
+            self.width = size 
+            self.rect.x = start_x
+            self.rect.y = height - size * 6
+            self.velocity = -2 
+            self.offset = 1 
+            self.delay = width + self.width * 3 
         if type == 'truck':
             self.image = pygame.image.load("./resources/truck_placeholder.png")
             self.rect = self.image.get_rect()
