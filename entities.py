@@ -59,16 +59,24 @@ class Frog(pygame.sprite.Sprite):
         if self.rect.y <= 0:
                 self.rect.y = 0
 
+class Final_Lily(pygame.sprite.Sprite): 
+    def __init__(self, x, y):
+        super().__init__()
+        self.image          = pygame.image.load("./resources/final_lily_placeholder.png").convert_alpha() 
+        self.rect           = self.image.get_rect()
+        self.rect.x         = x 
+        self.rect.y         = y 
+
 class Background: 
     RIVER_SIZE = 5
 
     def __init__(self, width, height, size): 
         self.safe_platform_image    = pygame.image.load("./resources/safe_platform_placeholder.png").convert_alpha() 
         self.river_image            = pygame.image.load("./resources/river_placeholder.png").convert_alpha() 
-        self.finish_platform_image  = pygame.image.load("./resources/finish_platform_placeholder.png").convert_alpha() 
-        self.width = width 
+        self.finish_platform_image  = pygame.image.load("./resources/finish_platform_placeholder_new.png").convert_alpha() 
+        self.width  = width 
         self.height = height
-        self.size = size 
+        self.size   = size 
 
     def draw(self, screen): 
         self.draw_safe_platforms(screen) 
@@ -83,15 +91,15 @@ class Background:
         screen.blit(self.safe_platform_image, self.safe_platform)
     
     def draw_river(self, screen): 
-        self.river = self.river_image.get_rect() 
-        for i in range(self.RIVER_SIZE): 
-            self.river.y = (i + 2) * self.size 
-            screen.blit(self.river_image, self.river) 
+        river = self.river_image.get_rect() 
+        for i in range(self.RIVER_SIZE + 1): 
+            river.y = (i + 1) * self.size 
+            screen.blit(self.river_image, river) 
 
     def draw_finish_platform(self, screen): 
-        self.finish_platform = self.finish_platform_image.get_rect() 
-        self.finish_platform.y  = 0 + self.size
-        screen.blit(self.finish_platform_image, self.finish_platform)
+        finish_platform = self.finish_platform_image.get_rect() 
+        finish_platform.y  = 0 + self.size
+        screen.blit(self.finish_platform_image, finish_platform)
 
 class Floater(pygame.sprite.Sprite): 
     def __init__(self, type, width, size, start_x):

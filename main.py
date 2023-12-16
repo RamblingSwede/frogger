@@ -13,25 +13,27 @@ class Game:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption('Frogger - Level 1')
-        self.level          = 1
-        self.clock          = pygame.time.Clock()
-        self.screen         = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
-        self.background     = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
-        self.ui             = UI(SCREENHEIGHT - SIZE)
-        self.running        = True
-        self.safe_frogs     = 0
-        self.lives_left     = 2
-        self.floater_group  = pygame.sprite.Group() 
-        self.vehicle_group  = pygame.sprite.Group()
-        self.frog           = pygame.sprite.GroupSingle()
+        self.level              = 1
+        self.clock              = pygame.time.Clock()
+        self.screen             = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
+        self.background         = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
+        self.ui                 = UI(SCREENHEIGHT - SIZE)
+        self.running            = True
+        self.safe_frogs         = 0
+        self.lives_left         = 2
+        self.floater_group      = pygame.sprite.Group() 
+        self.vehicle_group      = pygame.sprite.Group()
+        self.final_lilies_group = pygame.sprite.Group() 
+        self.frog               = pygame.sprite.GroupSingle()
         self.frog.add(Frog(SCREENWIDTH, SCREENHEIGHT, SIZE)) 
-        self.timer          = pygame.USEREVENT + 1
+        self.timer              = pygame.USEREVENT + 1
         pygame.time.set_timer(self.timer, 30000)
-        self.movementX      = [False, False]
-        self.movementY      = [False, False]
+        self.movementX          = [False, False]
+        self.movementY          = [False, False]
         self.start_time = int(pygame.time.get_ticks() / 1000)
         self.spawn_floaters()
         self.spawn_vehicles() 
+        self.spawn_final_lilies() 
 
     def spawn_floaters(self): 
         log_small_x = randint(-SIZE * 4, -SIZE * 2)
@@ -76,6 +78,13 @@ class Game:
         self.vehicle_group.add(Vehicle('tractor2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
         self.vehicle_group.add(Vehicle('tractor2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 4))
 
+    def spawn_final_lilies(self): 
+        y = SIZE + SIZE / 4 + 2 
+        for i in range(5): 
+            # (18, 8 + 2), (18 + 96, 8 + 2), (18 + 96 + 96, 8 + 2)
+            x = 16 + 6 + i * SIZE * 3 
+            self.final_lilies_group.add(Final_Lily(x, y))
+
     def collision(self):
         if pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False):
             if self.lives_left > 0:
@@ -101,12 +110,20 @@ class Game:
                     self.respawn()
                 else:
                     self.game_over()
-        if self.frog.sprite.rect.y == 0 + SIZE:
+        if pygame.sprite.spritecollide(self.frog.sprite, self.final_lilies_group, False): 
             if self.safe_frogs == 4:
                 self.level_completed()
             else:
                 self.safe_frogs += 1
+                print('Frog made it to safety')
                 self.respawn()
+        elif self.frog.sprite.rect.y == 0 + SIZE:
+            if self.lives_left > 0:
+                self.lives_left -= 1
+                self.respawn()
+            else:
+                self.game_over()
+            
 
     def respawn(self):
         pygame.time.set_timer(self.timer, 30000)
@@ -132,6 +149,7 @@ class Game:
         self.vehicle_group.draw(self.screen)
         self.floater_group.update(SCREENWIDTH, SIZE, self.floater_group)
         self.floater_group.draw(self.screen)
+        self.final_lilies_group.draw(self.screen) 
         self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, (self.movementX[0], self.movementX[1]), (self.movementY[0], self.movementY[1]))
         self.frog.draw(self.screen)
         self.ui.draw(self.screen)
