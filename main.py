@@ -86,6 +86,11 @@ class Game:
 
     def collision(self):
         if pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False):
+            obj = pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False)[0] 
+            if isinstance(obj, Vehicle): 
+                print('Its a vehicle') 
+            else: 
+                print('Not a vehicle')
             if self.lives_left > 0:
                 self.lives_left -= 1
                 self.respawn()
@@ -110,12 +115,21 @@ class Game:
                 else:
                     self.game_over()
         if pygame.sprite.spritecollide(self.frog.sprite, self.final_lilies_group, False): 
-            if self.safe_frogs == 4:
-                self.level_completed()
-            else:
-                self.safe_frogs += 1
-                print('Frog made it to safety')
-                self.respawn()
+            lily = pygame.sprite.spritecollide(self.frog.sprite, self.final_lilies_group, False)[0] 
+            if lily.hit(self.frog.sprite.get_x(), SIZE): 
+                if self.safe_frogs == 4:
+                    self.level_completed()
+                else:
+                    self.safe_frogs += 1
+                    print('Frog made it to safety')
+                    self.respawn()
+            else: 
+                print('Didnt hit')
+                if self.lives_left > 0:
+                    self.lives_left -= 1
+                    self.respawn()
+                else:
+                    self.game_over()
         elif self.frog.sprite.rect.y == 0 + SIZE:
             if self.lives_left > 0:
                 self.lives_left -= 1

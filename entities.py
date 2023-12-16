@@ -58,14 +58,26 @@ class Frog(pygame.sprite.Sprite):
                 self.rect.y = height - size * 2
         if self.rect.y <= 0:
                 self.rect.y = 0
+    
+    def get_x(self): 
+        return self.rect.x 
 
 class Final_Lily(pygame.sprite.Sprite): 
+    SIZE = 20 
+
     def __init__(self, x, y):
         super().__init__()
         self.image          = pygame.image.load("./resources/final_lily_placeholder.png").convert_alpha() 
         self.rect           = self.image.get_rect()
         self.rect.x         = x 
         self.rect.y         = y 
+
+    def hit(self, x, size): 
+        if x < self.rect.x: 
+            x_right = x + size 
+            return x_right - self.rect.x < size / 2 
+        else: 
+            return x - self.rect.x < self.SIZE / 2 
 
 class Floater(pygame.sprite.Sprite): 
     def __init__(self, type, width, size, start_x):
