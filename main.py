@@ -1,7 +1,6 @@
 from entities import *
-from entity_list import * 
 from utils import *
-from random import randint, choice
+from random import randint 
 import pygame
 import sys
 
