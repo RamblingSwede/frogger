@@ -80,7 +80,6 @@ class Game:
     def spawn_final_lilies(self): 
         y = SIZE + SIZE / 4 + 2 
         for i in range(5): 
-            # (18, 8 + 2), (18 + 96, 8 + 2), (18 + 96 + 96, 8 + 2)
             x = 16 + 6 + i * SIZE * 3 
             self.final_lilies_group.add(Final_Lily(x, y))
 
@@ -117,6 +116,7 @@ class Game:
         if pygame.sprite.spritecollide(self.frog.sprite, self.final_lilies_group, False): 
             lily = pygame.sprite.spritecollide(self.frog.sprite, self.final_lilies_group, False)[0] 
             if lily.hit(self.frog.sprite.get_x(), SIZE): 
+                lily.make_safe() 
                 if self.safe_frogs == 4:
                     self.level_completed()
                 else:

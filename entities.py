@@ -76,6 +76,13 @@ class Final_Lily(pygame.sprite.Sprite):
         x_right = x_left + size 
         mid = self.rect.x + self.SIZE / 2
         return x_left < mid and x_right > mid 
+    
+    def make_safe(self): 
+        x           = self.rect.x 
+        self.image  = pygame.image.load("./resources/frog_placeholder.png").convert_alpha() 
+        self.rect   = self.image.get_rect()
+        self.rect.x = x - 6 
+        self.rect.y = 32 
 
 class Floater(pygame.sprite.Sprite): 
     def __init__(self, type, width, size, start_x):
