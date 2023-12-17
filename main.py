@@ -116,7 +116,7 @@ class Game:
         if pygame.sprite.spritecollide(self.frog.sprite, self.final_lilies_group, False): 
             lily = pygame.sprite.spritecollide(self.frog.sprite, self.final_lilies_group, False)[0] 
             if lily.hit(self.frog.sprite.get_x(), SIZE): 
-                lily.make_safe() 
+                lily.set_occupied() 
                 if self.safe_frogs == 4:
                     self.level_completed()
                 else:
