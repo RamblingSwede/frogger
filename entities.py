@@ -72,12 +72,10 @@ class Final_Lily(pygame.sprite.Sprite):
         self.rect.x         = x 
         self.rect.y         = y 
 
-    def hit(self, x, size): 
-        if x < self.rect.x: 
-            x_right = x + size 
-            return x_right - self.rect.x < size / 2 
-        else: 
-            return x - self.rect.x < self.SIZE / 2 
+    def hit(self, x_left, size): 
+        x_right = x_left + size 
+        mid = self.rect.x + self.SIZE / 2
+        return x_left < mid and x_right > mid 
 
 class Floater(pygame.sprite.Sprite): 
     def __init__(self, type, width, size, start_x):
