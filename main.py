@@ -25,6 +25,7 @@ class Game:
         self.safe_frogs         = 0
         self.lives_left         = 2
         self.floater_group      = pygame.sprite.Group() 
+        self.current_floater    = None 
         self.vehicle_group      = pygame.sprite.Group()
         self.final_lilies_group = pygame.sprite.Group() 
         self.frog               = pygame.sprite.GroupSingle()
@@ -103,10 +104,16 @@ class Game:
                 for platform in platforms:
                     if platform.within_bounds(self.frog.sprite.rect.x, SIZE): 
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
+                        if platform != self.current_floater: 
+                            print('another platform')
+                            self.current_floater = platform
+                            break 
                     else:
                         self.lose_life() 
             else:
                 self.lose_life() 
+        else: 
+            self.current_floater = None 
 
     def handle_final_platform_hit(self): 
         if pygame.sprite.spritecollide(self.frog.sprite, self.final_lilies_group, False): 
