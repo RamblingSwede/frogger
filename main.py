@@ -126,7 +126,7 @@ class Game:
             self.lose_life() 
 
     def in_river(self): 
-        return self.frog.sprite.rect.y < 224 and self.frog.sprite.rect.y > SIZE
+        return self.frog.sprite.rect.y < SIZE * 7 and self.frog.sprite.rect.y > SIZE
 
     def lose_life(self): 
         if self.lives_left > 0:
@@ -206,9 +206,6 @@ class Game:
                     else:
                         print('Ran out of time')
                         self.game_over()
-                    #print('Spawning vehicle') 
-                    #self.vehicle_group.add(Vehicle(choice(['car','truck', 'tractor']), SCREENWIDTH, SCREENHEIGHT, SIZE))
-                    #self.floater_group.add(Floater(choice(['log_small','log_medium', 'log_large', 'lily_medium', 'lily_large']), SCREENWIDTH, SIZE))
             if self.running:
                 self.collision()
                 self.update_display() 
