@@ -147,7 +147,22 @@ class Game:
         self.ui.update(str(self.lives_left))
         self.frog.sprite.rect.x = SCREENWIDTH / 2
         self.frog.sprite.rect.y = SCREENHEIGHT - SIZE * 2
-            
+    
+    def reset_game(self):
+        self.running = True
+        self.start_time = int(pygame.time.get_ticks() / 1000)
+        for vehicle in self.vehicle_group:
+            vehicle.kill()
+        for floater in self.floater_group:
+            floater.kill()
+        for lily in self.final_lilies_group:
+            lily.kill()
+        self.spawn_vehicles()
+        self.spawn_floaters()
+        self.spawn_final_lilies()
+        self.safe_frogs = 0
+        self.lives_left = 2
+
     def game_over(self):
         print('Press Space to restart')
         self.running = False
@@ -189,13 +204,7 @@ class Game:
                         self.movementY[0] = True
                     if event.key == pygame.K_SPACE:
                         ##Only exists for debug, to be replaced with restart menu at some point
-                        self.running = True
-                        self.start_time = int(pygame.time.get_ticks() / 1000)
-                        for lily in self.final_lilies_group:
-                            lily.kill()
-                        self.spawn_final_lilies()
-                        self.safe_frogs = 0
-                        self.lives_left = 2
+                        self.reset_game()
                         self.respawn()
                 if event.type == pygame.KEYUP:
                     if event.key in LEFT_DIR:
