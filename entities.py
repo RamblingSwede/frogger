@@ -50,13 +50,14 @@ class Frog(pygame.sprite.Sprite):
         self.count += 1 
 
     def out_of_bounds(self, width, height, size):
-        if self.rect.x >= width - size:
-            self.rect.x = width - size
-        if self.rect.x <= 0:
-                self.rect.x = 0
+        if self.rect.y > size * 6:
+            if self.rect.x >= width - size:
+                self.rect.x = width - size
+            elif self.rect.x <= 0:
+                    self.rect.x = 0
         if self.rect.y >= height - size * 2:
                 self.rect.y = height - size * 2
-        if self.rect.y <= 0:
+        elif self.rect.y <= 0:
                 self.rect.y = 0
     
     def get_x(self): 
@@ -146,11 +147,11 @@ class Floater(pygame.sprite.Sprite):
         if self.count == self.offset: 
             self.rect.x += self.velocity
             self.count = 0 
-            if self.destroy(width, size): 
+            if self.destroy(width): 
                 group.add(Floater(self.type, width, size, self.delay))
         self.count += 1 
 
-    def destroy(self, width, size):
+    def destroy(self, width):
         if self.velocity > 0: 
             if self.rect.x >= width: 
                 self.kill()

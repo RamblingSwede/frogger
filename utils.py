@@ -17,6 +17,20 @@ class UI:
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
+class Timer_Bar(pygame.sprite.Sprite):
+    def __init__(self, height, size, offset):
+        super().__init__()
+        self.image = pygame.image.load("./resources/bottom_UI_timer.png")
+        self.rect = self.image.get_rect()
+        self.rect.x = 90 + offset
+        self.rect.y = height - size + 2
+
+    def destroy(self, posX):
+        if self.rect.x == posX:
+            self.kill()
+            return True 
+        return False
+
 class Background: 
     RIVER_SIZE = 5
 

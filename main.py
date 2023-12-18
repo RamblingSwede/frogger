@@ -31,13 +31,15 @@ class Game:
         self.frog               = pygame.sprite.GroupSingle()
         self.frog.add(Frog(SCREENWIDTH, SCREENHEIGHT, SIZE)) 
         self.timer              = pygame.USEREVENT + 1
+        self.timer_bar          = pygame.sprite.Group()
         pygame.time.set_timer(self.timer, 30000)
         self.movementX          = [False, False]
         self.movementY          = [False, False]
         self.start_time = int(pygame.time.get_ticks() / 1000)
         self.spawn_floaters()
         self.spawn_vehicles() 
-        self.spawn_final_lilies() 
+        self.spawn_final_lilies()
+        self.spawn_timer_bar()
 
     def spawn_floaters(self): 
         log_small_x = randint(-SIZE * 4, -SIZE * 2)
@@ -87,6 +89,16 @@ class Game:
         for i in range(5): 
             x = 16 + 6 + i * SIZE * 3 
             self.final_lilies_group.add(Final_Lily(x, y))
+
+    def spawn_timer_bar(self):
+        for i in range(0, 30):
+            offset = i * 10
+            self.timer_bar.add(Timer_Bar(SCREENHEIGHT, SIZE, offset))
+
+    def timer_tick(self):
+        for bar in self.timer_bar:
+            offset = (39 - self.current_time) * 10
+            bar.destroy(offset)
 
     def collision(self):
         self.handle_vehicle_hit() 
@@ -144,11 +156,17 @@ class Game:
 
     def respawn(self):
         pygame.time.set_timer(self.timer, 30000)
-        self.ui.update(str(self.lives_left))
+        self.start_time = int(pygame.time.get_ticks() / 1000)
+        for bar in self.timer_bar:
+            bar.kill()
         self.frog.sprite.rect.x = SCREENWIDTH / 2
         self.frog.sprite.rect.y = SCREENHEIGHT - SIZE * 2
+        self.spawn_timer_bar()
+        self.ui.update(str(self.lives_left))
     
     def reset_game(self):
+        self.level = 1
+        pygame.display.set_caption('Frogger - Level ' + str(self.level))
         self.running = True
         self.start_time = int(pygame.time.get_ticks() / 1000)
         for vehicle in self.vehicle_group:
@@ -157,11 +175,12 @@ class Game:
             floater.kill()
         for lily in self.final_lilies_group:
             lily.kill()
+        for bar in self.timer_bar:
+            bar.kill()
         self.spawn_vehicles()
         self.spawn_floaters()
         self.spawn_final_lilies()
-        self.safe_frogs = 0
-        self.lives_left = 2
+        self.spawn_timer_bar()
 
     def game_over(self):
         print('Press Space to restart')
@@ -171,6 +190,7 @@ class Game:
         print('Level completed')
         self.level += 1
         pygame.display.set_caption('Frogger - Level ' + str(self.level))
+        self.reset_game()
         self.respawn()
                     
     # Frog must be added last so that it is the most forward object on the display 
@@ -185,10 +205,10 @@ class Game:
         self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, (self.movementX[0], self.movementX[1]), (self.movementY[0], self.movementY[1]))
         self.frog.draw(self.screen)
         self.ui.draw(self.screen)
+        self.timer_bar.draw(self.screen)
 
     def run(self):
         while True:
-            self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -204,6 +224,8 @@ class Game:
                         self.movementY[0] = True
                     if event.key == pygame.K_SPACE:
                         ##Only exists for debug, to be replaced with restart menu at some point
+                        self.safe_frogs = 0
+                        self.lives_left = 2
                         self.reset_game()
                         self.respawn()
                 if event.type == pygame.KEYUP:
@@ -217,13 +239,13 @@ class Game:
                         self.movementY[0] = False
                 if event.type == self.timer and self.running:
                     if self.lives_left > 0:
-                        print('Ran out of time')
                         self.lives_left -= 1
                         self.respawn()
                     else:
-                        print('Ran out of time')
                         self.game_over()
             if self.running:
+                self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time 
+                self.timer_tick()
                 self.collision()
                 self.update_display() 
                 pygame.display.update()
