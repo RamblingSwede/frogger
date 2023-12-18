@@ -84,35 +84,27 @@ class Game:
             self.final_lilies_group.add(Final_Lily(x, y))
 
     def collision(self):
+        self.handle_vehicle_hit() 
+        self.handle_floater_hit() 
+        self.handle_final_platform_hit() 
+
+    def handle_vehicle_hit(self): 
         if pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False):
-            obj = pygame.sprite.spritecollide(self.frog.sprite, self.vehicle_group, False)[0] 
-            if isinstance(obj, Vehicle): 
-                print('Its a vehicle') 
-            else: 
-                print('Not a vehicle')
-            if self.lives_left > 0:
-                self.lives_left -= 1
-                self.respawn()
-            else:
-                self.game_over()
-        if self.frog.sprite.rect.y < 224 and self.frog.sprite.rect.y > 0 + SIZE:
+            self.lose_life() 
+
+    def handle_floater_hit(self): 
+        if self.in_river():
             if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
                 platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
                 for platform in platforms:
                     if self.frog.sprite.rect.x + SIZE in range(platform.rect.x + SIZE, platform.rect.x + platform.width):
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
                     else:
-                        if self.lives_left > 0:
-                            self.lives_left -= 1
-                            self.respawn()
-                        else:
-                            self.game_over()
+                        self.lose_life() 
             else:
-                if self.lives_left > 0:
-                    self.lives_left -= 1
-                    self.respawn()
-                else:
-                    self.game_over()
+                self.lose_life() 
+
+    def handle_final_platform_hit(self): 
         if pygame.sprite.spritecollide(self.frog.sprite, self.final_lilies_group, False): 
             lily = pygame.sprite.spritecollide(self.frog.sprite, self.final_lilies_group, False)[0] 
             if lily.hit(self.frog.sprite.get_x(), SIZE): 
@@ -125,18 +117,19 @@ class Game:
                     self.respawn()
             else: 
                 print('Didnt hit')
-                if self.lives_left > 0:
-                    self.lives_left -= 1
-                    self.respawn()
-                else:
-                    self.game_over()
-        elif self.frog.sprite.rect.y == 0 + SIZE:
-            if self.lives_left > 0:
-                self.lives_left -= 1
-                self.respawn()
-            else:
-                self.game_over()
-            
+                self.lose_life() 
+        elif self.frog.sprite.rect.y == SIZE:
+            self.lose_life() 
+
+    def in_river(self): 
+        return self.frog.sprite.rect.y < 224 and self.frog.sprite.rect.y > SIZE
+
+    def lose_life(self): 
+        if self.lives_left > 0:
+            self.lives_left -= 1
+            self.respawn()
+        else:
+            self.game_over()
 
     def respawn(self):
         pygame.time.set_timer(self.timer, 30000)
