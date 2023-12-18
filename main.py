@@ -22,6 +22,7 @@ class Game:
         self.background         = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
         self.ui                 = UI(SCREENHEIGHT - SIZE)
         self.running            = True
+        self.current_score      = Current_Score()
         self.safe_frogs         = 0
         self.lives_left         = 2
         self.floater_group      = pygame.sprite.Group() 
@@ -133,9 +134,12 @@ class Game:
             if lily.hit(self.frog.sprite.get_x(), SIZE): 
                 lily.set_occupied() 
                 if self.safe_frogs == 4:
+                    self.current_score.update_score('frogsaved',  30 - self.current_time)
+                    self.current_score.update_score('levelcomplete',  30 - self.current_time)
                     self.level_completed()
                 else:
                     self.safe_frogs += 1
+                    self.current_score.update_score('frogsaved',  30 - self.current_time)
                     print('Frog made it to safety')
                     self.respawn()
             else: 
@@ -148,6 +152,9 @@ class Game:
         return self.frog.sprite.rect.y < SIZE * 7 and self.frog.sprite.rect.y > SIZE
 
     def lose_life(self): 
+        if self.movementY[1]:
+            self.current_score.score -= 10
+            self.current_score.visited_pos.pop()
         if self.lives_left > 0:
             self.lives_left -= 1
             self.respawn()
@@ -157,6 +164,7 @@ class Game:
     def respawn(self):
         pygame.time.set_timer(self.timer, 30000)
         self.start_time = int(pygame.time.get_ticks() / 1000)
+        self.current_score.collision = False
         for bar in self.timer_bar:
             bar.kill()
         self.frog.sprite.rect.x = SCREENWIDTH / 2
@@ -168,6 +176,8 @@ class Game:
         self.running = True
         pygame.display.set_caption('Frogger - Level ' + str(self.level))
         self.start_time = int(pygame.time.get_ticks() / 1000)
+        self.current_score.visited_pos.clear()
+        self.current_score.score = 0
         for vehicle in self.vehicle_group:
             vehicle.kill()
         for floater in self.floater_group:
@@ -206,7 +216,7 @@ class Game:
         self.timer_bar.draw(self.screen)
 
     def run(self):
-        while True:
+        while True:    
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -218,6 +228,8 @@ class Game:
                         self.movementX[1] = True
                     if event.key in UP_DIR:
                         self.movementY[1] = True
+                        if self.current_score.unique_position(self.frog.sprite.rect.y):
+                            self.current_score.update_score('stepforward', 30 - self.current_time)
                     if event.key in DOWN_DIR:
                         self.movementY[0] = True
                     if event.key == pygame.K_SPACE:

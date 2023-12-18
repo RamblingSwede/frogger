@@ -31,6 +31,31 @@ class Timer_Bar(pygame.sprite.Sprite):
             return True 
         return False
 
+class Current_Score():
+    def __init__(self):
+        self.visited_pos = []
+        self.collision = False
+        self.score = 0
+        self.move_forward = 10
+        self.frog_saved = 50
+        self.level_completed = 1000
+    
+    def unique_position(self, posY):
+        if posY not in self.visited_pos:
+            self.visited_pos.append(posY)
+            return True
+        else:
+            return False
+
+    def update_score(self, type, time_left):
+        if type == 'stepforward':
+            self.score += self.move_forward
+        if type == 'frogsaved':
+            self.score += self.frog_saved
+            self.score += (time_left * 2) * 10
+        if type == 'levelcomplete':
+            self.score += self.level_completed
+
 class Background: 
     RIVER_SIZE = 5
 
