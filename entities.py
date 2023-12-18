@@ -79,7 +79,7 @@ class Final_Lily(pygame.sprite.Sprite):
         x_right = x_left + size 
         mid = self.rect.x + self.WIDTH / 2
         return x_left < mid and x_right > mid 
-    
+
     def set_safe(self): 
         x           = self.rect.x 
         self.image  = pygame.image.load("./resources/frog_placeholder.png").convert_alpha() 

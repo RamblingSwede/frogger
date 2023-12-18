@@ -10,7 +10,7 @@ FPS = 60
 LEFT_DIR    = [pygame.K_a, pygame.K_LEFT]
 RIGHT_DIR   = [pygame.K_d, pygame.K_RIGHT] 
 UP_DIR      = [pygame.K_w, pygame.K_UP] 
-DOWN_DIR    = [pygame.K_w, pygame.K_DOWN] 
+DOWN_DIR    = [pygame.K_s, pygame.K_DOWN] 
 
 class Game:
     def __init__(self):
@@ -127,7 +127,7 @@ class Game:
                     print('Frog made it to safety')
                     self.respawn()
             else: 
-                print('Didnt hit')
+                print('Didn\'t hit')
                 self.lose_life() 
         elif self.frog.sprite.rect.y == SIZE:
             self.lose_life() 
@@ -174,7 +174,6 @@ class Game:
     def run(self):
         while True:
             self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time
-            #print('Remaining time: ' + str(30 - self.current_time))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -192,7 +191,9 @@ class Game:
                         ##Only exists for debug, to be replaced with restart menu at some point
                         self.running = True
                         self.start_time = int(pygame.time.get_ticks() / 1000)
-                        #self.level_completed()
+                        for lily in self.final_lilies_group:
+                            lily.kill()
+                        self.spawn_final_lilies()
                         self.safe_frogs = 0
                         self.lives_left = 2
                         self.respawn()
@@ -205,7 +206,7 @@ class Game:
                         self.movementY[1] = False
                     if event.key in DOWN_DIR:
                         self.movementY[0] = False
-                if event.type == self.timer:
+                if event.type == self.timer and self.running:
                     if self.lives_left > 0:
                         print('Ran out of time')
                         self.lives_left -= 1
