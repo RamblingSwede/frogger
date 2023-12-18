@@ -134,10 +134,9 @@ class Game:
             if lily.hit(self.frog.sprite.get_x(), SIZE): 
                 lily.set_occupied() 
                 if self.safe_frogs == 4:
-                    self.current_score.update_score('frogsaved',  30 - self.current_time)
-                    self.current_score.update_score('levelcomplete',  30 - self.current_time)
                     self.level_completed()
                 else:
+                    self.current_score.visited_pos.clear()
                     self.safe_frogs += 1
                     self.current_score.update_score('frogsaved',  30 - self.current_time)
                     print('Frog made it to safety')
@@ -164,7 +163,6 @@ class Game:
     def respawn(self):
         pygame.time.set_timer(self.timer, 30000)
         self.start_time = int(pygame.time.get_ticks() / 1000)
-        self.current_score.collision = False
         for bar in self.timer_bar:
             bar.kill()
         self.frog.sprite.rect.x = SCREENWIDTH / 2
@@ -174,10 +172,8 @@ class Game:
     
     def reset_game(self):
         self.running = True
-        pygame.display.set_caption('Frogger - Level ' + str(self.level))
-        self.start_time = int(pygame.time.get_ticks() / 1000)
         self.current_score.visited_pos.clear()
-        self.current_score.score = 0
+        pygame.display.set_caption('Frogger - Level ' + str(self.level))
         for vehicle in self.vehicle_group:
             vehicle.kill()
         for floater in self.floater_group:
@@ -197,7 +193,10 @@ class Game:
 
     def level_completed(self):
         print('Level completed')
+        self.current_score.update_score('frogsaved',  30 - self.current_time)
+        self.current_score.update_score('levelcomplete',  30 - self.current_time)
         self.level += 1
+        self.safe_frogs = 0
         self.reset_game()
         self.respawn()
                     
@@ -217,6 +216,7 @@ class Game:
 
     def run(self):
         while True:    
+            print(self.current_score.score)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -234,6 +234,7 @@ class Game:
                         self.movementY[0] = True
                     if event.key == pygame.K_SPACE:
                         ##Only exists for debug, to be replaced with restart menu at some point
+                        self.current_score.score = 0
                         self.safe_frogs = 0
                         self.lives_left = 2
                         self.level = 1
@@ -249,11 +250,7 @@ class Game:
                     if event.key in DOWN_DIR:
                         self.movementY[0] = False
                 if event.type == self.timer and self.running:
-                    if self.lives_left > 0:
-                        self.lives_left -= 1
-                        self.respawn()
-                    else:
-                        self.game_over()
+                    self.lose_life()
             if self.running:
                 self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time 
                 self.timer_tick()
