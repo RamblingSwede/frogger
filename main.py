@@ -7,6 +7,10 @@ import sys
 SIZE = 32 
 SCREENWIDTH, SCREENHEIGHT = SIZE * 14, SIZE * 15
 FPS = 60
+LEFT_DIR    = [pygame.K_a, pygame.K_LEFT]
+RIGHT_DIR   = [pygame.K_d, pygame.K_RIGHT] 
+UP_DIR      = [pygame.K_w, pygame.K_UP] 
+DOWN_DIR    = [pygame.K_w, pygame.K_DOWN] 
 
 class Game:
     def __init__(self):
@@ -169,13 +173,13 @@ class Game:
                     pygame.quit()
                     sys.exit()        
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_a:
+                    if event.key in LEFT_DIR:
                         self.movementX[0] = True
-                    if event.key == pygame.K_d:
+                    if event.key in RIGHT_DIR:
                         self.movementX[1] = True
-                    if event.key == pygame.K_w:
+                    if event.key in UP_DIR:
                         self.movementY[1] = True
-                    if event.key == pygame.K_s:
+                    if event.key in DOWN_DIR:
                         self.movementY[0] = True
                     if event.key == pygame.K_SPACE:
                         ##Only exists for debug, to be replaced with restart menu at some point
@@ -186,13 +190,13 @@ class Game:
                         self.lives_left = 2
                         self.respawn()
                 if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_a:
+                    if event.key in LEFT_DIR:
                         self.movementX[0] = False
-                    if event.key == pygame.K_d:
+                    if event.key in RIGHT_DIR:
                         self.movementX[1] = False
-                    if event.key == pygame.K_w:
+                    if event.key in UP_DIR:
                         self.movementY[1] = False
-                    if event.key == pygame.K_s:
+                    if event.key in DOWN_DIR:
                         self.movementY[0] = False
                 if event.type == self.timer:
                     if self.lives_left > 0:
