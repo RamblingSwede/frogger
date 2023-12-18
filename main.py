@@ -21,6 +21,7 @@ class Game:
         self.screen             = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
         self.background         = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
         self.ui                 = UI(SCREENHEIGHT - SIZE)
+        self.top_ui             = TopUI()
         self.running            = True
         self.current_score      = Current_Score()
         self.safe_frogs         = 0
@@ -213,6 +214,7 @@ class Game:
         self.frog.draw(self.screen)
         self.ui.draw(self.screen)
         self.timer_bar.draw(self.screen)
+        self.top_ui.draw(self.screen)
 
     def run(self):
         while True:    
