@@ -165,9 +165,8 @@ class Game:
         self.ui.update(str(self.lives_left))
     
     def reset_game(self):
-        self.level = 1
-        pygame.display.set_caption('Frogger - Level ' + str(self.level))
         self.running = True
+        pygame.display.set_caption('Frogger - Level ' + str(self.level))
         self.start_time = int(pygame.time.get_ticks() / 1000)
         for vehicle in self.vehicle_group:
             vehicle.kill()
@@ -189,7 +188,6 @@ class Game:
     def level_completed(self):
         print('Level completed')
         self.level += 1
-        pygame.display.set_caption('Frogger - Level ' + str(self.level))
         self.reset_game()
         self.respawn()
                     
@@ -226,6 +224,7 @@ class Game:
                         ##Only exists for debug, to be replaced with restart menu at some point
                         self.safe_frogs = 0
                         self.lives_left = 2
+                        self.level = 1
                         self.reset_game()
                         self.respawn()
                 if event.type == pygame.KEYUP:
