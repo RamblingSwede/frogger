@@ -63,7 +63,7 @@ class Frog(pygame.sprite.Sprite):
         return self.rect.x 
 
 class Final_Lily(pygame.sprite.Sprite): 
-    SIZE = 20 
+    WIDTH = 20 
 
     def __init__(self, x, y):
         super().__init__()
@@ -77,7 +77,7 @@ class Final_Lily(pygame.sprite.Sprite):
         if self.occupied: 
             return False 
         x_right = x_left + size 
-        mid = self.rect.x + self.SIZE / 2
+        mid = self.rect.x + self.WIDTH / 2
         return x_left < mid and x_right > mid 
     
     def set_safe(self): 
@@ -161,6 +161,11 @@ class Floater(pygame.sprite.Sprite):
                 self.kill() 
                 return True
             return False 
+        
+    def within_bounds(self, x_left, size): 
+        x_right = x_left + size 
+        margin = size * (4 / 10)
+        return x_left > self.rect.x - margin and x_right < self.rect.x + self.width + margin 
 
 class Vehicle(pygame.sprite.Sprite): 
     def __init__(self, type, width, height, size, start_x):

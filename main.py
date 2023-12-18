@@ -101,7 +101,7 @@ class Game:
             if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
                 platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
                 for platform in platforms:
-                    if self.frog.sprite.rect.x + SIZE in range(platform.rect.x + SIZE, platform.rect.x + platform.width):
+                    if platform.within_bounds(self.frog.sprite.rect.x, SIZE): 
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
                     else:
                         self.lose_life() 
