@@ -2,47 +2,34 @@ import pygame
 
 class UI:
     def __init__(self, height):
-        self.image = pygame.image.load("./resources/bottom_UI_two_lives.png").convert_alpha()
+        self.image = pygame.image.load("./resources/ui/bottom_UI_two_lives.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.y = height
 
     def update(self, type):
         if type == '2':
-            self.image = pygame.image.load("./resources/bottom_UI_two_lives.png").convert_alpha()
+            self.image = pygame.image.load("./resources/ui/bottom_UI_two_lives.png").convert_alpha()
         if type == '1':
-            self.image = pygame.image.load("./resources/bottom_UI_one_life.png").convert_alpha()
+            self.image = pygame.image.load("./resources/ui/bottom_UI_one_life.png").convert_alpha()
         if type == '0':
-            self.image = self.image = pygame.image.load("./resources/bottom_UI_no_lives.png").convert_alpha()
+            self.image = self.image = pygame.image.load("./resources/ui/bottom_UI_no_lives.png").convert_alpha()
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
 class TopUI:
     def __init__(self):
-        self.image = pygame.image.load("./resources/top_UI.png")
+        self.image = pygame.image.load("./resources/ui/top_UI.png")
         self.rect = self.image.get_rect()
         self.rect.y = 0
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
-class Score:
-    def __init__(self):
-        self.font = pygame.font.SysFont(None, 30)
-        self.surf = self.font.render('0', False, 'White', None)
-        self.rect = self.surf.get_rect()
-        self.rect.x = 70
-
-    def draw(self, screen, current_score):
-        self.surf = self.font.render(str(current_score), False, 'White', None)
-        screen.blit(self.surf,self.rect)
-
-    
-
 class Timer_Bar(pygame.sprite.Sprite):
     def __init__(self, height, size, offset):
         super().__init__()
-        self.image = pygame.image.load("./resources/bottom_UI_timer.png")
+        self.image = pygame.image.load("./resources/ui/bottom_UI_timer.png")
         self.rect = self.image.get_rect()
         self.rect.x = 90 + offset
         self.rect.y = height - size + 2
@@ -55,6 +42,11 @@ class Timer_Bar(pygame.sprite.Sprite):
 
 class Current_Score():
     def __init__(self):
+        self.font = pygame.font.SysFont(None, 30)
+        self.surf = self.font.render('0', False, 'White', None)
+        self.rect = self.surf.get_rect()
+        self.rect.x = 70
+
         self.visited_pos = []
         self.collision = False
         self.score = 0
@@ -78,13 +70,46 @@ class Current_Score():
         if type == 'levelcomplete':
             self.score += self.level_completed
 
+    def draw(self, screen, current_score):
+        self.surf = self.font.render(str(current_score), False, 'White', None)
+        screen.blit(self.surf,self.rect)
+
+class Highscore:
+    def __init__(self):
+        self.file = './resources/documents/highscore.txt'
+        self.font = pygame.font.SysFont(None, 30)
+        self.score = ''
+        self.surf = ''
+        self.rect = ''
+        self.refresh()
+
+    def refresh(self):
+        try:
+            with open(self.file, 'r+', encoding = 'utf-8') as file:
+                self.score = file.read()
+                self.surf = self.font.render(self.score, False, 'White', None)
+                self.rect = self.surf.get_rect()
+                self.rect.x = 325
+                
+        except:
+            with open(self.file, 'w+', encoding = 'utf-8') as file:
+                file.write("0")  
+    
+    def update(self, current_score):
+        with open(self.file, 'w+', encoding = 'utf-8') as file:
+            file.write(str(current_score))  
+
+    def draw(self, screen):
+        screen.blit(self.surf,self.rect)
+        
+
 class Background: 
     RIVER_SIZE = 5
 
     def __init__(self, width, height, size): 
-        self.safe_platform_image    = pygame.image.load("./resources/safe_platform_placeholder.png").convert_alpha() 
-        self.river_image            = pygame.image.load("./resources/river_placeholder.png").convert_alpha() 
-        self.finish_platform_image  = pygame.image.load("./resources/finish_platform_placeholder_new.png").convert_alpha() 
+        self.safe_platform_image    = pygame.image.load("./resources/misc/safe_platform_placeholder.png").convert_alpha() 
+        self.river_image            = pygame.image.load("./resources/misc/river_placeholder.png").convert_alpha() 
+        self.finish_platform_image  = pygame.image.load("./resources/misc/finish_platform_placeholder_new.png").convert_alpha() 
         self.width  = width 
         self.height = height
         self.size   = size 

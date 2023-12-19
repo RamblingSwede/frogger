@@ -3,7 +3,7 @@ import pygame
 class Frog(pygame.sprite.Sprite): 
     def __init__(self, width, height, size):
         super().__init__()
-        self.image          = pygame.image.load("./resources/frog_placeholder.png").convert_alpha()
+        self.image          = pygame.image.load("./resources/misc/frog_placeholder.png").convert_alpha()
         self.rect           = self.image.get_rect()
         self.rect.x         = width / 2 
         self.rect.y         = height - size * 2
@@ -68,7 +68,7 @@ class Final_Lily(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
-        self.image          = pygame.image.load("./resources/final_lily_placeholder.png").convert_alpha() 
+        self.image          = pygame.image.load("./resources/floaters/final_lily_placeholder.png").convert_alpha() 
         self.rect           = self.image.get_rect()
         self.rect.x         = x 
         self.rect.y         = y 
@@ -83,7 +83,7 @@ class Final_Lily(pygame.sprite.Sprite):
 
     def set_safe(self): 
         x           = self.rect.x 
-        self.image  = pygame.image.load("./resources/frog_placeholder.png").convert_alpha() 
+        self.image  = pygame.image.load("./resources/misc/frog_placeholder.png").convert_alpha() 
         self.rect   = self.image.get_rect()
         self.rect.x = x - 6 
         self.rect.y = 32 
@@ -98,7 +98,7 @@ class Floater(pygame.sprite.Sprite):
         self.type = type 
         self.count = 0 
         if self.type == 'log_small':
-            self.image = pygame.image.load("./resources/log_2_placeholder.png")
+            self.image = pygame.image.load("./resources/floaters/log_2_placeholder.png")
             self.rect = self.image.get_rect()
             self.width = 2 * size 
             self.rect.x = start_x
@@ -107,7 +107,7 @@ class Floater(pygame.sprite.Sprite):
             self.offset = 3
             self.delay = -self.width
         if self.type == 'log_medium':
-            self.image = pygame.image.load("./resources/log_3_placeholder.png")
+            self.image = pygame.image.load("./resources/floaters/log_3_placeholder.png")
             self.rect  = self.image.get_rect()
             self.width = 3 * size 
             self.rect.x = start_x
@@ -116,7 +116,7 @@ class Floater(pygame.sprite.Sprite):
             self.offset = 2 
             self.delay = -(self.width * 3 + size)
         if self.type == 'log_large':
-            self.image = pygame.image.load("./resources/log_4_placeholder.png")
+            self.image = pygame.image.load("./resources/floaters/log_4_placeholder.png")
             self.rect = self.image.get_rect()
             self.width = 4 * size 
             self.rect.x = start_x
@@ -125,7 +125,7 @@ class Floater(pygame.sprite.Sprite):
             self.offset = 1
             self.delay = -(self.width + size) * 2
         if self.type == 'lily_medium':
-            self.image = pygame.image.load("./resources/lily_2_placeholder.png")
+            self.image = pygame.image.load("./resources/floaters/lily_2_placeholder.png")
             self.rect = self.image.get_rect()
             self.width = 2 * size 
             self.rect.x = start_x
@@ -134,7 +134,7 @@ class Floater(pygame.sprite.Sprite):
             self.offset = 1 
             self.delay = width + self.width * 2
         if self.type == 'lily_large':
-            self.image = pygame.image.load("./resources/lily_3_placeholder.png")
+            self.image = pygame.image.load("./resources/floaters/lily_3_placeholder.png")
             self.rect = self.image.get_rect()
             self.width = 3 * size 
             self.rect.x = start_x
@@ -174,7 +174,7 @@ class Vehicle(pygame.sprite.Sprite):
         self.type = type 
         self.count = 0 
         if type == 'car':
-            self.image = pygame.image.load("./resources/car_placeholder.png")
+            self.image = pygame.image.load("./resources/vehicles/car_placeholder.png")
             self.rect = self.image.get_rect()
             self.width = size 
             self.rect.x = start_x
@@ -183,7 +183,7 @@ class Vehicle(pygame.sprite.Sprite):
             self.offset = 1 
             self.delay = width + self.width * 3 
         if type == 'car2':
-            self.image = pygame.image.load("./resources/car_placeholder.png")
+            self.image = pygame.image.load("./resources/vehicles/car_placeholder.png")
             self.rect = self.image.get_rect()
             self.width = size 
             self.rect.x = start_x
@@ -192,7 +192,7 @@ class Vehicle(pygame.sprite.Sprite):
             self.offset = 1 
             self.delay = -self.width * 8 
         if type == 'tractor':
-            self.image = pygame.image.load("./resources/tractor_placeholder.png")
+            self.image = pygame.image.load("./resources/vehicles/tractor_placeholder.png")
             self.rect  = self.image.get_rect()
             self.width = size 
             self.rect.x = start_x
@@ -201,7 +201,7 @@ class Vehicle(pygame.sprite.Sprite):
             self.offset = 1 
             self.delay = -self.width * 8 
         if type == 'tractor2':
-            self.image = pygame.image.load("./resources/tractor_placeholder.png")
+            self.image = pygame.image.load("./resources/vehicles/tractor_placeholder.png")
             self.rect  = self.image.get_rect()
             self.width = size 
             self.rect.x = start_x
@@ -210,7 +210,7 @@ class Vehicle(pygame.sprite.Sprite):
             self.offset = 1 
             self.delay = width + self.width * 3 
         if type == 'truck':
-            self.image = pygame.image.load("./resources/truck_placeholder.png")
+            self.image = pygame.image.load("./resources/vehicles/truck_placeholder.png")
             self.rect = self.image.get_rect()
             self.width = size * 2
             self.rect.x = start_x

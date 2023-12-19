@@ -23,7 +23,7 @@ class Game:
         self.ui                 = UI(SCREENHEIGHT - SIZE)
         self.top_ui             = TopUI()
         self.current_score      = Current_Score()
-        self.score              = Score()
+        self.high_score         = Highscore()
         self.running            = True
         self.safe_frogs         = 0
         self.lives_left         = 2
@@ -197,6 +197,9 @@ class Game:
         print('Level completed')
         self.current_score.update_score('frogsaved',  30 - self.current_time)
         self.current_score.update_score('levelcomplete',  30 - self.current_time)
+        if int(self.current_score.score) > int(self.high_score.score):
+            self.high_score.update(self.current_score.score)
+        self.high_score.refresh()
         self.level += 1
         self.safe_frogs = 0
         self.reset_game()
@@ -216,7 +219,8 @@ class Game:
         self.ui.draw(self.screen)
         self.timer_bar.draw(self.screen)
         self.top_ui.draw(self.screen)
-        self.score.draw(self.screen, self.current_score.score)
+        self.current_score.draw(self.screen, self.current_score.score)
+        self.high_score.draw(self.screen)
 
     def run(self):
         while True:    
