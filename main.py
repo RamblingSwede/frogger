@@ -22,8 +22,9 @@ class Game:
         self.background         = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
         self.ui                 = UI(SCREENHEIGHT - SIZE)
         self.top_ui             = TopUI()
-        self.running            = True
         self.current_score      = Current_Score()
+        self.score              = Score()
+        self.running            = True
         self.safe_frogs         = 0
         self.lives_left         = 2
         self.floater_group      = pygame.sprite.Group() 
@@ -215,10 +216,10 @@ class Game:
         self.ui.draw(self.screen)
         self.timer_bar.draw(self.screen)
         self.top_ui.draw(self.screen)
+        self.score.draw(self.screen, self.current_score.score)
 
     def run(self):
         while True:    
-            print(self.current_score.score)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()

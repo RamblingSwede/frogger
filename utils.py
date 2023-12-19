@@ -17,6 +17,28 @@ class UI:
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
+class TopUI:
+    def __init__(self):
+        self.image = pygame.image.load("./resources/top_UI.png")
+        self.rect = self.image.get_rect()
+        self.rect.y = 0
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+
+class Score:
+    def __init__(self):
+        self.font = pygame.font.SysFont(None, 30)
+        self.surf = self.font.render('0', False, 'White', None)
+        self.rect = self.surf.get_rect()
+        self.rect.x = 70
+
+    def draw(self, screen, current_score):
+        self.surf = self.font.render(str(current_score), False, 'White', None)
+        screen.blit(self.surf,self.rect)
+
+    
+
 class Timer_Bar(pygame.sprite.Sprite):
     def __init__(self, height, size, offset):
         super().__init__()
