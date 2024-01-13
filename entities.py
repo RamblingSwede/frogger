@@ -12,7 +12,7 @@ class Frog(pygame.sprite.Sprite):
         self.hop_cooldownY  = self.hop_cooldown
         self.count          = 0
 
-    def update(self, width, height, size, movementX = (0,0), movementY = (0,0)): 
+    def update(self, width, height, size, movementX = [0,0], movementY = [0,0]): 
         self.out_of_bounds(width, height, size)
         if movementX[0] == True and movementY[0] == False and movementY[1] == False:
             if self.hop_cooldownX == self.hop_cooldown:
