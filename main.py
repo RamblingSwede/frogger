@@ -22,6 +22,7 @@ class Game:
         self.background         = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
         self.ui                 = UI(SCREENHEIGHT - SIZE)
         self.top_ui             = TopUI()
+        self.respawn_menu       = RespawnMenu(SCREENWIDTH, SCREENHEIGHT)
         self.current_score      = Current_Score()
         self.high_score         = Highscore()
         self.running            = True
@@ -190,8 +191,8 @@ class Game:
         self.spawn_timer_bar()
 
     def game_over(self):
-        print('Press Space to restart')
         self.running = False
+        print('Press Space to restart')
 
     def level_completed(self):
         print('Level completed')
@@ -223,7 +224,7 @@ class Game:
         self.high_score.draw(self.screen)
 
     def run(self):
-        while True:    
+        while True:  
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -258,6 +259,7 @@ class Game:
                         self.movementY[0] = False
                 if event.type == self.timer and self.running:
                     self.lose_life()
+
             if self.running:
                 self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time 
                 self.timer_tick()
@@ -265,5 +267,13 @@ class Game:
                 self.update_display() 
                 pygame.display.update()
                 self.clock.tick(FPS)
+            
+            if not self.running:
+                self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time
+                if self.current_time > 0:
+                    self.respawn_menu.update(str(10 - self.current_time))
+                self.respawn_menu.draw(self.screen)
+                pygame.display.update()
+                        
 
 Game().run()
