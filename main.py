@@ -274,6 +274,5 @@ class Game:
                     self.respawn_menu.update(str(10 - self.current_time))
                 self.respawn_menu.draw(self.screen)
                 pygame.display.update()
-                        
-
+                    
 Game().run()
