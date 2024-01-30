@@ -215,7 +215,7 @@ class Game:
         self.floater_group.update(SCREENWIDTH, SIZE, self.floater_group)
         self.floater_group.draw(self.screen)
         self.final_lilies_group.draw(self.screen) 
-        self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, (self.movementX[0], self.movementX[1]), (self.movementY[0], self.movementY[1]))
+        self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.movementX, self.movementY)
         self.frog.draw(self.screen)
         self.ui.draw(self.screen)
         self.timer_bar.draw(self.screen)
