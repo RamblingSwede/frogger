@@ -162,7 +162,7 @@ class Game:
             self.lives_left -= 1
             self.respawn()
         else:
-            self.game_over()
+            self.running = False
 
     def respawn(self):
         pygame.time.set_timer(self.timer, 30000)
@@ -190,10 +190,6 @@ class Game:
         self.spawn_floaters()
         self.spawn_final_lilies()
         self.spawn_timer_bar()
-
-    def game_over(self):
-        self.running = False
-        print('Press Space to restart')
 
     def level_completed(self):
         print('Level completed')
