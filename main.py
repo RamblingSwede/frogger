@@ -25,7 +25,8 @@ class Game:
         self.respawn_menu       = RespawnMenu(SCREENWIDTH, SCREENHEIGHT)
         self.current_score      = Current_Score()
         self.high_score         = Highscore()
-        self.running            = True
+        self.in_start_screen    = True 
+        self.running            = False
         self.safe_frogs         = 0
         self.lives_left         = 2
         self.floater_group      = pygame.sprite.Group() 
@@ -223,56 +224,93 @@ class Game:
         self.current_score.draw(self.screen, self.current_score.score)
         self.high_score.draw(self.screen)
 
+    def start_screen(self):
+        self.screen.fill('Black')
+        self.background.draw(self.screen)
+        self.final_lilies_group.draw(self.screen) 
+        self.top_ui.draw(self.screen)
+        self.current_score.draw(self.screen, self.current_score.score)
+        self.high_score.draw(self.screen)
+        pygame.display.update() 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()  
+            if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
+                self.current_score.score = 0
+                self.safe_frogs = 0
+                self.lives_left = 2
+                self.level = 1
+                self.reset_game()
+                self.respawn()
+                self.in_start_screen = False
+                self.running = True     
+    
     def run(self):
-        while True:  
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()        
-                if event.type == pygame.KEYDOWN:
-                    if event.key in LEFT_DIR:
-                        self.movementX[0] = True
-                    if event.key in RIGHT_DIR:
-                        self.movementX[1] = True
-                    if event.key in UP_DIR:
-                        self.movementY[1] = True
-                        if self.current_score.unique_position(self.frog.sprite.rect.y):
-                            self.current_score.update_score('stepforward', 30 - self.current_time)
-                    if event.key in DOWN_DIR:
-                        self.movementY[0] = True
-                    if event.key == pygame.K_SPACE:
-                        ##Only exists for debug, to be replaced with restart menu at some point
+        while True:
+            while self.in_start_screen:
+                self.start_screen()  
+            while not self.in_start_screen:
+                for event in pygame.event.get():
+                    if event.type == pygame.MOUSEMOTION:
+                        mx, my = pygame.mouse.get_pos()
+                    if event.type == pygame.MOUSEBUTTONDOWN and mx >= 160 and mx <= 220 and my >= 264 and my <= 294 and not self.running:
                         self.current_score.score = 0
                         self.safe_frogs = 0
                         self.lives_left = 2
                         self.level = 1
                         self.reset_game()
                         self.respawn()
-                if event.type == pygame.KEYUP:
-                    if event.key in LEFT_DIR:
-                        self.movementX[0] = False
-                    if event.key in RIGHT_DIR:
-                        self.movementX[1] = False
-                    if event.key in UP_DIR:
-                        self.movementY[1] = False
-                    if event.key in DOWN_DIR:
-                        self.movementY[0] = False
-                if event.type == self.timer and self.running:
-                    self.lose_life()
+                    if event.type == pygame.MOUSEBUTTONDOWN and mx >= 235 and mx <= 300 and my >= 264 and my <= 294 and not self.running:
+                        self.in_start_screen = True
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()        
+                    if event.type == pygame.KEYDOWN:
+                        if event.key in LEFT_DIR:
+                            self.movementX[0] = True
+                        if event.key in RIGHT_DIR:
+                            self.movementX[1] = True
+                        if event.key in UP_DIR:
+                            self.movementY[1] = True
+                            if self.current_score.unique_position(self.frog.sprite.rect.y):
+                                self.current_score.update_score('stepforward', 30 - self.current_time)
+                        if event.key in DOWN_DIR:
+                            self.movementY[0] = True
+                        if event.key == pygame.K_SPACE:
+                            ##Only exists for debug, to be replaced with restart menu at some point
+                            self.current_score.score = 0
+                            self.safe_frogs = 0
+                            self.lives_left = 2
+                            self.level = 1
+                            self.reset_game()
+                            self.respawn()
+                    if event.type == pygame.KEYUP:
+                        if event.key in LEFT_DIR:
+                            self.movementX[0] = False
+                        if event.key in RIGHT_DIR:
+                            self.movementX[1] = False
+                        if event.key in UP_DIR:
+                            self.movementY[1] = False
+                        if event.key in DOWN_DIR:
+                            self.movementY[0] = False
+                    if event.type == self.timer and self.running:
+                        self.lose_life()
 
-            if self.running:
-                self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time 
-                self.timer_tick()
-                self.collision()
-                self.update_display() 
-                pygame.display.update()
-                self.clock.tick(FPS)
-            
-            if not self.running:
-                self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time
-                if self.current_time > 0:
-                    self.respawn_menu.update(str(10 - self.current_time))
-                self.respawn_menu.draw(self.screen)
-                pygame.display.update()
-                    
+                if self.running:
+                    self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time 
+                    self.timer_tick()
+                    self.collision()
+                    self.update_display() 
+                    pygame.display.update()
+                    self.clock.tick(FPS)
+                
+                if not self.running and not self.in_start_screen:
+                    self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time
+                    if 10 - self.current_time > 0:
+                        self.respawn_menu.update(str(10 - self.current_time))
+                        self.respawn_menu.draw(self.screen)
+                    else:
+                        self.in_start_screen = True
+                    pygame.display.update()
 Game().run()
