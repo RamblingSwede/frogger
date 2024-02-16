@@ -42,12 +42,12 @@ class Game:
         self.movementY          = [False, False]
         self.jump_distance      = SIZE 
         self.start_time = int(pygame.time.get_ticks() / 1000)
-        self.spawn_floaters()
-        self.spawn_vehicles() 
+        self.spawn_floaters_lvl_1()
+        self.spawn_vehicles_lvl_1() 
         self.spawn_final_lilies()
         self.spawn_timer_bar()
 
-    def spawn_floaters(self): 
+    def spawn_floaters_lvl_1(self): 
         log_small_x = randint(-SIZE * 4, -SIZE * 2)
         log_medium_x = randint(-SIZE * 10, -SIZE * 4)
         log_large_x = randint(-SIZE * 8, -SIZE * 3)
@@ -72,7 +72,7 @@ class Game:
         self.floater_group.add(Floater('lily_large', SCREENWIDTH, SIZE, lily_large_x + SIZE * 10))
         self.floater_group.add(Floater('lily_large', SCREENWIDTH, SIZE, lily_large_x + SIZE * 15))
 
-    def spawn_vehicles(self): 
+    def spawn_vehicles_lvl_1(self): 
         car_x = randint(SIZE * 2, SIZE * 8)
         tractor_x = randint(SIZE * 2, SIZE * 8)
         truck_x = randint(SIZE * 6, SIZE * 10)
@@ -197,8 +197,8 @@ class Game:
             lily.kill()
         for bar in self.timer_bar:
             bar.kill()
-        self.spawn_vehicles()
-        self.spawn_floaters()
+        self.spawn_vehicles_lvl_1()
+        self.spawn_floaters_lvl_1()
         self.spawn_final_lilies()
         self.spawn_timer_bar()
 
