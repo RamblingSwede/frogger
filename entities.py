@@ -12,17 +12,17 @@ class Frog(pygame.sprite.Sprite):
         self.hop_cooldownY  = self.hop_cooldown
         self.count          = 0
 
-    def update(self, width, height, size, movementX = [0,0], movementY = [0,0]): 
+    def update(self, width, height, size, jump_distance, movementX = [0,0], movementY = [0,0]): 
         self.out_of_bounds(width, height, size)
         if movementX[0] == True and movementY[0] == False and movementY[1] == False:
             if self.hop_cooldownX == self.hop_cooldown:
                 self.hop_cooldownX = 0
-                self.rect.x -= size
+                self.rect.x -= jump_distance
             self.hop_cooldownX += 1
         elif movementX[1] == True and movementY[0] == False and movementY[1] == False:
             if self.hop_cooldownX == self.hop_cooldown:
                 self.hop_cooldownX = 0
-                self.rect.x += size
+                self.rect.x += jump_distance
             self.hop_cooldownX += 1
         else:
             self.velX = 0
@@ -106,6 +106,7 @@ class Floater(pygame.sprite.Sprite):
             self.velocity = 1
             self.offset = 3
             self.delay = -self.width
+            self.jump_distance = (size * 1.4, size)
         if self.type == 'log_medium':
             self.image = pygame.image.load("./resources/floaters/log_3_placeholder.png")
             self.rect  = self.image.get_rect()
@@ -115,6 +116,7 @@ class Floater(pygame.sprite.Sprite):
             self.velocity = 1
             self.offset = 2 
             self.delay = -(self.width * 3 + size)
+            self.jump_distance = (size * 1.4, size)
         if self.type == 'log_large':
             self.image = pygame.image.load("./resources/floaters/log_4_placeholder.png")
             self.rect = self.image.get_rect()
@@ -124,6 +126,7 @@ class Floater(pygame.sprite.Sprite):
             self.velocity = 1
             self.offset = 1
             self.delay = -(self.width + size) * 2
+            self.jump_distance = (size * 1.4, size)
         if self.type == 'lily_medium':
             self.image = pygame.image.load("./resources/floaters/lily_2_placeholder.png")
             self.rect = self.image.get_rect()
@@ -133,6 +136,7 @@ class Floater(pygame.sprite.Sprite):
             self.velocity = -1
             self.offset = 1 
             self.delay = width + self.width * 2
+            self.jump_distance = (size, size * 1.4)
         if self.type == 'lily_large':
             self.image = pygame.image.load("./resources/floaters/lily_3_placeholder.png")
             self.rect = self.image.get_rect()
@@ -142,6 +146,10 @@ class Floater(pygame.sprite.Sprite):
             self.velocity = -1
             self.offset = 2 
             self.delay = width + self.width 
+            self.jump_distance = (size, size * 1.4)
+
+    def get_jump_distance(self): 
+        return self.jump_distance 
 
     def update(self, width, size, group):
         if self.count == self.offset: 

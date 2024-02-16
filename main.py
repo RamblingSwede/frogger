@@ -38,6 +38,7 @@ class Game:
         pygame.time.set_timer(self.timer, 30000)
         self.movementX          = [False, False]
         self.movementY          = [False, False]
+        self.jump_distance      = SIZE 
         self.start_time = int(pygame.time.get_ticks() / 1000)
         self.spawn_floaters()
         self.spawn_vehicles() 
@@ -118,6 +119,7 @@ class Game:
                 platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
                 for platform in platforms:
                     if platform.within_bounds(self.frog.sprite.rect.x, SIZE): 
+                        self.set_jump_distance(platform) 
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
                         if platform != self.current_floater: 
                             print('another platform')
@@ -128,6 +130,7 @@ class Game:
             else:
                 self.lose_life() 
         else: 
+            self.jump_distance = SIZE 
             self.current_floater = None 
 
     def handle_final_platform_hit(self): 
@@ -148,6 +151,14 @@ class Game:
                 self.lose_life() 
         elif self.frog.sprite.rect.y == SIZE:
             self.lose_life() 
+
+    def set_jump_distance(self, platform): 
+        dists = platform.get_jump_distance() 
+        if self.movementX[0]: 
+            self.jump_distance = dists[0] 
+        elif self.movementX[1]: 
+            self.jump_distance = dists[1] 
+
 
     def in_river(self): 
         return self.frog.sprite.rect.y < SIZE * 7 and self.frog.sprite.rect.y > SIZE
@@ -214,7 +225,7 @@ class Game:
         self.floater_group.update(SCREENWIDTH, SIZE, self.floater_group)
         self.floater_group.draw(self.screen)
         self.final_lilies_group.draw(self.screen) 
-        self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.movementX, self.movementY)
+        self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.jump_distance, self.movementX, self.movementY)
         self.frog.draw(self.screen)
         self.ui.draw(self.screen)
         self.timer_bar.draw(self.screen)
