@@ -12,7 +12,7 @@ class UI:
         if type == '1':
             self.image = pygame.image.load("./resources/ui/bottom_UI_one_life.png").convert_alpha()
         if type == '0':
-            self.image = self.image = pygame.image.load("./resources/ui/bottom_UI_no_lives.png").convert_alpha()
+            self.image = pygame.image.load("./resources/ui/bottom_UI_no_lives.png").convert_alpha()
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
@@ -102,6 +102,35 @@ class Highscore:
     def draw(self, screen):
         screen.blit(self.surf,self.rect)
         
+class RespawnMenu:
+    def __init__(self, width, height):
+        self.image = pygame.image.load("./resources/ui/game_over_9.png").convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.y = height // 3.5
+        self.rect.x = width // 3
+
+    def update(self, type):
+        if type == '9':
+            self.image = pygame.image.load("./resources/ui/game_over_9.png").convert_alpha()
+        if type == '8':
+            self.image = pygame.image.load("./resources/ui/game_over_8.png").convert_alpha()
+        if type == '7':
+            self.image = pygame.image.load("./resources/ui/game_over_7.png").convert_alpha()
+        if type == '6':
+            self.image = pygame.image.load("./resources/ui/game_over_6.png").convert_alpha()
+        if type == '5':
+            self.image = pygame.image.load("./resources/ui/game_over_5.png").convert_alpha()
+        if type == '4':
+            self.image = pygame.image.load("./resources/ui/game_over_4.png").convert_alpha()
+        if type == '3':
+            self.image = pygame.image.load("./resources/ui/game_over_3.png").convert_alpha()
+        if type == '2':
+            self.image = pygame.image.load("./resources/ui/game_over_2.png").convert_alpha()
+        if type == '1':            
+            self.image = pygame.image.load("./resources/ui/game_over_1.png").convert_alpha()
+    
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
 
 class Background: 
     RIVER_SIZE = 5
