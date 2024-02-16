@@ -1,4 +1,4 @@
-from entities import *
+from Entities.entities import *
 from utils import *
 from random import randint 
 import pygame
@@ -220,7 +220,7 @@ class Game:
         self.background.draw(self.screen) 
         self.vehicle_group.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.vehicle_group)
         self.vehicle_group.draw(self.screen)
-        self.floater_group.update(SCREENWIDTH, SIZE, self.floater_group)
+        self.floater_group.update(SCREENWIDTH, self.floater_group)
         self.floater_group.draw(self.screen)
         self.final_lilies_group.draw(self.screen) 
         self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.jump_distance, self.movementX, self.movementY)
