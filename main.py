@@ -261,14 +261,14 @@ class Game:
                 for event in pygame.event.get():
                     if event.type == pygame.MOUSEMOTION:
                         mx, my = pygame.mouse.get_pos()
-                    if event.type == pygame.MOUSEBUTTONDOWN and mx >= 160 and mx <= 220 and my >= 264 and my <= 294 and not self.running:
+                    if event.type == pygame.MOUSEBUTTONDOWN and not self.running and mx >= 160 and mx <= 220 and my >= 264 and my <= 294:
                         self.current_score.score = 0
                         self.safe_frogs = 0
                         self.lives_left = 2
                         self.level = 1
                         self.reset_game()
                         self.respawn()
-                    if event.type == pygame.MOUSEBUTTONDOWN and mx >= 235 and mx <= 300 and my >= 264 and my <= 294 and not self.running:
+                    if event.type == pygame.MOUSEBUTTONDOWN and not self.running and mx >= 235 and mx <= 300 and my >= 264 and my <= 294:
                         self.in_start_screen = True
                     if event.type == pygame.QUIT:
                         pygame.quit()
