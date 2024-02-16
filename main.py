@@ -1,4 +1,5 @@
 from Entities.entities import *
+from Entities.floater import * 
 from utils import *
 from random import randint 
 import pygame
@@ -53,24 +54,24 @@ class Game:
         log_large_x = randint(-SIZE * 8, -SIZE * 3)
         lily_medium_x = randint(SIZE * 9, SCREENWIDTH + SIZE * 4)
         lily_large_x = randint(SIZE * 6, SCREENWIDTH + SIZE * 2)
-        self.floater_group.add(Floater('log_small', SCREENWIDTH, SIZE, log_small_x))
-        self.floater_group.add(Floater('log_small', SCREENWIDTH, SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
-        self.floater_group.add(Floater('log_small', SCREENWIDTH, SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
-        self.floater_group.add(Floater('log_medium', SCREENWIDTH, SIZE, log_medium_x))
-        self.floater_group.add(Floater('log_medium', SCREENWIDTH, SIZE, log_medium_x - SIZE * 6))
-        self.floater_group.add(Floater('log_medium', SCREENWIDTH, SIZE, log_medium_x - SIZE * 11))
-        self.floater_group.add(Floater('log_medium', SCREENWIDTH, SIZE, log_medium_x - SIZE * 16))
-        self.floater_group.add(Floater('log_large', SCREENWIDTH, SIZE, log_large_x))
-        self.floater_group.add(Floater('log_large', SCREENWIDTH, SIZE, log_large_x - SIZE * 8))
-        self.floater_group.add(Floater('log_large', SCREENWIDTH, SIZE, log_large_x - SIZE * 16))
-        self.floater_group.add(Floater('lily_medium', SCREENWIDTH, SIZE, lily_medium_x))
-        self.floater_group.add(Floater('lily_medium', SCREENWIDTH, SIZE, lily_medium_x + SIZE * 5))
-        self.floater_group.add(Floater('lily_medium', SCREENWIDTH, SIZE, lily_medium_x + SIZE * 10))
-        self.floater_group.add(Floater('lily_medium', SCREENWIDTH, SIZE, lily_medium_x + SIZE * 15))
-        self.floater_group.add(Floater('lily_large', SCREENWIDTH, SIZE, lily_large_x))
-        self.floater_group.add(Floater('lily_large', SCREENWIDTH, SIZE, lily_large_x + SIZE * 5))
-        self.floater_group.add(Floater('lily_large', SCREENWIDTH, SIZE, lily_large_x + SIZE * 10))
-        self.floater_group.add(Floater('lily_large', SCREENWIDTH, SIZE, lily_large_x + SIZE * 15))
+        self.floater_group.add(Log('log_small', SIZE, log_small_x))
+        self.floater_group.add(Log('log_small', SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
+        self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
+        self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
+        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 6))
+        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 11))
+        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 16))
+        self.floater_group.add(Log('log_large', SIZE, log_large_x))
+        self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 8))
+        self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 16))
+        self.floater_group.add(Lily('lily_medium', SIZE, SCREENWIDTH, lily_medium_x))
+        self.floater_group.add(Lily('lily_medium', SIZE, SCREENWIDTH, lily_medium_x + SIZE * 5))
+        self.floater_group.add(Lily('lily_medium', SIZE, SCREENWIDTH, lily_medium_x + SIZE * 10))
+        self.floater_group.add(Lily('lily_medium', SIZE, SCREENWIDTH, lily_medium_x + SIZE * 15))
+        self.floater_group.add(Lily('lily_large', SIZE, SCREENWIDTH, lily_large_x))
+        self.floater_group.add(Lily('lily_large', SIZE, SCREENWIDTH, lily_large_x + SIZE * 5))
+        self.floater_group.add(Lily('lily_large', SIZE, SCREENWIDTH, lily_large_x + SIZE * 10))
+        self.floater_group.add(Lily('lily_large', SIZE, SCREENWIDTH, lily_large_x + SIZE * 15))
 
     def spawn_vehicles_lvl_1(self): 
         car_x = randint(SIZE * 2, SIZE * 8)

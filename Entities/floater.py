@@ -48,14 +48,17 @@ class Log(Floater):
         if type == 'log_small':
             super().__init__(pygame.image.load("./resources/floaters/log_2_placeholder.png"), 
                              2 * size, x_pos, size * 5, 1, 3, -2 * size, (size * 1.4, size))
-        if type == 'log_medium':
+            self.image = pygame.image.load("./resources/floaters/log_2_placeholder.png")
+        elif type == 'log_medium':
             super().__init__(pygame.image.load("./resources/floaters/log_3_placeholder.png"), 
                              3 * size, x_pos, size * 2, 1, 2, -(10 * size), (size * 1.4, size))
-        if type == 'log_large':
+            self.image = pygame.image.load("./resources/floaters/log_3_placeholder.png")
+        elif type == 'log_large':
             super().__init__(pygame.image.load("./resources/floaters/log_4_placeholder.png"), 
                              4 * size, x_pos, size * 4, 1, 1, -(10 * size), (size * 1.4, size))
-        self.type = type; 
-        self.size = size; 
+            self.image = pygame.image.load("./resources/floaters/log_4_placeholder.png")
+        self.type = type
+        self.size = size
             
     def create_new_floater(self): 
         return Log(self.type, self.size, self.delay) 
@@ -65,12 +68,14 @@ class Lily(Floater):
         if type == 'lily_medium':
             super().__init__(pygame.image.load("./resources/floaters/lily_2_placeholder.png"), 
                              2 * size, x_pos, size * 3, -1, 1, width + 4 * size, (size, size * 1.4))
-        if type == 'lily_large':
+            self.image = pygame.image.load("./resources/floaters/lily_2_placeholder.png")
+        elif type == 'lily_large':
             super().__init__(pygame.image.load("./resources/floaters/lily_3_placeholder.png"), 
                              3 * size, x_pos, size * 6, -1, 2, width + 3 * size, (size, size * 1.4))
-        self.type = type; 
-        self.size = size; 
-        self.width = width; 
+            self.image = pygame.image.load("./resources/floaters/lily_3_placeholder.png")
+        self.type = type
+        self.size = size
+        self.width = width
 
     def create_new_floater(self): 
         return Lily(self.type, self.size, self.width, self.delay) 
