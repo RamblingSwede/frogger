@@ -1,5 +1,5 @@
 from Entities.entities import *
-from Entities.floater import * 
+from Entities.floaters import * 
 from utils import *
 from random import randint 
 import pygame
