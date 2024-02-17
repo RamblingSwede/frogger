@@ -25,7 +25,7 @@ class Game:
         self.respawn_menu       = RespawnMenu(SCREENWIDTH, SCREENHEIGHT)
         self.current_score      = Current_Score()
         self.high_score         = Highscore()
-        self.splash_screen      = SplashScreen(SCREENWIDTH, SCREENHEIGHT)
+        self.splash_screen      = SplashScreen()
         self.in_start_screen    = True 
         self.running            = False
         self.safe_frogs         = 0
