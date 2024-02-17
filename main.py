@@ -25,6 +25,7 @@ class Game:
         self.respawn_menu       = RespawnMenu(SCREENWIDTH, SCREENHEIGHT)
         self.current_score      = Current_Score()
         self.high_score         = Highscore()
+        self.splash_screen      = SplashScreen(SCREENWIDTH, SCREENHEIGHT)
         self.in_start_screen    = True 
         self.running            = False
         self.safe_frogs         = 0
@@ -238,6 +239,7 @@ class Game:
         self.top_ui.draw(self.screen)
         self.current_score.draw(self.screen, self.current_score.score)
         self.high_score.draw(self.screen)
+        self.splash_screen.draw(self.screen)
         pygame.display.update() 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
