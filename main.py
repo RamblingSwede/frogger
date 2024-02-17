@@ -1,5 +1,6 @@
 from Entities.entities import *
 from Entities.floaters import * 
+from Entities.final_lilies import * 
 from utils import *
 from random import randint 
 import pygame
@@ -96,7 +97,16 @@ class Game:
         y = SIZE + SIZE / 4 + 2 
         for i in range(5): 
             x = 16 + 6 + i * SIZE * 3 
-            self.final_lilies_group.add(Final_Lily(x, y))
+            random_nbr = randint(1, 12) 
+            if random_nbr < 4: 
+                print("Bonus lily")
+                self.final_lilies_group.add(Bonus_Final_Lily(x, y))
+            elif random_nbr < 7: 
+                print("Hostile lily")
+                self.final_lilies_group.add(Hostile_Final_Lily(x, y))
+            else: 
+                print("Ordinary lily")
+                self.final_lilies_group.add(Ordinary_Final_Lily(x, y))
 
     def spawn_timer_bar(self):
         for i in range(0, 30):
