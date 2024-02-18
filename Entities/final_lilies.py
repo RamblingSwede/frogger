@@ -1,5 +1,6 @@
 import pygame 
 import threading 
+from random import randint 
 
 class Final_Lily(pygame.sprite.Sprite): 
     WIDTH = 20 
@@ -7,17 +8,21 @@ class Final_Lily(pygame.sprite.Sprite):
     SAFE_LILY_IMG_FILE = "./resources/misc/frog_placeholder.png"
     CURRENT_IMG = LILY_IMG_FILE
 
-    def __init__(self, x, y, timer_delay):
+    def __init__(self, x, y):
         super().__init__()
         self.image          = pygame.image.load(Final_Lily.LILY_IMG_FILE).convert_alpha() 
         self.rect           = self.image.get_rect()
         self.rect.x         = x
         self.rect.y         = y
         self.occupied       = False
-        self.timer          = threading.Timer(timer_delay, self.update_image).start()
+        self.timer          = threading.Timer(randint(5, 15), self.update_image)
+        self.timer.start()
+
+    def is_active(self): 
+        return self.active 
 
     def hit(self, x_left, size): 
-        if self.occupied: 
+        if self.occupied or self.is_hostile(): 
             return False 
         x_right = x_left + size 
         mid = self.rect.x + Final_Lily.WIDTH / 2
@@ -46,17 +51,21 @@ class Final_Lily(pygame.sprite.Sprite):
             self.reset_timer()
 
     def reset_timer(self): 
-        self.timer = threading.Timer(8, self.update_image).start()
+        self.timer = threading.Timer(randint(4, 12), self.update_image)
+        self.timer.start()
 
 
 
 class Ordinary_Final_Lily(Final_Lily): 
 
     def __init__(self, x, y):
-        super().__init__(x, y, 2)
+        super().__init__(x, y)
 
     def set_image(self): 
         return Final_Lily.LILY_IMG_FILE
+    
+    def is_hostile(self): 
+        return False
     
 
 
@@ -64,7 +73,7 @@ class Bonus_Final_Lily(Final_Lily):
     FLY_LILY_IMG_FILE = "./resources/misc/fly_final_lily_placeholder.png" #to be replaced 
 
     def __init__(self, x, y):
-        super().__init__(x, y, 2)
+        super().__init__(x, y)
         self.active = False 
 
     def set_image(self): 
@@ -74,6 +83,9 @@ class Bonus_Final_Lily(Final_Lily):
         else:
             self.active = True
             return Bonus_Final_Lily.FLY_LILY_IMG_FILE
+        
+    def is_hostile(self): 
+        return False
     
 
 
@@ -81,7 +93,7 @@ class Hostile_Final_Lily(Final_Lily):
     BIRD_LILY_IMG_FILE = "./resources/misc/bird_final_lily_placeholder.png" #to be replaced 
 
     def __init__(self, x, y):
-        super().__init__(x, y, 6)
+        super().__init__(x, y)
         self.active = False 
 
     def set_image(self): 
@@ -91,3 +103,6 @@ class Hostile_Final_Lily(Final_Lily):
         else:
             self.active = True
             return Hostile_Final_Lily.BIRD_LILY_IMG_FILE
+        
+    def is_hostile(self): 
+        return self.active

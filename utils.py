@@ -61,13 +61,18 @@ class Current_Score():
         else:
             return False
 
-    def update_score(self, type, time_left):
+    def update_score(self, type, elapsed_time):
+        print(elapsed_time)
         if type == 'stepforward':
             self.score += self.move_forward
-        if type == 'frogsaved':
+        elif type == 'frogsaved':
             self.score += self.frog_saved
-            self.score += (time_left * 2) * 10
-        if type == 'levelcomplete':
+            self.score += ((30 - elapsed_time) * 2) * 10
+            print(((30 - elapsed_time) * 2) * 10)
+        elif type == 'frogsavedbonus':
+            self.score += self.frog_saved
+            self.score += ((60 - elapsed_time) * 2) * 10 #How many points should bonus give? 
+        elif type == 'levelcomplete':
             self.score += self.level_completed
 
     def draw(self, screen, current_score):

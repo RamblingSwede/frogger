@@ -153,11 +153,19 @@ class Game:
             if lily.hit(self.frog.sprite.get_x(), SIZE): 
                 lily.set_occupied() 
                 if self.safe_frogs == 4:
+                    if isinstance(lily, Bonus_Final_Lily) and lily.is_active(): 
+                        self.current_score.update_score('frogsavedbonus',  self.current_time)
+                    else: 
+                        self.current_score.update_score('frogsaved',  self.current_time)
+                    self.current_score.update_score('levelcomplete',  self.current_time)
                     self.level_completed()
                 else:
                     self.current_score.visited_pos.clear()
                     self.safe_frogs += 1
-                    self.current_score.update_score('frogsaved',  30 - self.current_time)
+                    if isinstance(lily, Bonus_Final_Lily) and lily.is_active(): 
+                        self.current_score.update_score('frogsavedbonus',  self.current_time)
+                    else: 
+                        self.current_score.update_score('frogsaved',  self.current_time)
                     print('Frog made it to safety')
                     self.respawn()
             else: 
@@ -216,8 +224,6 @@ class Game:
 
     def level_completed(self):
         print('Level completed')
-        self.current_score.update_score('frogsaved',  30 - self.current_time)
-        self.current_score.update_score('levelcomplete',  30 - self.current_time)
         if int(self.current_score.score) > int(self.high_score.score):
             self.high_score.update(self.current_score.score)
         self.high_score.refresh()
@@ -294,7 +300,7 @@ class Game:
                         if event.key in UP_DIR:
                             self.movementY[1] = True
                             if self.current_score.unique_position(self.frog.sprite.rect.y):
-                                self.current_score.update_score('stepforward', 30 - self.current_time)
+                                self.current_score.update_score('stepforward', self.current_time)
                         if event.key in DOWN_DIR:
                             self.movementY[0] = True
                         if event.key == pygame.K_SPACE:
