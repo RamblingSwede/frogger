@@ -66,14 +66,14 @@ class Game:
         self.floater_group.add(Log('log_large', SIZE, log_large_x))
         self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 8))
         self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 16))
-        self.floater_group.add(Turtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
+        self.floater_group.add(DivingTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
         self.floater_group.add(Turtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 5))
         self.floater_group.add(Turtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 10))
         self.floater_group.add(Turtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 15))
         self.floater_group.add(Turtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x))
         self.floater_group.add(Turtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 5))
         self.floater_group.add(Turtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 10))
-        self.floater_group.add(Turtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
+        self.floater_group.add(DivingTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
 
     def spawn_vehicles_lvl_1(self): 
         car_x = randint(SIZE * 2, SIZE * 8)

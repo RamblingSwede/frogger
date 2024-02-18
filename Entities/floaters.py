@@ -1,10 +1,12 @@
 import pygame
+import threading 
 
 class Floater(pygame.sprite.Sprite): 
     def __init__(self, image, width, x_pos, y_pos, velocity, offset, delay, jump_distance):
         super().__init__()
         self.count = 0 
-        self.rect = image.get_rect()
+        self.image = image.convert_alpha() 
+        self.rect = self.image.get_rect()
         self.width = width 
         self.rect.x = x_pos 
         self.rect.y = y_pos 
@@ -48,15 +50,15 @@ class Log(Floater):
         if type == 'log_small':
             super().__init__(pygame.image.load("./resources/floaters/log_2_placeholder.png"), 
                              2 * size, x_pos, size * 5, 1, 3, -2 * size, (size * 1.4, size))
-            self.image = pygame.image.load("./resources/floaters/log_2_placeholder.png")
+            self.image_file = "./resources/floaters/log_2_placeholder.png"
         elif type == 'log_medium':
             super().__init__(pygame.image.load("./resources/floaters/log_3_placeholder.png"), 
                              3 * size, x_pos, size * 2, 1, 2, -(10 * size), (size * 1.4, size))
-            self.image = pygame.image.load("./resources/floaters/log_3_placeholder.png")
+            self.image_file = "./resources/floaters/log_3_placeholder.png"
         elif type == 'log_large':
             super().__init__(pygame.image.load("./resources/floaters/log_4_placeholder.png"), 
                              4 * size, x_pos, size * 4, 1, 1, -(10 * size), (size * 1.4, size))
-            self.image = pygame.image.load("./resources/floaters/log_4_placeholder.png")
+            self.image_file = "./resources/floaters/log_4_placeholder.png"
         self.type = type
         self.size = size
             
@@ -68,14 +70,42 @@ class Turtle(Floater):
         if type == 'turtle_medium':
             super().__init__(pygame.image.load("./resources/floaters/turtle_2_placeholder.png"), 
                              2 * size, x_pos, size * 3, -1, 1, width + 4 * size, (size, size * 1.4))
-            self.image = pygame.image.load("./resources/floaters/turtle_2_placeholder.png")
+            self.image_file = "./resources/floaters/turtle_2_placeholder.png"
         elif type == 'turtle_large':
             super().__init__(pygame.image.load("./resources/floaters/turtle_3_placeholder.png"), 
                              3 * size, x_pos, size * 6, -1, 2, width + 3 * size, (size, size * 1.4))
-            self.image = pygame.image.load("./resources/floaters/turtle_3_placeholder.png")
+            self.image_file = "./resources/floaters/turtle_3_placeholder.png"
         self.type = type
         self.size = size
         self.width = width
 
     def create_new_floater(self): 
         return Turtle(self.type, self.size, self.width, self.delay) 
+    
+class DivingTurtle(Turtle): 
+    def __init__(self, type, size, width, x_pos):
+        if type == 'turtle_medium':
+            super().__init__(type, size, width, x_pos)
+            self.diving_image_file = "./resources/floaters/diving_turtle_2_placeholder.png"
+        elif type == 'turtle_large':
+            super().__init__(type, size, width, x_pos)
+            self.diving_image_file = "./resources/floaters/diving_turtle_3_placeholder.png"
+        self.diving = True 
+        self.timer = threading.Timer(0.8, self.update_turtle)
+        self.timer.start()
+
+    def update_turtle(self): 
+        x = self.rect.x
+        y = self.rect.y
+        if self.diving: 
+            self.image = pygame.image.load(self.image_file).convert_alpha()
+            self.timer = threading.Timer(3.2, self.update_turtle)
+            self.diving = False
+        else: 
+            self.image = pygame.image.load(self.diving_image_file).convert_alpha()
+            self.timer = threading.Timer(0.8, self.update_turtle)
+            self.diving = True
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.timer.start()
