@@ -132,6 +132,16 @@ class RespawnMenu:
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
+class SplashScreen:
+    def __init__(self):
+        self.image = pygame.image.load("./resources/ui/splash_screen.png").convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.y = 0
+        self.rect.x = 0
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+
 class Background: 
     RIVER_SIZE = 5
 
