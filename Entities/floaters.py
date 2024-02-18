@@ -63,19 +63,19 @@ class Log(Floater):
     def create_new_floater(self): 
         return Log(self.type, self.size, self.delay) 
             
-class Lily(Floater): 
+class Turtle(Floater): 
     def __init__(self, type, size, width, x_pos):
-        if type == 'lily_medium':
-            super().__init__(pygame.image.load("./resources/floaters/lily_2_placeholder.png"), 
+        if type == 'turtle_medium':
+            super().__init__(pygame.image.load("./resources/floaters/turtle_2_placeholder.png"), 
                              2 * size, x_pos, size * 3, -1, 1, width + 4 * size, (size, size * 1.4))
-            self.image = pygame.image.load("./resources/floaters/lily_2_placeholder.png")
-        elif type == 'lily_large':
-            super().__init__(pygame.image.load("./resources/floaters/lily_3_placeholder.png"), 
+            self.image = pygame.image.load("./resources/floaters/turtle_2_placeholder.png")
+        elif type == 'turtle_large':
+            super().__init__(pygame.image.load("./resources/floaters/turtle_3_placeholder.png"), 
                              3 * size, x_pos, size * 6, -1, 2, width + 3 * size, (size, size * 1.4))
-            self.image = pygame.image.load("./resources/floaters/lily_3_placeholder.png")
+            self.image = pygame.image.load("./resources/floaters/turtle_3_placeholder.png")
         self.type = type
         self.size = size
         self.width = width
 
     def create_new_floater(self): 
-        return Lily(self.type, self.size, self.width, self.delay) 
+        return Turtle(self.type, self.size, self.width, self.delay) 

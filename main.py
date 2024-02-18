@@ -1,6 +1,6 @@
 from Entities.entities import *
 from Entities.floaters import * 
-from Entities.final_lilies import * 
+from Entities.lilies import * 
 from utils import *
 from random import randint 
 import pygame
@@ -35,7 +35,7 @@ class Game:
         self.floater_group      = pygame.sprite.Group() 
         self.current_floater    = None 
         self.vehicle_group      = pygame.sprite.Group()
-        self.final_lilies_group = pygame.sprite.Group() 
+        self.lilies_group       = pygame.sprite.Group() 
         self.frog               = pygame.sprite.GroupSingle()
         self.frog.add(Frog(SCREENWIDTH, SCREENHEIGHT, SIZE)) 
         self.timer              = pygame.USEREVENT + 1
@@ -47,15 +47,15 @@ class Game:
         self.start_time = int(pygame.time.get_ticks() / 1000)
         self.spawn_floaters_lvl_1()
         self.spawn_vehicles_lvl_1() 
-        self.spawn_final_lilies()
+        self.spawn_lilies()
         self.spawn_timer_bar()
 
     def spawn_floaters_lvl_1(self): 
         log_small_x = randint(-SIZE * 4, -SIZE * 2)
         log_medium_x = randint(-SIZE * 10, -SIZE * 4)
         log_large_x = randint(-SIZE * 8, -SIZE * 3)
-        lily_medium_x = randint(SIZE * 9, SCREENWIDTH + SIZE * 4)
-        lily_large_x = randint(SIZE * 6, SCREENWIDTH + SIZE * 2)
+        turtle_medium_x = randint(SIZE * 9, SCREENWIDTH + SIZE * 4)
+        turtle_large_x = randint(SIZE * 6, SCREENWIDTH + SIZE * 2)
         self.floater_group.add(Log('log_small', SIZE, log_small_x))
         self.floater_group.add(Log('log_small', SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
         self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
@@ -66,14 +66,14 @@ class Game:
         self.floater_group.add(Log('log_large', SIZE, log_large_x))
         self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 8))
         self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 16))
-        self.floater_group.add(Lily('lily_medium', SIZE, SCREENWIDTH, lily_medium_x))
-        self.floater_group.add(Lily('lily_medium', SIZE, SCREENWIDTH, lily_medium_x + SIZE * 5))
-        self.floater_group.add(Lily('lily_medium', SIZE, SCREENWIDTH, lily_medium_x + SIZE * 10))
-        self.floater_group.add(Lily('lily_medium', SIZE, SCREENWIDTH, lily_medium_x + SIZE * 15))
-        self.floater_group.add(Lily('lily_large', SIZE, SCREENWIDTH, lily_large_x))
-        self.floater_group.add(Lily('lily_large', SIZE, SCREENWIDTH, lily_large_x + SIZE * 5))
-        self.floater_group.add(Lily('lily_large', SIZE, SCREENWIDTH, lily_large_x + SIZE * 10))
-        self.floater_group.add(Lily('lily_large', SIZE, SCREENWIDTH, lily_large_x + SIZE * 15))
+        self.floater_group.add(Turtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
+        self.floater_group.add(Turtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 5))
+        self.floater_group.add(Turtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 10))
+        self.floater_group.add(Turtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 15))
+        self.floater_group.add(Turtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x))
+        self.floater_group.add(Turtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 5))
+        self.floater_group.add(Turtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 10))
+        self.floater_group.add(Turtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
 
     def spawn_vehicles_lvl_1(self): 
         car_x = randint(SIZE * 2, SIZE * 8)
@@ -93,20 +93,20 @@ class Game:
         self.vehicle_group.add(Vehicle('tractor2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
         self.vehicle_group.add(Vehicle('tractor2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 4))
 
-    def spawn_final_lilies(self): 
+    def spawn_lilies(self): 
         y = SIZE + SIZE / 4 + 2 
         for i in range(5): 
             x = 16 + 6 + i * SIZE * 3 
             random_nbr = randint(1, 12) 
             if random_nbr < 4: 
                 print("Bonus lily")
-                self.final_lilies_group.add(Bonus_Final_Lily(x, y))
+                self.lilies_group.add(Bonus_Lily(x, y))
             elif random_nbr < 7: 
                 print("Hostile lily")
-                self.final_lilies_group.add(Hostile_Final_Lily(x, y))
+                self.lilies_group.add(Hostile_Lily(x, y))
             else: 
                 print("Ordinary lily")
-                self.final_lilies_group.add(Ordinary_Final_Lily(x, y))
+                self.lilies_group.add(Ordinary_Lily(x, y))
 
     def spawn_timer_bar(self):
         for i in range(0, 30):
@@ -148,12 +148,12 @@ class Game:
             self.current_floater = None 
 
     def handle_final_platform_hit(self): 
-        if pygame.sprite.spritecollide(self.frog.sprite, self.final_lilies_group, False): 
-            lily = pygame.sprite.spritecollide(self.frog.sprite, self.final_lilies_group, False)[0] 
+        if pygame.sprite.spritecollide(self.frog.sprite, self.lilies_group, False): 
+            lily = pygame.sprite.spritecollide(self.frog.sprite, self.lilies_group, False)[0] 
             if lily.hit(self.frog.sprite.get_x(), SIZE): 
                 lily.set_occupied() 
                 if self.safe_frogs == 4:
-                    if isinstance(lily, Bonus_Final_Lily) and lily.is_active(): 
+                    if isinstance(lily, Bonus_Lily) and lily.is_active(): 
                         self.current_score.update_score('frogsavedbonus',  self.current_time)
                     else: 
                         self.current_score.update_score('frogsaved',  self.current_time)
@@ -162,7 +162,7 @@ class Game:
                 else:
                     self.current_score.visited_pos.clear()
                     self.safe_frogs += 1
-                    if isinstance(lily, Bonus_Final_Lily) and lily.is_active(): 
+                    if isinstance(lily, Bonus_Lily) and lily.is_active(): 
                         self.current_score.update_score('frogsavedbonus',  self.current_time)
                     else: 
                         self.current_score.update_score('frogsaved',  self.current_time)
@@ -213,13 +213,13 @@ class Game:
             vehicle.kill()
         for floater in self.floater_group:
             floater.kill()
-        for lily in self.final_lilies_group:
+        for lily in self.lilies_group:
             lily.kill()
         for bar in self.timer_bar:
             bar.kill()
         self.spawn_vehicles_lvl_1()
         self.spawn_floaters_lvl_1()
-        self.spawn_final_lilies()
+        self.spawn_lilies()
         self.spawn_timer_bar()
 
     def level_completed(self):
@@ -240,7 +240,7 @@ class Game:
         self.vehicle_group.draw(self.screen)
         self.floater_group.update(SCREENWIDTH, self.floater_group)
         self.floater_group.draw(self.screen)
-        self.final_lilies_group.draw(self.screen) 
+        self.lilies_group.draw(self.screen) 
         self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.jump_distance, self.movementX, self.movementY)
         self.frog.draw(self.screen)
         self.ui.draw(self.screen)
@@ -252,7 +252,7 @@ class Game:
     def start_screen(self):
         self.screen.fill('Black')
         self.background.draw(self.screen)
-        self.final_lilies_group.draw(self.screen) 
+        self.lilies_group.draw(self.screen) 
         self.top_ui.draw(self.screen)
         self.current_score.draw(self.screen, self.current_score.score)
         self.high_score.draw(self.screen)
