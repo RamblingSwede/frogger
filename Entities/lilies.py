@@ -44,7 +44,7 @@ class Lily(pygame.sprite.Sprite):
             x = self.rect.x 
             y = self.rect.y 
             next_img = self.set_image() 
-            self.image = pygame.image.load(next_img)
+            self.image = pygame.image.load(next_img).convert_alpha()
             self.rect = self.image.get_rect()
             self.rect.x = x
             self.rect.y = y
