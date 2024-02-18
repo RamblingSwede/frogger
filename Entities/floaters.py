@@ -66,7 +66,7 @@ class Log(Floater):
     def create_new_floater(self): 
         return Log(self.type, self.size, self.delay) 
     
-    
+
             
 class Turtle(Floater): 
     def __init__(self, type, size, width, x_pos):
@@ -102,13 +102,17 @@ class DivingTurtle(Turtle):
     def __init__(self, type, size, width, x_pos):
         if type == 'turtle_medium':
             super().__init__(type, size, width, x_pos)
-            self.diving_image_file = "./resources/floaters/diving_turtle_2_placeholder.png"
+            self.diving_image_file1 = "./resources/floaters/1diving_turtle_2_placeholder.png"
+            self.diving_image_file2 = "./resources/floaters/2diving_turtle_2_placeholder.png"
+            self.diving_image_file3 = "./resources/floaters/diving_turtle_2_placeholder.png"
 
         elif type == 'turtle_large':
             super().__init__(type, size, width, x_pos)
-            self.diving_image_file = "./resources/floaters/diving_turtle_3_placeholder.png"
+            self.diving_image_file1 = "./resources/floaters/1diving_turtle_3_placeholder.png"
+            self.diving_image_file2 = "./resources/floaters/2diving_turtle_3_placeholder.png"
+            self.diving_image_file3 = "./resources/floaters/diving_turtle_3_placeholder.png"
 
-        self.diving = True 
+        self.timer_count = 0
         self.timer = threading.Timer(0.8, self.update_turtle)
         self.timer.start()
 
@@ -116,16 +120,31 @@ class DivingTurtle(Turtle):
         return DivingTurtle(self.type, self.size, self.width, self.delay) 
 
     def update_turtle(self): 
+        self.timer_count += 1
         x = self.rect.x
         y = self.rect.y
-        if self.diving: 
+        if self.timer_count % 5 == 0: 
             self.image = pygame.image.load(self.image_file).convert_alpha()
-            self.timer = threading.Timer(3.2, self.update_turtle)
-            self.diving = False
-        else: 
-            self.image = pygame.image.load(self.diving_image_file).convert_alpha()
             self.timer = threading.Timer(0.8, self.update_turtle)
-            self.diving = True
+        
+        elif self.timer_count % 5 == 1: 
+            self.timer = threading.Timer(0.8, self.update_turtle)
+
+        elif self.timer_count % 5 == 2: 
+            self.image = pygame.image.load(self.diving_image_file1).convert_alpha()
+            self.timer = threading.Timer(0.8, self.update_turtle)
+
+        elif self.timer_count % 5 == 3: 
+            self.image = pygame.image.load(self.diving_image_file2).convert_alpha()
+            self.timer = threading.Timer(0.8, self.update_turtle)
+
+        elif self.timer_count % 5 == 4: 
+            self.image = pygame.image.load(self.diving_image_file3).convert_alpha()
+            self.timer = threading.Timer(0.8, self.update_turtle)
+
+        else: 
+            return
+
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
