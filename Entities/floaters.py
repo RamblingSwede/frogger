@@ -74,9 +74,9 @@ class Log(Floater):
 class Turtle(Floater): 
     def __init__(self, type, size, width, x_pos):
         if type == 'turtle_medium':
-            super().__init__("./resources/floaters/turtle_2_placeholder.png", 2 * size, 
+            super().__init__("./resources/floaters/turtle_small.png", 2 * size, 
                              x_pos, size * 3, -1, 1, width + 4 * size, (size, size * 1.4))
-            self.image_file = "./resources/floaters/turtle_2_placeholder.png"
+            self.image_file = "./resources/floaters/turtle_small.png"
 
         elif type == 'turtle_large':
             super().__init__("./resources/floaters/turtle_3_placeholder.png", 3 * size, 
