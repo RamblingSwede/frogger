@@ -216,10 +216,15 @@ class Game:
             lily.kill()
         for bar in self.timer_bar:
             bar.kill()
+        self.reset_movements()
         self.spawn_vehicles_lvl_1()
         self.spawn_floaters_lvl_1()
         self.spawn_lilies()
         self.spawn_timer_bar()
+
+    def reset_movements(self):
+        self.movementX = [False, False]
+        self.movementY = [False, False]
 
     def level_completed(self):
         print('Level completed')
