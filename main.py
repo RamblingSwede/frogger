@@ -1,5 +1,6 @@
-from Entities.entities import *
+from Entities.vehicles import *
 from Entities.floaters import * 
+from Entities.frogs import * 
 from Entities.lilies import * 
 from utils import *
 from random import randint 
@@ -37,7 +38,8 @@ class Game:
         self.vehicle_group      = pygame.sprite.Group()
         self.lilies_group       = pygame.sprite.Group() 
         self.frog               = pygame.sprite.GroupSingle()
-        self.frog.add(Frog(SCREENWIDTH, SCREENHEIGHT, SIZE)) 
+        self.frog.add(NormalFrog(SCREENWIDTH, SCREENHEIGHT, SIZE))
+        self.friend_frog        = pygame.sprite.GroupSingle() 
         self.timer              = pygame.USEREVENT + 1
         self.timer_bar          = pygame.sprite.Group()
         pygame.time.set_timer(self.timer, 30000)
@@ -52,7 +54,9 @@ class Game:
         log_large_x = randint(-SIZE * 8, -SIZE * 3)
         turtle_medium_x = randint(SIZE * 9, SCREENWIDTH + SIZE * 4)
         turtle_large_x = randint(SIZE * 6, SCREENWIDTH + SIZE * 2)
-        self.floater_group.add(Log('log_small', SIZE, log_small_x))
+        log = Log('log_small', SIZE, log_small_x)
+        self.floater_group.add(log)
+        self.friend_frog.add(FriendFrog(self.frog, log))
         self.floater_group.add(Log('log_small', SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
         self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
         self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
@@ -134,6 +138,7 @@ class Game:
                             break
                         self.set_jump_distance(platform) 
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
+                        self.handle_friend_frog_hit()
                         if platform != self.current_floater: 
                             print('another platform')
                             self.current_floater = platform
@@ -146,6 +151,16 @@ class Game:
             self.jump_distance = SIZE 
             self.current_floater = None 
 
+    def handle_friend_frog_hit(self):
+        if self.frog.sprite.carrying_friend() or self.friend_frog.sprite.is_safe():
+            return
+        try: 
+            if self.friend_frog.sprite.hit(SIZE):
+                self.frog.sprite.set_carry_friend(True)
+                self.friend_frog.sprite.set_carried()
+        except Exception as e: 
+            print("Friend frog is no more: ", e)
+
     def handle_final_platform_hit(self): 
         if pygame.sprite.spritecollide(self.frog.sprite, self.lilies_group, False): 
             lily = pygame.sprite.spritecollide(self.frog.sprite, self.lilies_group, False)[0] 
@@ -154,6 +169,9 @@ class Game:
                 if self.safe_frogs == 4:
                     if isinstance(lily, Bonus_Lily) and lily.is_active(): 
                         self.current_score.update_score('frogsavedbonus',  self.current_time)
+                    elif self.frog.sprite.carrying_friend():
+                        self.current_score.update_score('frogsavedbonus',  self.current_time)
+                        self.friend_frog.sprite.set_safe()
                     else: 
                         self.current_score.update_score('frogsaved',  self.current_time)
                     self.current_score.update_score('levelcomplete',  self.current_time)
@@ -163,6 +181,9 @@ class Game:
                     self.safe_frogs += 1
                     if isinstance(lily, Bonus_Lily) and lily.is_active(): 
                         self.current_score.update_score('frogsavedbonus',  self.current_time)
+                    elif self.frog.sprite.carrying_friend():
+                        self.current_score.update_score('frogsavedbonus',  self.current_time)
+                        self.friend_frog.sprite.set_safe()
                     else: 
                         self.current_score.update_score('frogsaved',  self.current_time)
                     print('Frog made it to safety')
@@ -199,6 +220,8 @@ class Game:
         self.start_time = int(pygame.time.get_ticks() / 1000)
         for bar in self.timer_bar:
             bar.kill()
+        if self.frog.sprite.carrying_friend():
+            self.frog.sprite.set_carry_friend(False)
         self.frog.sprite.rect.x = SCREENWIDTH / 2
         self.frog.sprite.rect.y = SCREENHEIGHT - SIZE * 2
         self.spawn_timer_bar()
@@ -216,6 +239,10 @@ class Game:
             lily.kill()
         for bar in self.timer_bar:
             bar.kill()
+        try: 
+            self.friend_frog.sprite.kill()
+        except Exception as e: 
+            print("Friend frog is already dead:", e)
         self.reset_movements()
         self.spawn_vehicles_lvl_1()
         self.spawn_floaters_lvl_1()
@@ -247,6 +274,8 @@ class Game:
         self.lilies_group.draw(self.screen) 
         self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.jump_distance, self.movementX, self.movementY)
         self.frog.draw(self.screen)
+        self.friend_frog.update()
+        self.friend_frog.draw(self.screen)
         self.ui.draw(self.screen)
         self.timer_bar.draw(self.screen)
         self.top_ui.draw(self.screen)

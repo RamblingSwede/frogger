@@ -66,6 +66,9 @@ class Log(Floater):
     def create_new_floater(self): 
         return Log(self.type, self.size, self.delay) 
     
+    def get_pos(self):
+        return (self.rect.x, self.rect.y)
+    
 
             
 class Turtle(Floater): 
