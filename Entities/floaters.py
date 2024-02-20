@@ -49,15 +49,15 @@ class Floater(pygame.sprite.Sprite):
 class Log(Floater): 
     def __init__(self, type, size, x_pos):
         if type == 'log_small':
-            super().__init__("./resources/floaters/log_2_placeholder.png", 2 * size, 
+            super().__init__("./resources/floaters/log_small.png", 2 * size, 
                              x_pos, size * 5, 1, 3, -2 * size, (size * 1.4, size))
 
         elif type == 'log_medium':
-            super().__init__("./resources/floaters/log_3_placeholder.png", 3 * size, 
+            super().__init__("./resources/floaters/log_medium.png", 3 * size, 
                              x_pos, size * 2, 1, 2, -(10 * size), (size * 1.4, size))
 
         elif type == 'log_large':
-            super().__init__("./resources/floaters/log_4_placeholder.png", 4 * size, 
+            super().__init__("./resources/floaters/log_large.png", 4 * size, 
                              x_pos, size * 4, 1, 1, -(10 * size), (size * 1.4, size))
 
         self.type = type
@@ -79,9 +79,9 @@ class Turtle(Floater):
             self.image_file = "./resources/floaters/turtle_small.png"
 
         elif type == 'turtle_large':
-            super().__init__("./resources/floaters/turtle_3_placeholder.png", 3 * size, 
+            super().__init__("./resources/floaters/turtle_medium.png", 3 * size, 
                              x_pos, size * 6, -1, 2, width + 3 * size, (size, size * 1.4))
-            self.image_file = "./resources/floaters/turtle_3_placeholder.png"
+            self.image_file = "./resources/floaters/turtle_medium.png"
 
         self.type = type
         self.size = size
