@@ -129,6 +129,9 @@ class Game:
                 platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
                 for platform in platforms:
                     if platform.within_bounds(self.frog.sprite.rect.x, SIZE): 
+                        if isinstance(platform, DivingTurtle) and platform.is_diving(): 
+                            self.lose_life()
+                            break
                         self.set_jump_distance(platform) 
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
                         if platform != self.current_floater: 
