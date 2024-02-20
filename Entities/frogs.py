@@ -1,4 +1,5 @@
 import pygame
+import threading 
 
 class Frog(pygame.sprite.Sprite):
     def __init__(self, image, x, y): 
@@ -10,39 +11,66 @@ class Frog(pygame.sprite.Sprite):
         self.count = 0 
 
     def match_speed(self, offset, velocity):
-        if self.count == offset: 
+        if self.count == offset:
             self.rect.x += velocity
-            self.count = 0 
+            self.count = 0
         if self.count >= 3:
             self.count = 0
-        self.count += 1 
+        self.count += 1
+
+    def get_x(self):
+        return self.rect.x
+    
+    def get_y(self):
+        return self.rect.y
      
 
 
 class FriendFrog(Frog): 
-    def __init__(self, frog, log):
+    def __init__(self, size, frog, log):
         super().__init__("./resources/misc/friend_frog_placeholder.png", log.get_pos()[0], log.get_pos()[1])
+        self.size       = size
         self.is_on_log  = True
         self.is_carried = False
-        self.safe    = False
+        self.safe       = False
         self.log        = log
         self.frog       = frog
+        self.right_dir  = True
+        self.delay      = 1.5
+        self.timer = threading.Timer(self.delay, self.jump)
+        self.timer.start()
 
-    def hit(self, size): 
+    def hit(self): 
         y = self.frog.sprite.get_y()
         x_left = self.frog.sprite.get_x()
-        x_right = x_left + size 
-        mid = self.rect.x + size / 2
+        x_right = x_left + self.size 
+        mid = self.rect.x + self.size / 2
         return y == self.rect.y and x_left < mid and x_right > mid 
 
     def update(self):
         if self.is_on_log:
             pos = self.log.get_pos()
-            self.rect.x = pos[0]
             self.rect.y = pos[1]
+            if self.right_dir:
+                self.rect.x = pos[0]
+            else:
+                self.rect.x = pos[0]  + self.size
         elif self.is_carried:
             self.rect.x = self.frog.sprite.get_x()
             self.rect.y = self.frog.sprite.get_y()
+
+    def jump(self): 
+        if self.is_on_log:
+            pos = self.log.get_pos()
+            if self.right_dir:
+                self.rect.x = pos[0]
+                self.right_dir = False
+            else:
+                self.rect.x = pos[0] + self.size
+                self.right_dir = True
+            self.timer = threading.Timer(self.delay, self.jump)
+            self.timer.start()
+            
     
     def set_carried(self): 
         self.is_on_log = False
@@ -107,12 +135,6 @@ class NormalFrog(Frog):
                 self.rect.y = height - size * 2
         elif self.rect.y <= 0:
                 self.rect.y = 0
-    
-    def get_x(self): 
-        return self.rect.x
-    
-    def get_y(self):
-        return self.rect.y
     
     def carrying_friend(self): 
         return self.carrying

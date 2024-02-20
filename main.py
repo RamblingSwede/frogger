@@ -56,7 +56,7 @@ class Game:
         turtle_large_x = randint(SIZE * 6, SCREENWIDTH + SIZE * 2)
         log = Log('log_small', SIZE, log_small_x)
         self.floater_group.add(log)
-        self.friend_frog.add(FriendFrog(self.frog, log))
+        self.friend_frog.add(FriendFrog(SIZE, self.frog, log))
         self.floater_group.add(Log('log_small', SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
         self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
         self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
@@ -155,7 +155,7 @@ class Game:
         if self.frog.sprite.carrying_friend() or self.friend_frog.sprite.is_safe():
             return
         try: 
-            if self.friend_frog.sprite.hit(SIZE):
+            if self.friend_frog.sprite.hit():
                 self.frog.sprite.set_carry_friend(True)
                 self.friend_frog.sprite.set_carried()
         except Exception as e: 
