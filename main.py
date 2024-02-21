@@ -29,26 +29,26 @@ class Game:
         self.current_score      = Current_Score()
         self.high_score         = Highscore()
         self.splash_screen      = SplashScreen()
-        self.in_start_screen    = True 
+        self.in_start_screen    = True
         self.running            = False
         self.safe_frogs         = 0
         self.lives_left         = 2
-        self.floater_group      = pygame.sprite.Group() 
-        self.current_floater    = None 
+        self.floater_group      = pygame.sprite.Group()
+        self.current_floater    = None
         self.vehicle_group      = pygame.sprite.Group()
-        self.lilies_group       = pygame.sprite.Group() 
+        self.lilies_group       = pygame.sprite.Group()
         self.frog               = pygame.sprite.GroupSingle()
         self.frog.add(NormalFrog(SCREENWIDTH, SCREENHEIGHT, SIZE))
-        self.friend_frog        = pygame.sprite.GroupSingle() 
+        self.friend_frog        = pygame.sprite.GroupSingle()
         self.timer              = pygame.USEREVENT + 1
-        self.timer_bar          = pygame.sprite.Group()
+
         pygame.time.set_timer(self.timer, 30000)
         self.movementX          = [False, False]
         self.movementY          = [False, False]
-        self.jump_distance      = SIZE 
+        self.jump_distance      = SIZE
         self.start_time = int(pygame.time.get_ticks() / 1000)
 
-    def spawn_floaters_lvl_1(self): 
+    def spawn_floaters_lvl_1(self):
         log_small_x = randint(-SIZE * 4, -SIZE * 2)
         log_medium_x = randint(-SIZE * 10, -SIZE * 4)
         log_large_x = randint(-SIZE * 8, -SIZE * 3)
@@ -93,30 +93,26 @@ class Game:
         self.vehicle_group.add(Vehicle('tractor2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
         self.vehicle_group.add(Vehicle('tractor2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 4))
 
-    def spawn_lilies(self): 
-        y = SIZE + SIZE / 4 + 2 
-        for i in range(5): 
-            x = 16 + 6 + i * SIZE * 3 
-            random_nbr = randint(1, 12) 
-            if random_nbr < 4: 
+    def spawn_lilies(self):
+        y = SIZE + SIZE / 4 + 2
+        for i in range(5):
+            x = 16 + 6 + i * SIZE * 3
+            random_nbr = randint(1, 12)
+            if random_nbr < 4:
                 print("Bonus lily")
                 self.lilies_group.add(Bonus_Lily(x, y))
-            elif random_nbr < 7: 
+            elif random_nbr < 7:
                 print("Hostile lily")
                 self.lilies_group.add(Hostile_Lily(x, y))
-            else: 
+            else:
                 print("Ordinary lily")
                 self.lilies_group.add(Ordinary_Lily(x, y))
 
     def spawn_timer_bar(self):
-        for i in range(0, 30):
-            offset = i * 10
-            self.timer_bar.add(Timer_Bar(SCREENHEIGHT, SIZE, offset))
+        self.timer_bar = Timer_Bar(90, SCREENHEIGHT - SIZE + 2, SCREENWIDTH - 90 - 2, SIZE / 2)
 
-    def timer_tick(self):
-        for bar in self.timer_bar:
-            offset = (39 - self.current_time) * 10
-            bar.destroy(offset)
+    def timer_tick(self, time):
+        self.timer_bar.update(time)
 
     def collision(self):
         self.handle_vehicle_hit() 
@@ -218,8 +214,7 @@ class Game:
     def respawn(self):
         pygame.time.set_timer(self.timer, 30000)
         self.start_time = int(pygame.time.get_ticks() / 1000)
-        for bar in self.timer_bar:
-            bar.kill()
+        self.timer_bar.destroy()
         if self.frog.sprite.carrying_friend():
             self.frog.sprite.set_carry_friend(False)
         self.frog.sprite.rect.x = SCREENWIDTH / 2
@@ -237,8 +232,7 @@ class Game:
             floater.kill()
         for lily in self.lilies_group:
             lily.kill()
-        for bar in self.timer_bar:
-            bar.kill()
+        self.timer_bar.destroy()
         try: 
             self.friend_frog.sprite.kill()
         except Exception as e: 
@@ -277,7 +271,7 @@ class Game:
         self.friend_frog.update()
         self.friend_frog.draw(self.screen)
         self.ui.draw(self.screen)
-        self.timer_bar.draw(self.screen)
+        self.timer_bar.draw2(self.screen)
         self.top_ui.draw(self.screen)
         self.current_score.draw(self.screen, self.current_score.score)
         self.high_score.draw(self.screen)
@@ -290,6 +284,7 @@ class Game:
         self.current_score.draw(self.screen, self.current_score.score)
         self.high_score.draw(self.screen)
         self.splash_screen.draw(self.screen)
+        self.spawn_timer_bar()
         pygame.display.update() 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -357,8 +352,8 @@ class Game:
                         self.lose_life()
 
                 if self.running:
-                    self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time 
-                    self.timer_tick()
+                    self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time
+                    self.timer_tick(pygame.time.get_ticks() / 1000 - self.start_time)
                     self.collision()
                     self.update_display() 
                     pygame.display.update()

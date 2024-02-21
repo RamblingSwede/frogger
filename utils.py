@@ -26,19 +26,28 @@ class TopUI:
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
-class Timer_Bar(pygame.sprite.Sprite):
-    def __init__(self, height, size, offset):
+class Timer_Bar():
+    GREEN = (106, 190, 48)
+    def __init__(self, x, y, width, height):
         super().__init__()
-        self.image = pygame.image.load("./resources/ui/bottom_UI_timer.png")
-        self.rect = self.image.get_rect()
-        self.rect.x = 90 + offset
-        self.rect.y = height - size + 2
+        self.total_time = 30
+        self.x          = x
+        self.y          = y
+        self.width      = width
+        self.height     = height
+        self.bar        = pygame.Rect(x, y, width, height)
 
-    def destroy(self, posX):
-        if self.rect.x == posX:
-            self.kill()
-            return True 
-        return False
+    def update(self, time):
+        offset = (self.total_time - time) / self.total_time
+        dx = self.width * (1 - offset)
+        self.bar = pygame.Rect(self.x, self.y, self.width - dx, self.height)
+
+    def draw2(self, display): 
+        pygame.draw.rect(display, Timer_Bar.GREEN, self.bar)
+        return True
+
+    def destroy(self):
+        self.bar = pygame.Rect(0, 0, 0, 0)
 
 class Current_Score():
     def __init__(self):
