@@ -321,8 +321,10 @@ class Game:
                         self.respawn_menu.update("9")
                         self.in_start_screen = True
                     if event.type == pygame.QUIT:
+                        for lily in self.lilies_group:
+                            lily.kill()
                         pygame.quit()
-                        sys.exit()        
+                        sys.exit()       
                     if event.type == pygame.KEYDOWN:
                         if event.key in LEFT_DIR:
                             self.movementX[0] = True

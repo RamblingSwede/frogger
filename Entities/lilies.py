@@ -1,3 +1,4 @@
+import os
 import pygame 
 import threading 
 from random import randint 
@@ -54,7 +55,8 @@ class Lily(pygame.sprite.Sprite):
         self.timer = threading.Timer(randint(4, 12), self.update_image)
         self.timer.start()
 
-
+    def kill(self):
+        os._exit(1)
 
 class Ordinary_Lily(Lily): 
 
