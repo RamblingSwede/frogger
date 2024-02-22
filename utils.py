@@ -156,12 +156,15 @@ class SplashScreen:
         self.timer = 0
 
     def update(self):
-        self.images = [pygame.image.load(img) for img in ["./resources/ui/splash_screen.png", "./resources/ui/splash_screen.png", "./resources/ui/splash_screen.png", 
-        "./resources/ui/splash_screen.png", "./resources/ui/splash_screen.png", "./resources/ui/splash_screen_grey.png", 
+        self.images = [pygame.image.load(img) for img in [
+        "./resources/ui/splash_screen.png", "./resources/ui/splash_screen.png", "./resources/ui/splash_screen.png", 
+        "./resources/ui/splash_screen.png", "./resources/ui/splash_screen.png", "./resources/ui/splash_screen_grey.png",
+        "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", 
+        "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", 
         "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", 
         "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_grey.png"]]
         self.timer += 1
-        if self.timer >= 3:
+        if self.timer >= 1:
             self.timer = 0
             self.image = self.images[self.animation_index]
             self.animation_index += 1
