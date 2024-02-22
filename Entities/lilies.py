@@ -55,7 +55,7 @@ class Lily(pygame.sprite.Sprite):
         self.timer = threading.Timer(randint(4, 12), self.update_image)
         self.timer.start()
 
-    def kill(self):
+    def kill_thread(self):
         os._exit(1)
 
 class Ordinary_Lily(Lily): 
