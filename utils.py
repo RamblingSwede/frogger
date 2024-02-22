@@ -152,7 +152,21 @@ class SplashScreen:
         self.rect = self.image.get_rect()
         self.rect.y = 0
         self.rect.x = 0
-        self.show = True
+        self.animation_index = 0
+        self.timer = 0
+
+    def update(self):
+        self.images = [pygame.image.load(img) for img in ["./resources/ui/splash_screen.png", "./resources/ui/splash_screen.png", "./resources/ui/splash_screen.png", 
+        "./resources/ui/splash_screen.png", "./resources/ui/splash_screen.png", "./resources/ui/splash_screen_grey.png", 
+        "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", 
+        "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_grey.png"]]
+        self.timer += 1
+        if self.timer >= 3:
+            self.timer = 0
+            self.image = self.images[self.animation_index]
+            self.animation_index += 1
+            if self.animation_index == len(self.images):
+                self.animation_index = 0
 
     def draw(self, screen):
        screen.blit(self.image, self.rect)

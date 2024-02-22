@@ -284,6 +284,7 @@ class Game:
         self.top_ui.draw(self.screen)
         self.current_score.draw(self.screen, self.current_score.score)
         self.high_score.draw(self.screen)
+        self.splash_screen.update()
         self.splash_screen.draw(self.screen)
         self.spawn_timer_bar()
         pygame.display.update() 
