@@ -124,7 +124,7 @@ class RespawnMenu:
         self.rect.x = width // 3
 
     def update(self, type):
-        if type == '9':
+        if type >= '9':
             self.image = pygame.image.load("./resources/ui/game_over_9.png").convert_alpha()
         if type == '8':
             self.image = pygame.image.load("./resources/ui/game_over_8.png").convert_alpha()

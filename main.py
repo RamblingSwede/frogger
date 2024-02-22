@@ -209,6 +209,8 @@ class Game:
             self.lives_left -= 1
             self.respawn()
         else:
+            pygame.time.set_timer(self.timer, 30000)
+            self.start_time = int(pygame.time.get_ticks() / 1000)
             self.running = False
 
     def respawn(self):
@@ -279,7 +281,6 @@ class Game:
     def start_screen(self):
         self.screen.fill('Black')
         self.background.draw(self.screen)
-        self.lilies_group.draw(self.screen) 
         self.top_ui.draw(self.screen)
         self.current_score.draw(self.screen, self.current_score.score)
         self.high_score.draw(self.screen)
@@ -309,6 +310,7 @@ class Game:
                     if event.type == pygame.MOUSEMOTION:
                         mx, my = pygame.mouse.get_pos()
                     if event.type == pygame.MOUSEBUTTONDOWN and not self.running and mx >= 160 and mx <= 220 and my >= 264 and my <= 294:
+                        self.respawn_menu.update("9")
                         self.current_score.score = 0
                         self.safe_frogs = 0
                         self.lives_left = 2
@@ -316,6 +318,7 @@ class Game:
                         self.reset_game()
                         self.respawn()
                     if event.type == pygame.MOUSEBUTTONDOWN and not self.running and mx >= 235 and mx <= 300 and my >= 264 and my <= 294:
+                        self.respawn_menu.update("9")
                         self.in_start_screen = True
                     if event.type == pygame.QUIT:
                         pygame.quit()
@@ -361,6 +364,7 @@ class Game:
                 
                 if not self.running and not self.in_start_screen:
                     self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time
+                    self.timer_tick(pygame.time.get_ticks() / 1000 - self.start_time)                  
                     if 10 - self.current_time > 0:
                         self.respawn_menu.update(str(10 - self.current_time))
                         self.respawn_menu.draw(self.screen)
