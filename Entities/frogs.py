@@ -1,5 +1,7 @@
 import pygame
-import threading 
+import threading
+
+from Entities.floaters import Log 
 
 class Frog(pygame.sprite.Sprite):
     def __init__(self, image, x, y): 
@@ -26,7 +28,7 @@ class Frog(pygame.sprite.Sprite):
      
 
 
-class FriendFrog(Frog): 
+class FriendFrog(Frog):
     def __init__(self, size, frog, log):
         super().__init__("./resources/misc/friend_frog_placeholder.png", log.get_pos()[0], log.get_pos()[1])
         self.size       = size
@@ -37,7 +39,7 @@ class FriendFrog(Frog):
         self.frog       = frog
         self.right_dir  = True
         self.delay      = 1.5
-        self.timer = threading.Timer(self.delay, self.jump)
+        self.timer      = threading.Timer(self.delay, self.jump)
         self.timer.start()
 
     def hit(self): 
@@ -47,7 +49,7 @@ class FriendFrog(Frog):
         mid = self.rect.x + self.size / 2
         return y == self.rect.y and x_left < mid and x_right > mid 
 
-    def update(self):
+    def update(self, screen_width, floaters):
         if self.is_on_log:
             pos = self.log.get_pos()
             self.rect.y = pos[1]
@@ -58,6 +60,8 @@ class FriendFrog(Frog):
         elif self.is_carried:
             self.rect.x = self.frog.sprite.get_x()
             self.rect.y = self.frog.sprite.get_y()
+        if self.rect.x >= screen_width + self.size / 2: 
+            self.inactivate()
 
     def jump(self): 
         if self.is_on_log:
@@ -68,15 +72,15 @@ class FriendFrog(Frog):
             else:
                 self.rect.x = pos[0] + self.size
                 self.right_dir = True
-            self.timer = threading.Timer(self.delay, self.jump)
-            self.timer.start()
+        self.timer = threading.Timer(self.delay, self.jump)
+        self.timer.start()
             
     
     def set_carried(self): 
         self.is_on_log = False
         self.is_carried = True
 
-    def set_safe(self): 
+    def set_safe(self):
         self.safe = True
         self.is_carried = False
         self.is_on_log = False
@@ -85,6 +89,21 @@ class FriendFrog(Frog):
 
     def is_safe(self):
         return self.safe
+    
+    def reset(self, log):
+        self.log = log
+        self.safe = False
+        self.is_carried = False
+        self.is_on_log = True
+
+    def inactivate(self):
+        self.is_on_log = False
+        self.is_carried = False
+        self.rect.x = -100
+        self.rect.y = -100
+
+    def out_of_bounds(self):
+        return (not self.is_on_log) and (not self.is_carried) and (not self.safe)
 
 
 

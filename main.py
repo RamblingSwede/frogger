@@ -1,19 +1,21 @@
 from Entities.vehicles import *
-from Entities.floaters import * 
-from Entities.frogs import * 
-from Entities.lilies import * 
+from Entities.floaters import *
+from Entities.frogs import *
+from Entities.lilies import *
 from utils import *
-from random import randint 
+from random import randint
 import pygame
 import sys
 
-SIZE = 32 
+# Grodan kommer inte tillbaka när loggen går ut ur bild
+
+SIZE = 32
 SCREENWIDTH, SCREENHEIGHT = SIZE * 14, SIZE * 15
 FPS = 60
 LEFT_DIR    = [pygame.K_a, pygame.K_LEFT]
-RIGHT_DIR   = [pygame.K_d, pygame.K_RIGHT] 
-UP_DIR      = [pygame.K_w, pygame.K_UP] 
-DOWN_DIR    = [pygame.K_s, pygame.K_DOWN] 
+RIGHT_DIR   = [pygame.K_d, pygame.K_RIGHT]
+UP_DIR      = [pygame.K_w, pygame.K_UP]
+DOWN_DIR    = [pygame.K_s, pygame.K_DOWN]
 
 class Game:
     def __init__(self):
@@ -21,8 +23,8 @@ class Game:
         pygame.display.set_caption('Frogger - Level 1')
         self.level              = 1
         self.clock              = pygame.time.Clock()
-        self.screen             = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT)) 
-        self.background         = Background(SCREENWIDTH, SCREENHEIGHT, SIZE) 
+        self.screen             = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
+        self.background         = Background(SCREENWIDTH, SCREENHEIGHT, SIZE)
         self.ui                 = UI(SCREENHEIGHT - SIZE)
         self.top_ui             = TopUI()
         self.respawn_menu       = RespawnMenu(SCREENWIDTH, SCREENHEIGHT)
@@ -75,7 +77,7 @@ class Game:
         self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 5))
         self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 10))
 
-    def spawn_vehicles_lvl_1(self): 
+    def spawn_vehicles_lvl_1(self):
         car_x = randint(SIZE * 2, SIZE * 8)
         tractor_x = randint(SIZE * 2, SIZE * 8)
         truck_x = randint(SIZE * 6, SIZE * 10)
@@ -219,6 +221,10 @@ class Game:
         self.timer_bar.destroy()
         if self.frog.sprite.carrying_friend():
             self.frog.sprite.set_carry_friend(False)
+            if self.friend_frog.sprite.is_safe():
+                self.friend_frog.sprite.set_safe()
+            else:
+                self.friend_frog.sprite.inactivate()
         self.frog.sprite.rect.x = SCREENWIDTH / 2
         self.frog.sprite.rect.y = SCREENHEIGHT - SIZE * 2
         self.spawn_timer_bar()
@@ -265,12 +271,12 @@ class Game:
         self.background.draw(self.screen) 
         self.vehicle_group.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.vehicle_group)
         self.vehicle_group.draw(self.screen)
-        self.floater_group.update(SCREENWIDTH, self.floater_group)
+        self.floater_group.update(SCREENWIDTH, self.floater_group, self.friend_frog)
         self.floater_group.draw(self.screen)
         self.lilies_group.draw(self.screen) 
         self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.jump_distance, self.movementX, self.movementY)
         self.frog.draw(self.screen)
-        self.friend_frog.update()
+        self.friend_frog.update(SCREENWIDTH, self.floater_group)
         self.friend_frog.draw(self.screen)
         self.ui.draw(self.screen)
         self.timer_bar.draw2(self.screen)

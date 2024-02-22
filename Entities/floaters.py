@@ -18,12 +18,12 @@ class Floater(pygame.sprite.Sprite):
     def get_jump_distance(self): 
         return self.jump_distance 
 
-    def update(self, width, group):
+    def update(self, width, group, friend_frog):
         if self.count == self.offset: 
             self.rect.x += self.velocity
             self.count = 0 
             if self.destroy(width): 
-                new_floater = self.create_new_floater()
+                new_floater = self.create_new_floater(friend_frog)
                 group.add(new_floater)
         self.count += 1 
 
@@ -63,8 +63,11 @@ class Log(Floater):
         self.type = type
         self.size = size
             
-    def create_new_floater(self): 
-        return Log(self.type, self.size, self.delay) 
+    def create_new_floater(self, friend_frog): 
+        log = Log(self.type, self.size, self.delay)
+        if (friend_frog.sprite.out_of_bounds() and self.type == 'log_small'):
+            friend_frog.sprite.reset(log)
+        return log
     
     def get_pos(self):
         return (self.rect.x, self.rect.y)
@@ -87,7 +90,7 @@ class Turtle(Floater):
         self.size = size
         self.width = width
 
-    def create_new_floater(self):
+    def create_new_floater(self, friend_frog):
         return self.generate_turtle()
     
 
