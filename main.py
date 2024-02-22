@@ -289,6 +289,8 @@ class Game:
         pygame.display.update() 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                for lily in self.lilies_group:
+                            lily.kill()
                 pygame.quit()
                 sys.exit()  
             if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:

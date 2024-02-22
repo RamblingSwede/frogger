@@ -152,10 +152,11 @@ class SplashScreen:
         self.rect = self.image.get_rect()
         self.rect.y = 0
         self.rect.x = 0
+        self.show = True
 
     def draw(self, screen):
-        screen.blit(self.image, self.rect)
-
+       screen.blit(self.image, self.rect)
+        
 class Background: 
     RIVER_SIZE = 5
 
