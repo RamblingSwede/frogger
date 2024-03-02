@@ -6,7 +6,7 @@ class Vehicle(pygame.sprite.Sprite):
         self.type = type 
         self.count = 0 
         if type == 'car':
-            self.image = pygame.image.load("./resources/vehicles/car_placeholder.png")
+            self.image = pygame.image.load("./resources/vehicles/car_1.png")
             self.rect = self.image.get_rect()
             self.width = size 
             self.rect.x = start_x
@@ -15,7 +15,7 @@ class Vehicle(pygame.sprite.Sprite):
             self.offset = 1 
             self.delay = width + self.width * 3 
         if type == 'car2':
-            self.image = pygame.image.load("./resources/vehicles/car_placeholder.png")
+            self.image = pygame.image.load("./resources/vehicles/car_2.png")
             self.rect = self.image.get_rect()
             self.width = size 
             self.rect.x = start_x
@@ -42,7 +42,7 @@ class Vehicle(pygame.sprite.Sprite):
             self.offset = 1 
             self.delay = width + self.width * 3 
         if type == 'truck':
-            self.image = pygame.image.load("./resources/vehicles/truck_placeholder.png")
+            self.image = pygame.image.load("./resources/vehicles/truck.png")
             self.rect = self.image.get_rect()
             self.width = size * 2
             self.rect.x = start_x
