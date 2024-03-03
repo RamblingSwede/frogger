@@ -79,21 +79,21 @@ class Game:
 
     def spawn_vehicles_lvl_1(self):
         car_x = randint(SIZE * 2, SIZE * 8)
-        tractor_x = randint(SIZE * 2, SIZE * 8)
+        racecar_x = randint(SIZE * 2, SIZE * 8)
         truck_x = randint(SIZE * 6, SIZE * 10)
         self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
         self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 5))
         self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 10))
-        self.vehicle_group.add(Vehicle('tractor', SCREENWIDTH, SCREENHEIGHT, SIZE, tractor_x))
-        self.vehicle_group.add(Vehicle('tractor', SCREENWIDTH, SCREENHEIGHT, SIZE, tractor_x - SIZE * 4))
+        self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x))
+        self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x - SIZE * 4))
         self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x))
         self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 6))
         self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 10))
-        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, tractor_x))
-        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, tractor_x  - SIZE * 5))
-        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, tractor_x  - SIZE * 10))
-        self.vehicle_group.add(Vehicle('tractor2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
-        self.vehicle_group.add(Vehicle('tractor2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 4))
+        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x))
+        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x  - SIZE * 5))
+        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x  - SIZE * 10))
+        self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
+        self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 4))
 
     def spawn_lilies(self):
         y = SIZE + SIZE / 4 + 2
