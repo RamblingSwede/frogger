@@ -95,6 +95,51 @@ class Game:
         self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
         self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 4))
 
+    def spawn_floaters_lvl_2(self):
+        log_small_x = randint(-SIZE * 4, -SIZE * 2)
+        log_medium_x = randint(-SIZE * 10, -SIZE * 4)
+        log_large_x = randint(-SIZE * 8, -SIZE * 3)
+        turtle_medium_x = randint(SIZE * 9, SCREENWIDTH + SIZE * 4)
+        turtle_large_x = randint(SIZE * 6, SCREENWIDTH + SIZE * 2)
+        log = Log('log_small', SIZE, log_small_x)
+        self.floater_group.add(log)
+        self.friend_frog.add(FriendFrog(SIZE, self.frog, log))
+        self.floater_group.add(Log('log_small', SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
+        self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
+        self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
+        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 6))
+        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 11))
+        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 16))
+        self.floater_group.add(Log('log_large', SIZE, log_large_x))
+        self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 8))
+        self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 16))
+        self.floater_group.add(DivingTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
+        self.floater_group.add(DivingTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
+        self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 5))
+        self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 10))
+        self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 15))
+        self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x))
+        self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 5))
+        self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 10))
+
+    def spawn_vehicles_lvl_2(self):
+        car_x = randint(SIZE * 2, SIZE * 8)
+        racecar_x = randint(SIZE * 2, SIZE * 8)
+        truck_x = randint(SIZE * 6, SIZE * 10)
+        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
+        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 5))
+        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 10))
+        self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x))
+        self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x - SIZE * 4))
+        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x))
+        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 6))
+        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 10))
+        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x))
+        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x  - SIZE * 5))
+        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x  - SIZE * 10))
+        self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
+        self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 4))
+
     def spawn_lilies(self):
         y = SIZE + SIZE / 4 + 2
         for i in range(5):
@@ -246,8 +291,12 @@ class Game:
         except Exception as e: 
             print("Friend frog is already dead:", e)
         self.reset_movements()
-        self.spawn_vehicles_lvl_1()
-        self.spawn_floaters_lvl_1()
+        if self.level == 1: 
+            self.spawn_vehicles_lvl_1()
+            self.spawn_floaters_lvl_1()
+        else: 
+            self.spawn_vehicles_lvl_2()
+            self.spawn_floaters_lvl_2()
         self.spawn_lilies()
         self.spawn_timer_bar()
 

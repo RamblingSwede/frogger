@@ -30,7 +30,7 @@ class Frog(pygame.sprite.Sprite):
 
 class FriendFrog(Frog):
     def __init__(self, size, frog, log):
-        super().__init__("./resources/misc/friend_frog_placeholder.png", log.get_pos()[0], log.get_pos()[1])
+        super().__init__("./resources/misc/friend_frog.png", log.get_pos()[0], log.get_pos()[1])
         self.size       = size
         self.is_on_log  = True
         self.is_carried = False
@@ -109,7 +109,7 @@ class FriendFrog(Frog):
 
 class NormalFrog(Frog): 
     def __init__(self, width, height, size):
-        super().__init__("./resources/misc/frog_placeholder.png", width / 2, height - size * 2)
+        super().__init__("./resources/misc/frog.png", width / 2, height - size * 2)
         self.carrying       = False
         self.hop_cooldown   = 20
         self.hop_cooldownX  = self.hop_cooldown
