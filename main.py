@@ -24,7 +24,7 @@ class Game:
         self.level              = 1
         self.clock              = pygame.time.Clock()
         self.screen             = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
-        self.background         = Background(SCREENWIDTH, SCREENHEIGHT, SIZE)
+        self.background         = Background()
         self.ui                 = UI(SCREENHEIGHT - SIZE)
         self.top_ui             = TopUI()
         self.respawn_menu       = RespawnMenu(SCREENWIDTH, SCREENHEIGHT)
@@ -317,7 +317,7 @@ class Game:
     # Frog must be added last so that it is the most forward object on the display 
     def update_display(self): 
         self.screen.fill('Black')
-        self.background.draw(self.screen) 
+        self.background.draw(self.screen)
         self.vehicle_group.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.vehicle_group)
         self.vehicle_group.draw(self.screen)
         self.floater_group.update(SCREENWIDTH, self.floater_group, self.friend_frog)
