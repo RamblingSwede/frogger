@@ -26,7 +26,6 @@ class Game:
         self.screen             = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
         self.background         = Background()
         self.ui                 = UI(SCREENHEIGHT - SIZE)
-        self.top_ui             = TopUI()
         self.respawn_menu       = RespawnMenu(SCREENWIDTH, SCREENHEIGHT)
         self.current_score      = Current_Score()
         self.high_score         = Highscore()
@@ -329,14 +328,12 @@ class Game:
         self.friend_frog.draw(self.screen)
         self.ui.draw(self.screen)
         self.timer_bar.draw2(self.screen)
-        self.top_ui.draw(self.screen)
         self.current_score.draw(self.screen, self.current_score.score)
         self.high_score.draw(self.screen)
 
     def start_screen(self):
         self.screen.fill('Black')
         self.background.draw(self.screen)
-        self.top_ui.draw(self.screen)
         self.current_score.draw(self.screen, self.current_score.score)
         self.high_score.draw(self.screen)
         self.splash_screen.update()
