@@ -143,7 +143,7 @@ class Game:
         y = SIZE + SIZE / 4 + 2
         for i in range(5):
             x = 16 + 6 + i * SIZE * 3
-            random_nbr = randint(1, 12)
+            random_nbr = randint(1, 14)
             if random_nbr < 4:
                 print("Bonus lily")
                 self.lilies_group.add(Bonus_Lily(x, y))
