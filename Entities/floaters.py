@@ -47,7 +47,7 @@ class Floater(pygame.sprite.Sprite):
         margin = size * (4 / 10)
         return x_left > self.rect.x - margin and x_right < self.rect.x + self.width + margin 
     
-    def hostile(self): 
+    def hostile(self, frog): 
         return False
     
     
@@ -98,7 +98,7 @@ class SnakeLog(Floater):
         return SnakeLog(self.size, self.delay)
     
     def hostile(self, frog): 
-        return pygame.sprite.spritecollide(frog, self.snake, False)
+        return pygame.sprite.collide_rect(frog, self.snake)
     
     class Snake(pygame.sprite.Sprite):
         def __init__(self, log, width):
@@ -111,23 +111,29 @@ class SnakeLog(Floater):
             self.log_width = width
             self.rect.x = log.get_pos()[0]
             self.rect.y = log.get_pos()[1]
-            self.velocity = log.velocity + 1
-            self.offset = log.velocity
+            self.velocity = log.velocity
+            self.offset = 2
             self.x = 0
+            self.right = True
 
         def update(self):
-            print(f"x: {self.rect.x}, y: {self.rect.y}")
             log_x = self.log.get_pos()[0]
             self.rect.x = log_x + self.x
             if self.count == self.offset: 
-                self.x += self.velocity
+                if self.right:
+                    self.x += self.velocity
+                else:
+                    self.x -= self.velocity
                 self.count = 0 
-                if self.rect.x >= log_x - self.width or self.rect.x <= log_x:
-                    self.velocity *= -1
+                if self.rect.x >= log_x + self.log.width - self.width:
+                    self.right = False
+                    self.offset = 2
+                if self.rect.x <= log_x:
+                    self.right = True
+                    self.offset = 1
             self.count += 1 
 
         def draw(self, screen):
-            #print("draw called")
             screen.blit(self.image, self.rect)
     
 
