@@ -64,7 +64,7 @@ class Game:
         self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 6))
         self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 11))
         self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 16))
-        self.floater_group.add(Log('log_large', SIZE, log_large_x))
+        self.floater_group.add(SnakeLog(SIZE, log_large_x))
         self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 8))
         self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 16))
         self.floater_group.add(DivingTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
@@ -178,6 +178,8 @@ class Game:
                         if isinstance(platform, DivingTurtle) and platform.is_diving(): 
                             self.lose_life()
                             break
+                        if platform.hostile(self.frog.sprite):
+                            self.lose_life()
                         self.set_jump_distance(platform) 
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
                         self.handle_friend_frog_hit()
@@ -291,6 +293,7 @@ class Game:
             print("Friend frog is already dead:", e)
         self.reset_movements()
         if self.level == 1: 
+            print("Spawning lvl 1")
             self.spawn_vehicles_lvl_1()
             self.spawn_floaters_lvl_1()
         else: 
@@ -312,6 +315,12 @@ class Game:
         self.safe_frogs = 0
         self.reset_game()
         self.respawn()
+
+    def draw_snake(self):
+        for floater in self.floater_group:
+            if isinstance(floater, SnakeLog):
+                floater.draw(self.screen)
+                break
                     
     # Frog must be added last so that it is the most forward object on the display 
     def update_display(self): 
@@ -321,6 +330,7 @@ class Game:
         self.vehicle_group.draw(self.screen)
         self.floater_group.update(SCREENWIDTH, self.floater_group, self.friend_frog)
         self.floater_group.draw(self.screen)
+        self.draw_snake()
         self.lilies_group.draw(self.screen) 
         self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.jump_distance, self.movementX, self.movementY)
         self.frog.draw(self.screen)

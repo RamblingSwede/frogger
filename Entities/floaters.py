@@ -17,6 +17,9 @@ class Floater(pygame.sprite.Sprite):
 
     def get_jump_distance(self): 
         return self.jump_distance 
+    
+    def get_pos(self):
+        return (self.rect.x, self.rect.y)
 
     def update(self, width, group, friend_frog):
         if self.count == self.offset: 
@@ -44,6 +47,9 @@ class Floater(pygame.sprite.Sprite):
         margin = size * (4 / 10)
         return x_left > self.rect.x - margin and x_right < self.rect.x + self.width + margin 
     
+    def hostile(self): 
+        return False
+    
     
 
 class Log(Floater): 
@@ -69,11 +75,63 @@ class Log(Floater):
             friend_frog.sprite.reset(log)
         return log
     
-    def get_pos(self):
-        return (self.rect.x, self.rect.y)
+
+
+class SnakeLog(Floater):
+    def __init__(self, size, x_pos):
+        super().__init__("./resources/floaters/log_large.png", 4 * size, 
+                             x_pos, size * 4, 1, 1, -(10 * size), (size * 1.4, size))
+        self.size = size 
+        self.init_snake()
+
+    def init_snake(self):
+        self.snake = self.Snake(self, self.width)
+
+    def update(self, width, group, friend_frog):
+        super().update(width, group, friend_frog)
+        self.snake.update()
+
+    def draw(self, screen):
+        self.snake.draw(screen)
+
+    def create_new_floater(self, friend_frog):
+        return SnakeLog(self.size, self.delay)
+    
+    def hostile(self, frog): 
+        return pygame.sprite.spritecollide(frog, self.snake, False)
+    
+    class Snake(pygame.sprite.Sprite):
+        def __init__(self, log, width):
+            super().__init__()
+            self.log = log
+            self.count = 0 
+            self.image = pygame.image.load("./resources/floaters/snake_placeholder.png").convert_alpha() 
+            self.rect = self.image.get_rect()
+            self.width = 32 
+            self.log_width = width
+            self.rect.x = log.get_pos()[0]
+            self.rect.y = log.get_pos()[1]
+            self.velocity = log.velocity + 1
+            self.offset = log.velocity
+            self.x = 0
+
+        def update(self):
+            print(f"x: {self.rect.x}, y: {self.rect.y}")
+            log_x = self.log.get_pos()[0]
+            self.rect.x = log_x + self.x
+            if self.count == self.offset: 
+                self.x += self.velocity
+                self.count = 0 
+                if self.rect.x >= log_x - self.width or self.rect.x <= log_x:
+                    self.velocity *= -1
+            self.count += 1 
+
+        def draw(self, screen):
+            #print("draw called")
+            screen.blit(self.image, self.rect)
     
 
-            
+
 class Turtle(Floater): 
     def __init__(self, type, size, width, x_pos):
         if type == 'turtle_medium':
