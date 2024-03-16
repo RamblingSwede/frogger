@@ -66,24 +66,31 @@ class Crocodile(Floater):
     
 
 class Log(Floater): 
-    def __init__(self, type, size, x_pos):
+    def __init__(self, type, size, x_pos, lvl=1):
+        self.level = lvl
         if type == 'log_small':
             super().__init__("./resources/floaters/log_small.png", 2 * size, 
                              x_pos, size * 5, 1, 3, -2 * size, (size * 1.4, size))
 
         elif type == 'log_medium':
+            offset = 1
+            if lvl == 1 or lvl == 2:
+                offset = 2
             super().__init__("./resources/floaters/log_medium.png", 3 * size, 
-                             x_pos, size * 2, 1, 2, -(10 * size), (size * 1.4, size))
+                             x_pos, size * 2, 1, offset, -(10 * size), (size * 1.4, size))
 
         elif type == 'log_large':
+            offset = 2
+            if lvl == 1:
+                offset = 1
             super().__init__("./resources/floaters/log_large.png", 4 * size, 
-                             x_pos, size * 4, 1, 1, -(10 * size), (size * 1.4, size))
+                             x_pos, size * 4, 1, offset, -(10 * size), (size * 1.4, size))
 
         self.type = type
         self.size = size
             
     def create_new_floater(self, friend_frog): 
-        log = Log(self.type, self.size, self.spawn_delay)
+        log = Log(self.type, self.size, self.spawn_delay, self.level)
         if (friend_frog.sprite.out_of_bounds() and self.type == 'log_small'):
             friend_frog.sprite.reset(log)
         return log
@@ -93,7 +100,7 @@ class Log(Floater):
 class SnakeLog(Floater):
     def __init__(self, size, x_pos):
         super().__init__("./resources/floaters/log_large.png", 4 * size, 
-                             x_pos, size * 4, 1, 1, -(10 * size), (size * 1.4, size))
+                             x_pos, size * 4, 1, 2, -(10 * size), (size * 1.4, size))
         self.size = size 
         self.init_snake()
 
