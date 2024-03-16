@@ -107,7 +107,7 @@ class Game:
         self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
         self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
         self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 6))
-        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 11))
+        self.floater_group.add(Crocodile(SIZE, log_medium_x - SIZE * 11))
         self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 16))
         self.floater_group.add(SnakeLog(SIZE, log_large_x))
         self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 8))
@@ -175,11 +175,9 @@ class Game:
                 platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
                 for platform in platforms:
                     if platform.within_bounds(self.frog.sprite.rect.x, SIZE): 
-                        if isinstance(platform, DivingTurtle) and platform.is_diving(): 
-                            self.lose_life()
-                            break
                         if platform.hostile(self.frog.sprite):
                             self.lose_life()
+                            break
                         self.set_jump_distance(platform) 
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
                         self.handle_friend_frog_hit()

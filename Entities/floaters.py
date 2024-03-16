@@ -2,7 +2,7 @@ import pygame
 import threading 
 
 class Floater(pygame.sprite.Sprite): 
-    def __init__(self, image, width, x_pos, y_pos, velocity, offset, delay, jump_distance):
+    def __init__(self, image, width, x_pos, y_pos, velocity, offset, spawn_delay, jump_distance):
         super().__init__()
         self.count = 0 
         self.image = pygame.image.load(image).convert_alpha() 
@@ -12,7 +12,7 @@ class Floater(pygame.sprite.Sprite):
         self.rect.y = y_pos 
         self.velocity = velocity
         self.offset = offset
-        self.delay = delay 
+        self.spawn_delay = spawn_delay 
         self.jump_distance = jump_distance
 
     def get_jump_distance(self): 
@@ -50,6 +50,19 @@ class Floater(pygame.sprite.Sprite):
     def hostile(self, frog): 
         return False
     
+
+class Crocodile(Floater):
+    def __init__(self, size, x_pos):
+        super().__init__("./resources/floaters/crocodile.png", 3 * size, 
+                             x_pos, size * 2, 1, 2, -(10 * size), (size * 1.4, size))
+        self.size = size
+        
+    def create_new_floater(self, friend_frog):
+        return Crocodile(self.size, self.spawn_delay)
+    
+    def hostile(self, frog):
+        return True
+    
     
 
 class Log(Floater): 
@@ -70,7 +83,7 @@ class Log(Floater):
         self.size = size
             
     def create_new_floater(self, friend_frog): 
-        log = Log(self.type, self.size, self.delay)
+        log = Log(self.type, self.size, self.spawn_delay)
         if (friend_frog.sprite.out_of_bounds() and self.type == 'log_small'):
             friend_frog.sprite.reset(log)
         return log
@@ -95,7 +108,7 @@ class SnakeLog(Floater):
         self.snake.draw(screen)
 
     def create_new_floater(self, friend_frog):
-        return SnakeLog(self.size, self.delay)
+        return SnakeLog(self.size, self.spawn_delay)
     
     def hostile(self, frog): 
         return pygame.sprite.collide_rect(frog, self.snake)
@@ -164,7 +177,7 @@ class NormalTurtle(Turtle):
             super().__init__(type, size, width, x_pos)
 
     def generate_turtle(self): 
-        return NormalTurtle(self.type, self.size, self.width, self.delay) 
+        return NormalTurtle(self.type, self.size, self.width, self.spawn_delay) 
 
 
     
@@ -187,11 +200,14 @@ class DivingTurtle(Turtle):
         self.timer = threading.Timer(0.8, self.update_turtle)
         self.timer.start()
 
+    def hostile(self, frog):
+        return self.is_diving()
+
     def is_diving(self): 
         return self.diving
 
     def generate_turtle(self): 
-        return DivingTurtle(self.type, self.size, self.width, self.delay) 
+        return DivingTurtle(self.type, self.size, self.width, self.spawn_delay) 
 
     def update_turtle(self): 
         self.timer_count += 1
