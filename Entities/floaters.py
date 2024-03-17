@@ -56,6 +56,20 @@ class Crocodile(Floater):
         super().__init__("./resources/floaters/crocodile.png", 3 * size, 
                              x_pos, size * 2, 1, 2, -(10 * size), (size * 1.4, size))
         self.size = size
+        self.croc_image_file = "./resources/floaters/crocodile.png"
+        self.croc_image_file_mouth_open = "./resources/floaters/crocodile_mouth_open.png"
+        self.mouth_open = False 
+        self.timer = threading.Timer(1.2, self.update_crocodile)
+        self.timer.start()
+
+    def update_crocodile(self):
+        if self.mouth_open:
+            self.image = pygame.image.load(self.croc_image_file).convert_alpha() 
+        else:
+            self.image = pygame.image.load(self.croc_image_file_mouth_open).convert_alpha()
+        self.mouth_open = not self.mouth_open
+        self.timer = threading.Timer(1.2, self.update_crocodile)
+        self.timer.start()
         
     def create_new_floater(self, friend_frog):
         return Crocodile(self.size, self.spawn_delay)
