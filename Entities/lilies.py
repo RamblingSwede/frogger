@@ -16,8 +16,6 @@ class Lily(pygame.sprite.Sprite):
         self.rect.x         = x
         self.rect.y         = y
         self.occupied       = False
-        self.timer          = threading.Timer(randint(5, 15), self.update_image)
-        self.timer.start()
 
     def is_active(self): 
         return self.active 
@@ -39,6 +37,10 @@ class Lily(pygame.sprite.Sprite):
     def set_occupied(self): 
         self.occupied = True 
         self.set_safe() 
+
+    def start_timer(self):
+        self.timer = threading.Timer(randint(5, 15), self.update_image)
+        self.timer.start()
 
     def update_image(self): 
         if not self.occupied: 
@@ -108,3 +110,48 @@ class Hostile_Lily(Lily):
         
     def is_hostile(self): 
         return self.active
+    
+class Crocodile_Lily(Lily):
+    CROC_LILY_IMG_FILE = "./resources/misc/crocodile_lily.png"
+    CROC_LURK_LILY_IMG_FILE = "./resources/misc/crocodile_lurk_lily.png"
+
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.lurking = False
+        self.hunting = False
+
+    def start_timer(self):
+        self.timer = threading.Timer(randint(4, 12), self.update_image)
+        self.timer.start()
+
+    def update_image(self): 
+        if not self.occupied: 
+            x = self.rect.x 
+            y = self.rect.y 
+            next_img = self.set_image() 
+            self.image = pygame.image.load(next_img).convert_alpha()
+            self.rect = self.image.get_rect()
+            self.rect.x = x
+            self.rect.y = y
+
+    def reset_timer(self, delay=8): 
+        self.timer = threading.Timer(delay, self.update_image)
+        self.timer.start()
+
+    def set_image(self): 
+        if self.lurking: 
+            self.lurking = False
+            self.hunting = True
+            self.reset_timer(2)
+            return Crocodile_Lily.CROC_LILY_IMG_FILE
+        elif self.hunting:
+            self.hunting = False
+            self.reset_timer()
+            return Lily.LILY_IMG_FILE
+        else:
+            self.lurking = True
+            self.reset_timer(2)
+            return Crocodile_Lily.CROC_LURK_LILY_IMG_FILE
+        
+    def is_hostile(self): 
+        return self.hunting

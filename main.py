@@ -178,7 +178,7 @@ class Game:
         self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 3))
         self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x + SIZE * 5, 3))
 
-    def spawn_lilies(self):
+    def spawn_lilies_lvl_1(self):
         y = SIZE + SIZE / 4 + 2
         for i in range(5):
             x = 16 + 6 + i * SIZE * 3
@@ -189,6 +189,48 @@ class Game:
             elif random_nbr < 7:
                 print("Hostile lily")
                 self.lilies_group.add(Hostile_Lily(x, y))
+            else:
+                print("Ordinary lily")
+                self.lilies_group.add(Ordinary_Lily(x, y))
+
+    def spawn_lilies_lvl_2(self):
+        y = SIZE + SIZE / 4 + 2
+        x = 19
+        print("Croc lily")
+        self.lilies_group.add(Crocodile_Lily(x, y))
+        for i in range(1, 5):
+            x = 19 + i * SIZE * 3
+            random_nbr = randint(1, 14)
+            if random_nbr < 5:
+                print("Bonus lily")
+                self.lilies_group.add(Bonus_Lily(x, y))
+            elif random_nbr < 9:
+                print("Hostile lily")
+                self.lilies_group.add(Hostile_Lily(x, y))
+            elif random_nbr < 11:
+                print("Croc lily")
+                self.lilies_group.add(Crocodile_Lily(x, y))
+            else:
+                print("Ordinary lily")
+                self.lilies_group.add(Ordinary_Lily(x, y))
+
+    def spawn_lilies_lvl_3(self):
+        y = SIZE + SIZE / 4 + 2
+        x = 16 + 6
+        print("Croc lily")
+        self.lilies_group.add(Crocodile_Lily(x, y))
+        for i in range(1, 5):
+            x = 16 + 6 + i * SIZE * 3
+            random_nbr = randint(1, 14)
+            if random_nbr < 3:
+                print("Bonus lily")
+                self.lilies_group.add(Bonus_Lily(x, y))
+            elif random_nbr < 8:
+                print("Hostile lily")
+                self.lilies_group.add(Hostile_Lily(x, y))
+            elif random_nbr < 11:
+                print("Croc lily")
+                self.lilies_group.add(Crocodile_Lily(x, y))
             else:
                 print("Ordinary lily")
                 self.lilies_group.add(Ordinary_Lily(x, y))
@@ -332,13 +374,17 @@ class Game:
         if self.level == 1: 
             self.spawn_vehicles_lvl_1()
             self.spawn_floaters_lvl_1()
+            self.spawn_lilies_lvl_1()
         elif self.level == 2: 
             self.spawn_vehicles_lvl_2()
             self.spawn_floaters_lvl_2()
+            self.spawn_lilies_lvl_2()
         else:
             self.spawn_vehicles_lvl_3()
             self.spawn_floaters_lvl_3()
-        self.spawn_lilies()
+            self.spawn_lilies_lvl_3()
+        for lily in self.lilies_group:
+            lily.start_timer()
         self.spawn_timer_bar()
 
     def reset_movements(self):
