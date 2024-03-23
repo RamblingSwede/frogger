@@ -75,7 +75,7 @@ class Ordinary_Lily(Lily):
 
 
 class Bonus_Lily(Lily): 
-    FLY_LILY_IMG_FILE = "./resources/misc/fly_lily_placeholder.png" #to be replaced 
+    FLY_LILY_IMG_FILE = "./resources/misc/fly_lily.png" 
 
     def __init__(self, x, y):
         super().__init__(x, y)
