@@ -181,7 +181,7 @@ class Game:
     def spawn_lilies_lvl_1(self):
         y = SIZE + SIZE / 4 + 2
         for i in range(5):
-            x = 16 + 6 + i * SIZE * 3
+            x = 19 + i * SIZE * 3
             random_nbr = randint(1, 14)
             if random_nbr < 4:
                 print("Bonus lily")
@@ -216,11 +216,11 @@ class Game:
 
     def spawn_lilies_lvl_3(self):
         y = SIZE + SIZE / 4 + 2
-        x = 16 + 6
+        x = 19
         print("Croc lily")
         self.lilies_group.add(Crocodile_Lily(x, y))
         for i in range(1, 5):
-            x = 16 + 6 + i * SIZE * 3
+            x = 19 + i * SIZE * 3
             random_nbr = randint(1, 14)
             if random_nbr < 3:
                 print("Bonus lily")
