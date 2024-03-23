@@ -1,3 +1,4 @@
+from random import randint
 import pygame
 import threading 
 
@@ -175,14 +176,18 @@ class SnakeLog(Floater):
 class Turtle(Floater): 
     def __init__(self, type, size, width, x_pos):
         if type == 'turtle_medium':
-            super().__init__("./resources/floaters/turtle_small.png", 2 * size, 
+            super().__init__("./resources/floaters/1_turtle_small.png", 2 * size, 
                              x_pos, size * 3, -1, 1, width, (size, size * 1.4))
-            self.image_file = "./resources/floaters/turtle_small.png"
+            self.image_file_1 = "./resources/floaters/1_turtle_small.png"
+            self.image_file_2 = "./resources/floaters/2_turtle_small.png"
+            self.image_file_3 = "./resources/floaters/3_turtle_small.png"
 
         elif type == 'turtle_large':
-            super().__init__("./resources/floaters/turtle_medium.png", 3 * size, 
+            super().__init__("./resources/floaters/1_turtle_medium.png", 3 * size, 
                              x_pos, size * 6, -1, 2, width + size, (size, size * 1.4))
-            self.image_file = "./resources/floaters/turtle_medium.png"
+            self.image_file_1 = "./resources/floaters/1_turtle_medium.png"
+            self.image_file_2 = "./resources/floaters/2_turtle_medium.png"
+            self.image_file_3 = "./resources/floaters/3_turtle_medium.png"
 
         self.type = type
         self.size = size
@@ -195,10 +200,35 @@ class Turtle(Floater):
     
 class NormalTurtle(Turtle): 
     def __init__(self, type, size, width, x_pos):
-            super().__init__(type, size, width, x_pos)
+        super().__init__(type, size, width, x_pos)
+
+        self.timer_count = randint(1, 3)
+        self.timer = threading.Timer(0.5, self.update_turtle)
+        self.timer.start()
 
     def generate_turtle(self): 
         return NormalTurtle(self.type, self.size, self.width, self.spawn_delay) 
+    
+    def update_turtle(self): 
+        self.timer_count += 1
+        x = self.rect.x
+        y = self.rect.y
+        if self.timer_count % 3 == 0: 
+            self.image = pygame.image.load(self.image_file_1).convert_alpha()
+            self.timer = threading.Timer(0.5, self.update_turtle)
+        
+        elif self.timer_count % 3 == 1: 
+            self.image = pygame.image.load(self.image_file_2).convert_alpha()
+            self.timer = threading.Timer(0.5, self.update_turtle)
+
+        elif self.timer_count % 3 == 2: 
+            self.image = pygame.image.load(self.image_file_3).convert_alpha()
+            self.timer = threading.Timer(0.5, self.update_turtle)
+
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.timer.start()
 
 
     
@@ -236,10 +266,11 @@ class DivingTurtle(Turtle):
         y = self.rect.y
         if self.timer_count % 5 == 0: 
             self.diving = False 
-            self.image = pygame.image.load(self.image_file).convert_alpha()
+            self.image = pygame.image.load(self.image_file_1).convert_alpha()
             self.timer = threading.Timer(0.8, self.update_turtle)
         
         elif self.timer_count % 5 == 1: 
+            self.image = pygame.image.load(self.image_file_2).convert_alpha()
             self.timer = threading.Timer(0.8, self.update_turtle)
 
         elif self.timer_count % 5 == 2: 
@@ -254,9 +285,6 @@ class DivingTurtle(Turtle):
             self.image = pygame.image.load(self.diving_image_file3).convert_alpha()
             self.timer = threading.Timer(0.8, self.update_turtle)
             self.diving = True
-
-        else: 
-            return
 
         self.rect = self.image.get_rect()
         self.rect.x = x
