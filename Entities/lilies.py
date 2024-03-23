@@ -6,7 +6,7 @@ from random import randint
 class Lily(pygame.sprite.Sprite): 
     WIDTH = 20 
     LILY_IMG_FILE = "./resources/misc/lily_placeholder.png"
-    SAFE_LILY_IMG_FILE = "./resources/misc/frog.png"
+    SAFE_LILY_IMG_FILE = "./resources/misc/safe_frog.png"
     CURRENT_IMG = LILY_IMG_FILE
 
     def __init__(self, x, y):
@@ -28,11 +28,12 @@ class Lily(pygame.sprite.Sprite):
         return x_left < mid and x_right > mid 
 
     def set_safe(self): 
-        x            = self.rect.x 
-        self.image   = pygame.image.load(Lily.SAFE_LILY_IMG_FILE).convert_alpha()
-        self.rect    = self.image.get_rect()
-        self.rect.x  = x - 6 
-        self.rect.y  = 32
+        x           = self.rect.x 
+        y           = self.rect.y
+        self.image  = pygame.image.load(Lily.SAFE_LILY_IMG_FILE).convert_alpha()
+        self.rect   = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
     def set_occupied(self): 
         self.occupied = True 
