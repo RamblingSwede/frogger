@@ -10,8 +10,8 @@ import sys
 
 # Grodan kommer inte tillbaka när loggen går ut ur bild
 
-SIZE = 32
-SCREENWIDTH, SCREENHEIGHT = SIZE * 14, SIZE * 15
+BLOCK_SIZE = 32
+SCREEN_WIDTH, SCREEN_HEIGHT = BLOCK_SIZE * 14, BLOCK_SIZE * 15
 FPS = 60
 LEFT_DIR    = [pygame.K_a, pygame.K_LEFT]
 RIGHT_DIR   = [pygame.K_d, pygame.K_RIGHT]
@@ -24,10 +24,10 @@ class Game:
         pygame.display.set_caption('Frogger - Level 1')
         self.level              = 1
         self.clock              = pygame.time.Clock()
-        self.screen             = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
+        self.screen             = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.background         = Background()
-        self.ui                 = UI(SCREENHEIGHT - SIZE)
-        self.respawn_menu       = RespawnMenu(SCREENWIDTH, SCREENHEIGHT)
+        self.ui                 = UI(SCREEN_HEIGHT - BLOCK_SIZE)
+        self.respawn_menu       = RespawnMenu(SCREEN_WIDTH, SCREEN_HEIGHT)
         self.current_score      = Current_Score()
         self.high_score         = Highscore()
         self.splash_screen      = SplashScreen()
@@ -37,25 +37,25 @@ class Game:
         self.lives_left         = 2
         self.floater_group      = pygame.sprite.Group()
         self.vehicle_group      = pygame.sprite.Group()
-        self.sprite_generator   = spriteGenerator(SIZE, SCREENWIDTH, SCREENHEIGHT)
+        self.sprite_generator   = spriteGenerator(BLOCK_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT)
         self.lilies_group       = pygame.sprite.Group()
         self.frog               = pygame.sprite.GroupSingle()
-        self.frog.add(NormalFrog(SCREENWIDTH, SCREENHEIGHT, SIZE))
+        self.frog.add(NormalFrog(SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE))
         self.friend_frog        = pygame.sprite.GroupSingle()
         self.timer              = pygame.USEREVENT + 1
 
         pygame.time.set_timer(self.timer, 30000)
         self.movementX          = [False, False]
         self.movementY          = [False, False]
-        self.jump_distance      = SIZE
+        self.jump_distance      = BLOCK_SIZE
         self.start_time         = int(pygame.time.get_ticks() / 1000)
 
     def spawn_lilies(self, level):
-        y = SIZE + SIZE / 4 + 2
+        y = BLOCK_SIZE + BLOCK_SIZE / 4 + 2
         x = 19
         if level == 1:
             for i in range(5):
-                x = 19 + i * SIZE * 3
+                x = 19 + i * BLOCK_SIZE * 3
                 random_nbr = randint(1, 14)
                 if random_nbr < 4:
                     print("Bonus lily")
@@ -65,7 +65,7 @@ class Game:
                     self.lilies_group.add(Ordinary_Lily(x, y))
         if level == 2:
             for i in range(1, 5):
-                x = 19 + i * SIZE * 3
+                x = 19 + i * BLOCK_SIZE * 3
                 random_nbr = randint(1, 14)
                 if random_nbr < 5:
                     print("Bonus lily")
@@ -78,7 +78,7 @@ class Game:
                     self.lilies_group.add(Ordinary_Lily(x, y))
         if level >= 3:
             for i in range(1, 5):
-                x = 19 + i * SIZE * 3
+                x = 19 + i * BLOCK_SIZE * 3
                 random_nbr = randint(1, 14)
                 if random_nbr < 3:
                     print("Bonus lily")
@@ -91,7 +91,7 @@ class Game:
                     self.lilies_group.add(Ordinary_Lily(x, y))
 
     def spawn_timer_bar(self):
-        self.timer_bar = Timer_Bar(90, SCREENHEIGHT - SIZE + 2, SCREENWIDTH - 90 - 2, SIZE / 2)
+        self.timer_bar = Timer_Bar(90, SCREEN_HEIGHT - BLOCK_SIZE + 2, SCREEN_WIDTH - 90 - 2, BLOCK_SIZE / 2)
 
     def timer_tick(self, time):
         self.timer_bar.update(time)
@@ -110,7 +110,7 @@ class Game:
             if pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False):
                 platforms = pygame.sprite.spritecollide(self.frog.sprite, self.floater_group, False)
                 for platform in platforms:
-                    if platform.within_bounds(self.frog.sprite.rect.x, SIZE): 
+                    if platform.within_bounds(self.frog.sprite.rect.x, BLOCK_SIZE): 
                         if platform.hostile(self.frog.sprite):
                             self.lose_life()
                             break
@@ -122,7 +122,7 @@ class Game:
             else:
                 self.lose_life() 
         else: 
-            self.jump_distance = SIZE 
+            self.jump_distance = BLOCK_SIZE 
 
     def handle_friend_frog_hit(self):
         if self.frog.sprite.carrying_friend() or self.friend_frog.sprite.is_safe():
@@ -137,7 +137,7 @@ class Game:
     def handle_final_platform_hit(self): 
         if pygame.sprite.spritecollide(self.frog.sprite, self.lilies_group, False): 
             lily = pygame.sprite.spritecollide(self.frog.sprite, self.lilies_group, False)[0] 
-            if lily.hit(self.frog.sprite.get_x(), SIZE): 
+            if lily.hit(self.frog.sprite.get_x(), BLOCK_SIZE): 
                 lily.set_occupied() 
                 if self.safe_frogs == 4:
                     if isinstance(lily, Bonus_Lily) and lily.is_active(): 
@@ -164,7 +164,7 @@ class Game:
             else: 
                 print('Didn\'t hit')
                 self.lose_life() 
-        elif self.frog.sprite.rect.y == SIZE:
+        elif self.frog.sprite.rect.y == BLOCK_SIZE:
             self.lose_life() 
 
     def set_jump_distance(self, platform): 
@@ -176,7 +176,7 @@ class Game:
 
 
     def in_river(self): 
-        return self.frog.sprite.rect.y < SIZE * 7 and self.frog.sprite.rect.y > SIZE
+        return self.frog.sprite.rect.y < BLOCK_SIZE * 7 and self.frog.sprite.rect.y > BLOCK_SIZE
 
     def lose_life(self): 
         if self.movementY[1]:
@@ -200,8 +200,8 @@ class Game:
                 self.friend_frog.sprite.set_safe()
             else:
                 self.friend_frog.sprite.inactivate()
-        self.frog.sprite.rect.x = SCREENWIDTH / 2
-        self.frog.sprite.rect.y = SCREENHEIGHT - SIZE * 2
+        self.frog.sprite.rect.x = SCREEN_WIDTH / 2
+        self.frog.sprite.rect.y = SCREEN_HEIGHT - BLOCK_SIZE * 2
         self.spawn_timer_bar()
         self.ui.update(str(self.lives_left))
     
@@ -252,15 +252,15 @@ class Game:
     def update_display(self): 
         self.screen.fill('Black')
         self.background.draw(self.screen)
-        self.vehicle_group.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.vehicle_group)
+        self.vehicle_group.update(SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE, self.vehicle_group)
         self.vehicle_group.draw(self.screen)
-        self.floater_group.update(SCREENWIDTH, self.floater_group, self.friend_frog)
+        self.floater_group.update(SCREEN_WIDTH, self.floater_group, self.friend_frog)
         self.floater_group.draw(self.screen)
         self.draw_snake()
         self.lilies_group.draw(self.screen) 
-        self.frog.update(SCREENWIDTH, SCREENHEIGHT, SIZE, self.jump_distance, self.movementX, self.movementY)
+        self.frog.update(SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE, self.jump_distance, self.movementX, self.movementY)
         self.frog.draw(self.screen)
-        self.friend_frog.update(SCREENWIDTH, self.floater_group)
+        self.friend_frog.update(SCREEN_WIDTH, self.floater_group)
         self.friend_frog.draw(self.screen)
         self.ui.draw(self.screen)
         self.timer_bar.draw2(self.screen)
