@@ -1,3 +1,4 @@
+from Entities.spriteGenerator import spriteGenerator
 from Entities.vehicles import *
 from Entities.floaters import *
 from Entities.frogs import *
@@ -35,8 +36,8 @@ class Game:
         self.safe_frogs         = 0
         self.lives_left         = 2
         self.floater_group      = pygame.sprite.Group()
-        self.current_floater    = None
         self.vehicle_group      = pygame.sprite.Group()
+        self.sprite_generator   = spriteGenerator(SIZE, SCREENWIDTH, SCREENHEIGHT)
         self.lilies_group       = pygame.sprite.Group()
         self.frog               = pygame.sprite.GroupSingle()
         self.frog.add(NormalFrog(SCREENWIDTH, SCREENHEIGHT, SIZE))
@@ -47,108 +48,7 @@ class Game:
         self.movementX          = [False, False]
         self.movementY          = [False, False]
         self.jump_distance      = SIZE
-        self.start_time = int(pygame.time.get_ticks() / 1000)
-
-    def spawn_floaters(self, level):
-        log_small_x = randint(-SIZE * 4, -SIZE * 2)
-        log_medium_x = randint(-SIZE * 10, -SIZE * 4)
-        log_large_x = randint(-SIZE * 8, -SIZE * 3)
-        turtle_medium_x = randint(SIZE * 9, SCREENWIDTH + SIZE * 4)
-        turtle_large_x = randint(SIZE * 4, SCREENWIDTH + SIZE)
-        log = Log('log_small', SIZE, log_small_x)
-        self.floater_group.add(log)
-        self.friend_frog.add(FriendFrog(SIZE, self.frog, log))
-        self.floater_group.add(Log('log_small', SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
-        self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
-        if level == 1:
-            self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
-            self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 6))
-            self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 11))
-            self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 16))
-            self.floater_group.add(Log('log_large', SIZE, log_large_x))
-            self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 8))
-            self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 16))
-            self.floater_group.add(DivingTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
-            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 5))
-            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 10))
-            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 15))
-            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x))
-            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 5))
-            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 10))
-            self.floater_group.add(DivingTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
-        if level == 2:
-            self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
-            self.floater_group.add(Crocodile(SIZE, log_medium_x - SIZE * 7))
-            self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 15))
-            self.floater_group.add(SnakeLog(SIZE, log_large_x))
-            self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 10, 2))
-            self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 19, 2))
-            self.floater_group.add(DivingTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
-            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 5))
-            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 10))
-            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 15))
-            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x))
-            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 5))
-            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 10))
-            self.floater_group.add(DivingTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
-        if level >= 3:
-            self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
-            self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 6))
-            self.floater_group.add(Crocodile(SIZE, log_medium_x - SIZE * 11))
-            self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 16))
-            self.floater_group.add(SnakeLog(SIZE, log_large_x))
-            self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 10, 3))
-            self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 19, 3))
-            self.floater_group.add(DivingTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
-            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 5))
-            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 13))
-            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x))
-            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 8))
-            self.floater_group.add(DivingTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
-
-
-    def spawn_vehicles(self, level):
-        car_x = randint(SIZE * 2, SIZE * 8)
-        racecar_x = randint(SIZE * 2, SIZE * 8)
-        truck_x = randint(SIZE * 6, SIZE * 10)
-        if level == 1:
-            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
-            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 10))
-            self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x))
-            self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x - SIZE * 7))
-            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x))
-            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 10))
-            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
-            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 7))
-            self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x))
-        if level == 2:
-            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x, 2))
-            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 8, 2))
-            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 13, 2))
-            self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 2))
-            self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x - SIZE * 8, 2))
-            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x, 2))
-            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 7, 2))
-            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 12, 2))
-            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x, 2))
-            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 5, 2))
-            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 13, 2))
-            self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 2))
-            self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x + SIZE * 5, 2))
-        if level >= 3:
-            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x, 3))
-            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 5, 3))
-            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 10, 3))
-            self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 3))
-            self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x - SIZE * 4, 3))
-            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x, 3))
-            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 6, 3))
-            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 10, 3))
-            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x, 3))
-            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 5, 3))
-            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 10, 3))
-            self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 3))
-            self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x + SIZE * 5, 3))
+        self.start_time         = int(pygame.time.get_ticks() / 1000)
 
     def spawn_lilies(self, level):
         y = SIZE + SIZE / 4 + 2
@@ -217,17 +117,12 @@ class Game:
                         self.set_jump_distance(platform) 
                         self.frog.sprite.match_speed(platform.offset, platform.velocity)
                         self.handle_friend_frog_hit()
-                        if platform != self.current_floater: 
-                            print('another platform')
-                            self.current_floater = platform
-                            break 
                     else:
                         self.lose_life() 
             else:
                 self.lose_life() 
         else: 
             self.jump_distance = SIZE 
-            self.current_floater = None 
 
     def handle_friend_frog_hit(self):
         if self.frog.sprite.carrying_friend() or self.friend_frog.sprite.is_safe():
@@ -327,8 +222,8 @@ class Game:
             print("Friend frog is already dead:", e)
         self.reset_movements()
         self.spawn_lilies(self.level)
-        self.spawn_floaters(self.level)
-        self.spawn_vehicles(self.level)
+        self.sprite_generator.spawn_floaters(self.floater_group, self.frog, self.friend_frog, self.level)
+        self.sprite_generator.spawn_vehicles(self.vehicle_group, self.level)
         for lily in self.lilies_group:
             lily.start_timer()
         self.spawn_timer_bar()
