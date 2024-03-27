@@ -36,7 +36,7 @@ class spriteGenerator():
             group.add(NormalTurtle('turtle_large', self.size, self.screen_width, turtle_large_x + self.size * 5))
             group.add(NormalTurtle('turtle_large', self.size, self.screen_width, turtle_large_x + self.size * 10))
             group.add(DivingTurtle('turtle_large', self.size, self.screen_width, turtle_large_x + self.size * 15))
-        if level == 2:
+        elif level == 2:
             group.add(Log('log_medium', self.size, log_medium_x))
             group.add(Crocodile(self.size, log_medium_x - self.size * 7))
             group.add(Log('log_medium', self.size, log_medium_x - self.size * 15))
@@ -51,7 +51,7 @@ class spriteGenerator():
             group.add(NormalTurtle('turtle_large', self.size, self.screen_width, turtle_large_x + self.size * 5))
             group.add(NormalTurtle('turtle_large', self.size, self.screen_width, turtle_large_x + self.size * 10))
             group.add(DivingTurtle('turtle_large', self.size, self.screen_width, turtle_large_x + self.size * 15))
-        if level >= 3:
+        elif level >= 3:
             group.add(Log('log_medium', self.size, log_medium_x))
             group.add(Log('log_medium', self.size, log_medium_x - self.size * 6))
             group.add(Crocodile(self.size, log_medium_x - self.size * 11))
@@ -81,7 +81,7 @@ class spriteGenerator():
             group.add(Vehicle('car2', self.screen_width, self.screen_height, self.size, car_x))
             group.add(Vehicle('car2', self.screen_width, self.screen_height, self.size, car_x  - self.size * 7))
             group.add(Vehicle('racecar2', self.screen_width, self.screen_height, self.size, racecar_x))
-        if level == 2:
+        elif level == 2:
             group.add(Vehicle('car', self.screen_width, self.screen_height, self.size, car_x, 2))
             group.add(Vehicle('car', self.screen_width, self.screen_height, self.size, car_x + self.size * 8, 2))
             group.add(Vehicle('car', self.screen_width, self.screen_height, self.size, car_x + self.size * 13, 2))
@@ -95,7 +95,7 @@ class spriteGenerator():
             group.add(Vehicle('car2', self.screen_width, self.screen_height, self.size, car_x  - self.size * 13, 2))
             group.add(Vehicle('racecar2', self.screen_width, self.screen_height, self.size, racecar_x, 2))
             group.add(Vehicle('racecar2', self.screen_width, self.screen_height, self.size, racecar_x + self.size * 5, 2))
-        if level >= 3:
+        elif level >= 3:
             group.add(Vehicle('car', self.screen_width, self.screen_height, self.size, car_x, 3))
             group.add(Vehicle('car', self.screen_width, self.screen_height, self.size, car_x + self.size * 5, 3))
             group.add(Vehicle('car', self.screen_width, self.screen_height, self.size, car_x + self.size * 10, 3))
