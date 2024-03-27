@@ -49,191 +49,173 @@ class Game:
         self.jump_distance      = SIZE
         self.start_time = int(pygame.time.get_ticks() / 1000)
 
-    def spawn_floaters_lvl_1(self):
-        log_small_x = randint(-SIZE * 4, -SIZE * 2)
-        log_medium_x = randint(-SIZE * 10, -SIZE * 4)
-        log_large_x = randint(-SIZE * 8, -SIZE * 3)
-        turtle_medium_x = randint(SIZE * 9, SCREENWIDTH + SIZE * 4)
-        turtle_large_x = randint(SIZE * 4, SCREENWIDTH + SIZE)
-        log = Log('log_small', SIZE, log_small_x)
-        self.floater_group.add(log)
-        self.friend_frog.add(FriendFrog(SIZE, self.frog, log))
-        self.floater_group.add(Log('log_small', SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
-        self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
-        self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
-        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 6))
-        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 11))
-        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 16))
-        self.floater_group.add(Log('log_large', SIZE, log_large_x))
-        self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 8))
-        self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 16))
-        self.floater_group.add(DivingTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
-        self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 5))
-        self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 10))
-        self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 15))
-        self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x))
-        self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 5))
-        self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 10))
-        self.floater_group.add(DivingTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
+    def spawn_floaters(self, level):
+        if level == 1:
+            log_small_x = randint(-SIZE * 4, -SIZE * 2)
+            log_medium_x = randint(-SIZE * 10, -SIZE * 4)
+            log_large_x = randint(-SIZE * 8, -SIZE * 3)
+            turtle_medium_x = randint(SIZE * 9, SCREENWIDTH + SIZE * 4)
+            turtle_large_x = randint(SIZE * 4, SCREENWIDTH + SIZE)
+            log = Log('log_small', SIZE, log_small_x)
+            self.floater_group.add(log)
+            self.friend_frog.add(FriendFrog(SIZE, self.frog, log))
+            self.floater_group.add(Log('log_small', SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
+            self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
+            self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
+            self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 6))
+            self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 11))
+            self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 16))
+            self.floater_group.add(Log('log_large', SIZE, log_large_x))
+            self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 8))
+            self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 16))
+            self.floater_group.add(DivingTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
+            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 5))
+            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 10))
+            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 15))
+            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x))
+            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 5))
+            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 10))
+            self.floater_group.add(DivingTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
+        if level == 2:
+            log_small_x = randint(-SIZE * 4, -SIZE * 2)
+            log_medium_x = randint(-SIZE * 10, -SIZE * 4)
+            log_large_x = randint(-SIZE * 8, -SIZE * 3)
+            turtle_medium_x = randint(SIZE * 9, SCREENWIDTH + SIZE * 4)
+            turtle_large_x = randint(SIZE * 6, SCREENWIDTH + SIZE * 2)
+            log = Log('log_small', SIZE, log_small_x)
+            self.floater_group.add(log)
+            self.friend_frog.add(FriendFrog(SIZE, self.frog, log))
+            self.floater_group.add(Log('log_small', SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
+            self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
+            self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
+            self.floater_group.add(Crocodile(SIZE, log_medium_x - SIZE * 7))
+            self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 15))
+            self.floater_group.add(SnakeLog(SIZE, log_large_x))
+            self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 10, 2))
+            self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 19, 2))
+            self.floater_group.add(DivingTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
+            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 5))
+            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 10))
+            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 15))
+            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x))
+            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 5))
+            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 10))
+            self.floater_group.add(DivingTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
+        if level >= 3:
+            #racecar lvl 2 är inte snabba
+            log_small_x = randint(-SIZE * 4, -SIZE * 2)
+            log_medium_x = randint(-SIZE * 10, -SIZE * 4)
+            log_large_x = randint(-SIZE * 8, -SIZE * 3)
+            turtle_medium_x = randint(SIZE * 9, SCREENWIDTH + SIZE * 4)
+            turtle_large_x = randint(SIZE * 6, SCREENWIDTH + SIZE * 2)
+            log = Log('log_small', SIZE, log_small_x)
+            self.floater_group.add(log)
+            self.friend_frog.add(FriendFrog(SIZE, self.frog, log))
+            self.floater_group.add(Log('log_small', SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
+            self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
+            self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
+            self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 6))
+            self.floater_group.add(Crocodile(SIZE, log_medium_x - SIZE * 11))
+            self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 16))
+            self.floater_group.add(SnakeLog(SIZE, log_large_x))
+            self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 10, 3))
+            self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 19, 3))
+            self.floater_group.add(DivingTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
+            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 5))
+            self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 13))
+            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x))
+            self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 8))
+            self.floater_group.add(DivingTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
 
-    def spawn_floaters_lvl_2(self):
-        log_small_x = randint(-SIZE * 4, -SIZE * 2)
-        log_medium_x = randint(-SIZE * 10, -SIZE * 4)
-        log_large_x = randint(-SIZE * 8, -SIZE * 3)
-        turtle_medium_x = randint(SIZE * 9, SCREENWIDTH + SIZE * 4)
-        turtle_large_x = randint(SIZE * 6, SCREENWIDTH + SIZE * 2)
-        log = Log('log_small', SIZE, log_small_x)
-        self.floater_group.add(log)
-        self.friend_frog.add(FriendFrog(SIZE, self.frog, log))
-        self.floater_group.add(Log('log_small', SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
-        self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
-        self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
-        self.floater_group.add(Crocodile(SIZE, log_medium_x - SIZE * 7))
-        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 15))
-        self.floater_group.add(SnakeLog(SIZE, log_large_x))
-        self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 10, 2))
-        self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 19, 2))
-        self.floater_group.add(DivingTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
-        self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 5))
-        self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 10))
-        self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 15))
-        self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x))
-        self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 5))
-        self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 10))
-        self.floater_group.add(DivingTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
 
-    def spawn_floaters_lvl_3(self):
-        #racecar lvl 2 är inte snabba
-        log_small_x = randint(-SIZE * 4, -SIZE * 2)
-        log_medium_x = randint(-SIZE * 10, -SIZE * 4)
-        log_large_x = randint(-SIZE * 8, -SIZE * 3)
-        turtle_medium_x = randint(SIZE * 9, SCREENWIDTH + SIZE * 4)
-        turtle_large_x = randint(SIZE * 6, SCREENWIDTH + SIZE * 2)
-        log = Log('log_small', SIZE, log_small_x)
-        self.floater_group.add(log)
-        self.friend_frog.add(FriendFrog(SIZE, self.frog, log))
-        self.floater_group.add(Log('log_small', SIZE, log_small_x - SCREENWIDTH / 3 - SIZE))
-        self.floater_group.add(Log('log_small', SIZE, log_small_x - 2 * SCREENWIDTH / 3 - SIZE))
-        self.floater_group.add(Log('log_medium', SIZE, log_medium_x))
-        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 6))
-        self.floater_group.add(Crocodile(SIZE, log_medium_x - SIZE * 11))
-        self.floater_group.add(Log('log_medium', SIZE, log_medium_x - SIZE * 16))
-        self.floater_group.add(SnakeLog(SIZE, log_large_x))
-        self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 10, 3))
-        self.floater_group.add(Log('log_large', SIZE, log_large_x - SIZE * 19, 3))
-        self.floater_group.add(DivingTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x))
-        self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 5))
-        self.floater_group.add(NormalTurtle('turtle_medium', SIZE, SCREENWIDTH, turtle_medium_x + SIZE * 13))
-        self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x))
-        self.floater_group.add(NormalTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 8))
-        self.floater_group.add(DivingTurtle('turtle_large', SIZE, SCREENWIDTH, turtle_large_x + SIZE * 15))
+    def spawn_vehicles(self, level):
+        if level == 1:
+            car_x = randint(SIZE * 2, SIZE * 8)
+            racecar_x = randint(SIZE * 2, SIZE * 8)
+            truck_x = randint(SIZE * 6, SIZE * 10)
+            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
+            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 10))
+            self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x))
+            self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x - SIZE * 7))
+            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x))
+            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 10))
+            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
+            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 7))
+            self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x))
+        if level == 2:
+            car_x = randint(SIZE * 2, SIZE * 8)
+            racecar_x = randint(SIZE * 2, SIZE * 8)
+            truck_x = randint(SIZE * 6, SIZE * 10)
+            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x, 2))
+            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 8, 2))
+            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 13, 2))
+            self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 2))
+            self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x - SIZE * 8, 2))
+            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x, 2))
+            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 7, 2))
+            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 12, 2))
+            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x, 2))
+            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 5, 2))
+            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 13, 2))
+            self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 2))
+            self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x + SIZE * 5, 2))
+        if level >= 3:
+            car_x = randint(SIZE * 2, SIZE * 8)
+            racecar_x = randint(SIZE * 2, SIZE * 8)
+            truck_x = randint(SIZE * 6, SIZE * 10)
+            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x, 3))
+            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 5, 3))
+            self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 10, 3))
+            self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 3))
+            self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x - SIZE * 4, 3))
+            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x, 3))
+            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 6, 3))
+            self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 10, 3))
+            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x, 3))
+            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 5, 3))
+            self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 10, 3))
+            self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 3))
+            self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x + SIZE * 5, 3))
 
-    def spawn_vehicles_lvl_1(self):
-        car_x = randint(SIZE * 2, SIZE * 8)
-        racecar_x = randint(SIZE * 2, SIZE * 8)
-        truck_x = randint(SIZE * 6, SIZE * 10)
-        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
-        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 10))
-        self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x))
-        self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x - SIZE * 7))
-        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x))
-        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 10))
-        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x))
-        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 7))
-        self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x))
-
-    def spawn_vehicles_lvl_2(self):
-        car_x = randint(SIZE * 2, SIZE * 8)
-        racecar_x = randint(SIZE * 2, SIZE * 8)
-        truck_x = randint(SIZE * 6, SIZE * 10)
-        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x, 2))
-        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 8, 2))
-        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 13, 2))
-        self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 2))
-        self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x - SIZE * 8, 2))
-        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x, 2))
-        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 7, 2))
-        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 12, 2))
-        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x, 2))
-        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 5, 2))
-        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 13, 2))
-        self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 2))
-        self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x + SIZE * 5, 2))
-
-    def spawn_vehicles_lvl_3(self):
-        car_x = randint(SIZE * 2, SIZE * 8)
-        racecar_x = randint(SIZE * 2, SIZE * 8)
-        truck_x = randint(SIZE * 6, SIZE * 10)
-        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x, 3))
-        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 5, 3))
-        self.vehicle_group.add(Vehicle('car', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x + SIZE * 10, 3))
-        self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 3))
-        self.vehicle_group.add(Vehicle('racecar', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x - SIZE * 4, 3))
-        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x, 3))
-        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 6, 3))
-        self.vehicle_group.add(Vehicle('truck', SCREENWIDTH, SCREENHEIGHT, SIZE, truck_x + SIZE * 10, 3))
-        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x, 3))
-        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 5, 3))
-        self.vehicle_group.add(Vehicle('car2', SCREENWIDTH, SCREENHEIGHT, SIZE, car_x  - SIZE * 10, 3))
-        self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x, 3))
-        self.vehicle_group.add(Vehicle('racecar2', SCREENWIDTH, SCREENHEIGHT, SIZE, racecar_x + SIZE * 5, 3))
-
-    def spawn_lilies_lvl_1(self):
-        y = SIZE + SIZE / 4 + 2
-        for i in range(5):
-            x = 19 + i * SIZE * 3
-            random_nbr = randint(1, 14)
-            if random_nbr < 4:
-                print("Bonus lily")
-                self.lilies_group.add(Bonus_Lily(x, y))
-            elif random_nbr < 7:
-                print("Hostile lily")
-                self.lilies_group.add(Hostile_Lily(x, y))
-            else:
-                print("Ordinary lily")
-                self.lilies_group.add(Ordinary_Lily(x, y))
-
-    def spawn_lilies_lvl_2(self):
+    def spawn_lilies(self, level):
         y = SIZE + SIZE / 4 + 2
         x = 19
-        print("Croc lily")
-        self.lilies_group.add(Crocodile_Lily(x, y))
-        for i in range(1, 5):
-            x = 19 + i * SIZE * 3
-            random_nbr = randint(1, 14)
-            if random_nbr < 5:
-                print("Bonus lily")
-                self.lilies_group.add(Bonus_Lily(x, y))
-            elif random_nbr < 9:
-                print("Hostile lily")
-                self.lilies_group.add(Hostile_Lily(x, y))
-            elif random_nbr < 11:
-                print("Croc lily")
-                self.lilies_group.add(Crocodile_Lily(x, y))
-            else:
-                print("Ordinary lily")
-                self.lilies_group.add(Ordinary_Lily(x, y))
-
-    def spawn_lilies_lvl_3(self):
-        y = SIZE + SIZE / 4 + 2
-        x = 19
-        print("Croc lily")
-        self.lilies_group.add(Crocodile_Lily(x, y))
-        for i in range(1, 5):
-            x = 19 + i * SIZE * 3
-            random_nbr = randint(1, 14)
-            if random_nbr < 3:
-                print("Bonus lily")
-                self.lilies_group.add(Bonus_Lily(x, y))
-            elif random_nbr < 8:
-                print("Hostile lily")
-                self.lilies_group.add(Hostile_Lily(x, y))
-            elif random_nbr < 11:
-                print("Croc lily")
-                self.lilies_group.add(Crocodile_Lily(x, y))
-            else:
-                print("Ordinary lily")
-                self.lilies_group.add(Ordinary_Lily(x, y))
+        if level == 1:
+            for i in range(5):
+                x = 19 + i * SIZE * 3
+                random_nbr = randint(1, 14)
+                if random_nbr < 4:
+                    print("Bonus lily")
+                    self.lilies_group.add(Bonus_Lily(x, y))
+                else:
+                    print("Ordinary lily")
+                    self.lilies_group.add(Ordinary_Lily(x, y))
+        if level == 2:
+            for i in range(1, 5):
+                x = 19 + i * SIZE * 3
+                random_nbr = randint(1, 14)
+                if random_nbr < 5:
+                    print("Bonus lily")
+                    self.lilies_group.add(Bonus_Lily(x, y))
+                elif random_nbr < 11:
+                    print("Croc lily")
+                    self.lilies_group.add(Crocodile_Lily(x, y))
+                else:
+                    print("Ordinary lily")
+                    self.lilies_group.add(Ordinary_Lily(x, y))
+        if level >= 3:
+            for i in range(1, 5):
+                x = 19 + i * SIZE * 3
+                random_nbr = randint(1, 14)
+                if random_nbr < 3:
+                    print("Bonus lily")
+                    self.lilies_group.add(Bonus_Lily(x, y))
+                elif random_nbr < 11:
+                    print("Croc lily")
+                    self.lilies_group.add(Crocodile_Lily(x, y))
+                else:
+                    print("Ordinary lily")
+                    self.lilies_group.add(Ordinary_Lily(x, y))
 
     def spawn_timer_bar(self):
         self.timer_bar = Timer_Bar(90, SCREENHEIGHT - SIZE + 2, SCREENWIDTH - 90 - 2, SIZE / 2)
@@ -371,18 +353,9 @@ class Game:
         except Exception as e: 
             print("Friend frog is already dead:", e)
         self.reset_movements()
-        if self.level == 1: 
-            self.spawn_vehicles_lvl_1()
-            self.spawn_floaters_lvl_1()
-            self.spawn_lilies_lvl_1()
-        elif self.level == 2: 
-            self.spawn_vehicles_lvl_2()
-            self.spawn_floaters_lvl_2()
-            self.spawn_lilies_lvl_2()
-        else:
-            self.spawn_vehicles_lvl_3()
-            self.spawn_floaters_lvl_3()
-            self.spawn_lilies_lvl_3()
+        self.spawn_lilies(self.level)
+        self.spawn_floaters(self.level)
+        self.spawn_vehicles(self.level)
         for lily in self.lilies_group:
             lily.start_timer()
         self.spawn_timer_bar()

@@ -71,8 +71,6 @@ class Ordinary_Lily(Lily):
     
     def is_hostile(self): 
         return False
-    
-
 
 class Bonus_Lily(Lily): 
     FLY_LILY_IMG_FILE = "./resources/misc/fly_lily.png" 
@@ -91,27 +89,7 @@ class Bonus_Lily(Lily):
         
     def is_hostile(self): 
         return False
-    
-
-
-class Hostile_Lily(Lily): 
-    BIRD_LILY_IMG_FILE = "./resources/misc/bird_lily_placeholder.png" #to be replaced 
-
-    def __init__(self, x, y):
-        super().__init__(x, y)
-        self.active = False 
-
-    def set_image(self): 
-        if self.active: 
-            self.active = False
-            return Lily.LILY_IMG_FILE
-        else:
-            self.active = True
-            return Hostile_Lily.BIRD_LILY_IMG_FILE
         
-    def is_hostile(self): 
-        return self.active
-    
 class Crocodile_Lily(Lily):
     CROC_LILY_IMG_FILE = "./resources/misc/crocodile_lily.png"
     CROC_LURK_LILY_IMG_FILE = "./resources/misc/crocodile_lurk_lily.png"
