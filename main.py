@@ -8,7 +8,7 @@ from random import randint
 import pygame
 import sys
 
-# Grodan kommer inte tillbaka när loggen går ut ur bild
+# Grodan kommer inte tillbaka när loggen går ut ur bild - Gammal kommentar? Kan inte reproducera
 
 BLOCK_SIZE = 32
 SCREEN_WIDTH, SCREEN_HEIGHT = BLOCK_SIZE * 14, BLOCK_SIZE * 15
