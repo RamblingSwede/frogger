@@ -5,7 +5,7 @@ from random import randint
 
 class Lily(pygame.sprite.Sprite): 
     WIDTH = 20 
-    LILY_IMG_FILE = "./resources/misc/lily_placeholder.png"
+    LILY_IMG_FILE = "./resources/misc/lily.png"
     SAFE_LILY_IMG_FILE = "./resources/misc/safe_frog.png"
     CURRENT_IMG = LILY_IMG_FILE
 

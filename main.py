@@ -191,7 +191,7 @@ class Game:
                     print("Ordinary lily")
                     self.lilies_group.add(Ordinary_Lily(x, y))
         if level == 2:
-            for i in range(1, 5):
+            for i in range(5):
                 x = 19 + i * SIZE * 3
                 random_nbr = randint(1, 14)
                 if random_nbr < 5:
@@ -204,7 +204,7 @@ class Game:
                     print("Ordinary lily")
                     self.lilies_group.add(Ordinary_Lily(x, y))
         if level >= 3:
-            for i in range(1, 5):
+            for i in range(5):
                 x = 19 + i * SIZE * 3
                 random_nbr = randint(1, 14)
                 if random_nbr < 3:
@@ -460,13 +460,14 @@ class Game:
                         if event.key in DOWN_DIR:
                             self.movementY[0] = True
                         if event.key == pygame.K_SPACE:
+                            self.level_completed()
                             ##Only exists for debug, to be replaced with restart menu at some point
-                            self.current_score.score = 0
-                            self.safe_frogs = 0
-                            self.lives_left = 2
-                            self.level = 1
-                            self.reset_game()
-                            self.respawn()
+                            #self.current_score.score = 0
+                            #self.safe_frogs = 0
+                            #self.lives_left = 2
+                            #self.level = 1
+                            #self.reset_game()
+                            #self.respawn()
                     if event.type == pygame.KEYUP:
                         if event.key in LEFT_DIR:
                             self.movementX[0] = False
