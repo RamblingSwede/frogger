@@ -1,4 +1,4 @@
-from Entities.spriteGenerator import spriteGenerator
+from spriteGenerator import spriteGenerator
 from Entities.vehicles import *
 from Entities.floaters import *
 from Entities.frogs import *
@@ -28,7 +28,7 @@ class Game:
         self.background         = Background()
         self.ui                 = UI(SCREEN_HEIGHT - BLOCK_SIZE)
         self.respawn_menu       = RespawnMenu(SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.current_score      = Current_Score()
+        self.current_score      = CurrentScore()
         self.high_score         = Highscore()
         self.splash_screen      = SplashScreen()
         self.in_start_screen    = True
@@ -91,7 +91,7 @@ class Game:
                     self.lilies_group.add(Ordinary_Lily(x, y))
 
     def spawn_timer_bar(self):
-        self.timer_bar = Timer_Bar(90, SCREEN_HEIGHT - BLOCK_SIZE + 2, SCREEN_WIDTH - 90 - 2, BLOCK_SIZE / 2)
+        self.timer_bar = TimerBar(90, SCREEN_HEIGHT - BLOCK_SIZE + 2, SCREEN_WIDTH - 90 - 2, BLOCK_SIZE / 2)
 
     def timer_tick(self, time):
         self.timer_bar.update(time)

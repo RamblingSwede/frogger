@@ -17,7 +17,7 @@ class UI:
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
-class Timer_Bar():
+class TimerBar:
     GREEN = (106, 190, 48)
     def __init__(self, x, y, width, height):
         super().__init__()
@@ -34,13 +34,13 @@ class Timer_Bar():
         self.bar = pygame.Rect(self.x, self.y, self.width - dx, self.height)
 
     def draw2(self, display): 
-        pygame.draw.rect(display, Timer_Bar.GREEN, self.bar)
+        pygame.draw.rect(display, TimerBar.GREEN, self.bar)
         return True
 
     def destroy(self):
         self.bar = pygame.Rect(0, 0, 0, 0)
 
-class Current_Score():
+class CurrentScore:
     def __init__(self):
         self.font = pygame.font.SysFont(None, 30)
         self.surf = self.font.render('0', False, 'White', None)
