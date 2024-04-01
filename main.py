@@ -5,7 +5,6 @@ from Entities.frogs import *
 from Entities.lilies import *
 from utils import *
 from view import UI
-from random import randint
 import pygame
 import sys
 
@@ -46,46 +45,6 @@ class Game:
         self.movementY          = [False, False]
         self.jump_distance      = BLOCK_SIZE
         self.start_time         = int(pygame.time.get_ticks() / 1000)
-
-    def spawn_lilies(self, level):
-        y = BLOCK_SIZE + BLOCK_SIZE / 4 + 2
-        x = 19
-        if level == 1:
-            for i in range(5):
-                x = 19 + i * BLOCK_SIZE * 3
-                random_nbr = randint(1, 14)
-                if random_nbr < 4:
-                    print("Bonus lily")
-                    self.lilies_group.add(BonusLily(x, y))
-                else:
-                    print("Ordinary lily")
-                    self.lilies_group.add(OrdinaryLily(x, y))
-        if level == 2:
-            for i in range(1, 5):
-                x = 19 + i * BLOCK_SIZE * 3
-                random_nbr = randint(1, 14)
-                if random_nbr < 5:
-                    print("Bonus lily")
-                    self.lilies_group.add(BonusLily(x, y))
-                elif random_nbr < 11:
-                    print("Croc lily")
-                    self.lilies_group.add(CrocodileLily(x, y))
-                else:
-                    print("Ordinary lily")
-                    self.lilies_group.add(OrdinaryLily(x, y))
-        if level >= 3:
-            for i in range(1, 5):
-                x = 19 + i * BLOCK_SIZE * 3
-                random_nbr = randint(1, 14)
-                if random_nbr < 3:
-                    print("Bonus lily")
-                    self.lilies_group.add(BonusLily(x, y))
-                elif random_nbr < 11:
-                    print("Croc lily")
-                    self.lilies_group.add(CrocodileLily(x, y))
-                else:
-                    print("Ordinary lily")
-                    self.lilies_group.add(OrdinaryLily(x, y))
 
     def timer_tick(self, time):
         self.ui.update_timer(time)
@@ -212,9 +171,9 @@ class Game:
         except Exception as e: 
             print("Friend frog is already dead:", e)
         self.reset_movements()
-        self.spawn_lilies(self.level)
         self.sprite_generator.spawn_floaters(self.floater_group, self.frog, self.friend_frog, self.level)
         self.sprite_generator.spawn_vehicles(self.vehicle_group, self.level)
+        self.sprite_generator.spawn_lilies(self.lilies_group, self.level)
         for lily in self.lilies_group:
             lily.start_timer()
         self.ui.reset_timer_bar()

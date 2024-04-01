@@ -1,7 +1,8 @@
-from random import randint
 from Entities.vehicles import *
 from Entities.floaters import *
+from Entities.lilies import *
 from Entities.frogs import *
+from random import randint
 
 class spriteGenerator():
     def __init__(self, size, screen_width, screen_height): 
@@ -109,3 +110,43 @@ class spriteGenerator():
             group.add(Vehicle('car2', self.screen_width, self.screen_height, self.size, car_x  - self.size * 10, 3))
             group.add(Vehicle('racecar2', self.screen_width, self.screen_height, self.size, racecar_x, 3))
             group.add(Vehicle('racecar2', self.screen_width, self.screen_height, self.size, racecar_x + self.size * 5, 3))
+
+    def spawn_lilies(self, group, level):
+        y = self.size + self.size / 4 + 2
+        x = 19
+        if level == 1:
+            for i in range(5):
+                x = 19 + i * self.size * 3
+                random_nbr = randint(1, 14)
+                if random_nbr < 4:
+                    print("Bonus lily")
+                    group.add(BonusLily(x, y))
+                else:
+                    print("Ordinary lily")
+                    group.add(OrdinaryLily(x, y))
+        if level == 2:
+            for i in range(5):
+                x = 19 + i * self.size * 3
+                random_nbr = randint(1, 14)
+                if random_nbr < 5:
+                    print("Bonus lily")
+                    group.add(BonusLily(x, y))
+                elif random_nbr < 11:
+                    print("Croc lily")
+                    group.add(CrocodileLily(x, y))
+                else:
+                    print("Ordinary lily")
+                    group.add(OrdinaryLily(x, y))
+        if level >= 3:
+            for i in range(5):
+                x = 19 + i * self.size * 3
+                random_nbr = randint(1, 14)
+                if random_nbr < 3:
+                    print("Bonus lily")
+                    group.add(BonusLily(x, y))
+                elif random_nbr < 11:
+                    print("Croc lily")
+                    group.add(CrocodileLily(x, y))
+                else:
+                    print("Ordinary lily")
+                    group.add(OrdinaryLily(x, y))
