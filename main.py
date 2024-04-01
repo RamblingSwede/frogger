@@ -59,36 +59,36 @@ class Game:
                 random_nbr = randint(1, 14)
                 if random_nbr < 4:
                     print("Bonus lily")
-                    self.lilies_group.add(Bonus_Lily(x, y))
+                    self.lilies_group.add(BonusLily(x, y))
                 else:
                     print("Ordinary lily")
-                    self.lilies_group.add(Ordinary_Lily(x, y))
+                    self.lilies_group.add(OrdinaryLily(x, y))
         if level == 2:
             for i in range(1, 5):
                 x = 19 + i * BLOCK_SIZE * 3
                 random_nbr = randint(1, 14)
                 if random_nbr < 5:
                     print("Bonus lily")
-                    self.lilies_group.add(Bonus_Lily(x, y))
+                    self.lilies_group.add(BonusLily(x, y))
                 elif random_nbr < 11:
                     print("Croc lily")
-                    self.lilies_group.add(Crocodile_Lily(x, y))
+                    self.lilies_group.add(CrocodileLily(x, y))
                 else:
                     print("Ordinary lily")
-                    self.lilies_group.add(Ordinary_Lily(x, y))
+                    self.lilies_group.add(OrdinaryLily(x, y))
         if level >= 3:
             for i in range(1, 5):
                 x = 19 + i * BLOCK_SIZE * 3
                 random_nbr = randint(1, 14)
                 if random_nbr < 3:
                     print("Bonus lily")
-                    self.lilies_group.add(Bonus_Lily(x, y))
+                    self.lilies_group.add(BonusLily(x, y))
                 elif random_nbr < 11:
                     print("Croc lily")
-                    self.lilies_group.add(Crocodile_Lily(x, y))
+                    self.lilies_group.add(CrocodileLily(x, y))
                 else:
                     print("Ordinary lily")
-                    self.lilies_group.add(Ordinary_Lily(x, y))
+                    self.lilies_group.add(OrdinaryLily(x, y))
 
     def spawn_timer_bar(self):
         self.timer_bar = TimerBar(90, SCREEN_HEIGHT - BLOCK_SIZE + 2, SCREEN_WIDTH - 90 - 2, BLOCK_SIZE / 2)
@@ -140,7 +140,7 @@ class Game:
             if lily.hit(self.frog.sprite.get_x(), BLOCK_SIZE): 
                 lily.set_occupied() 
                 if self.safe_frogs == 4:
-                    if isinstance(lily, Bonus_Lily) and lily.is_active(): 
+                    if isinstance(lily, BonusLily) and lily.is_active(): 
                         self.current_score.update_score('frogsavedbonus',  self.current_time)
                     elif self.frog.sprite.carrying_friend():
                         self.current_score.update_score('frogsavedbonus',  self.current_time)
@@ -152,7 +152,7 @@ class Game:
                 else:
                     self.current_score.visited_pos.clear()
                     self.safe_frogs += 1
-                    if isinstance(lily, Bonus_Lily) and lily.is_active(): 
+                    if isinstance(lily, BonusLily) and lily.is_active(): 
                         self.current_score.update_score('frogsavedbonus',  self.current_time)
                     elif self.frog.sprite.carrying_friend():
                         self.current_score.update_score('frogsavedbonus',  self.current_time)

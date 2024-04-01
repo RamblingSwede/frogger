@@ -61,7 +61,7 @@ class Lily(pygame.sprite.Sprite):
     def kill_thread(self):
         os._exit(1)
 
-class Ordinary_Lily(Lily): 
+class OrdinaryLily(Lily): 
 
     def __init__(self, x, y):
         super().__init__(x, y)
@@ -72,7 +72,7 @@ class Ordinary_Lily(Lily):
     def is_hostile(self): 
         return False
 
-class Bonus_Lily(Lily): 
+class BonusLily(Lily): 
     FLY_LILY_IMG_FILE = "./resources/misc/fly_lily.png" 
 
     def __init__(self, x, y):
@@ -85,12 +85,12 @@ class Bonus_Lily(Lily):
             return Lily.LILY_IMG_FILE
         else:
             self.active = True
-            return Bonus_Lily.FLY_LILY_IMG_FILE
+            return BonusLily.FLY_LILY_IMG_FILE
         
     def is_hostile(self): 
         return False
         
-class Crocodile_Lily(Lily):
+class CrocodileLily(Lily):
     CROC_LILY_IMG_FILE = "./resources/misc/crocodile_lily.png"
     CROC_LURK_LILY_IMG_FILE = "./resources/misc/crocodile_lurk_lily.png"
 
@@ -122,7 +122,7 @@ class Crocodile_Lily(Lily):
             self.lurking = False
             self.hunting = True
             self.reset_timer(2)
-            return Crocodile_Lily.CROC_LILY_IMG_FILE
+            return CrocodileLily.CROC_LILY_IMG_FILE
         elif self.hunting:
             self.hunting = False
             self.reset_timer()
@@ -130,7 +130,7 @@ class Crocodile_Lily(Lily):
         else:
             self.lurking = True
             self.reset_timer(2)
-            return Crocodile_Lily.CROC_LURK_LILY_IMG_FILE
+            return CrocodileLily.CROC_LURK_LILY_IMG_FILE
         
     def is_hostile(self): 
         return self.hunting
