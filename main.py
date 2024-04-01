@@ -1,4 +1,4 @@
-from spriteGenerator import spriteGenerator
+from sprite_generator import spriteGenerator
 from Entities.vehicles import *
 from Entities.floaters import *
 from Entities.frogs import *
