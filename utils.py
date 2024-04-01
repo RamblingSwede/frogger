@@ -1,45 +1,5 @@
 import pygame
 
-class UI:
-    def __init__(self, height):
-        self.image = pygame.image.load("./resources/ui/bottom_UI_two_lives.png").convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.y = height
-
-    def update(self, type):
-        if type == '2':
-            self.image = pygame.image.load("./resources/ui/bottom_UI_two_lives.png").convert_alpha()
-        if type == '1':
-            self.image = pygame.image.load("./resources/ui/bottom_UI_one_life.png").convert_alpha()
-        if type == '0':
-            self.image = pygame.image.load("./resources/ui/bottom_UI_no_lives.png").convert_alpha()
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
-
-class TimerBar:
-    GREEN = (106, 190, 48)
-    def __init__(self, x, y, width, height):
-        super().__init__()
-        self.total_time = 30
-        self.x          = x
-        self.y          = y
-        self.width      = width
-        self.height     = height
-        self.bar        = pygame.Rect(x, y, width, height)
-
-    def update(self, time):
-        offset = (self.total_time - time) / self.total_time
-        dx = self.width * (1 - offset)
-        self.bar = pygame.Rect(self.x, self.y, self.width - dx, self.height)
-
-    def draw2(self, display): 
-        pygame.draw.rect(display, TimerBar.GREEN, self.bar)
-        return True
-
-    def destroy(self):
-        self.bar = pygame.Rect(0, 0, 0, 0)
-
 class CurrentScore:
     def __init__(self):
         self.font = pygame.font.SysFont(None, 30)
@@ -77,7 +37,7 @@ class CurrentScore:
 
     def draw(self, screen, current_score):
         self.surf = self.font.render(str(current_score), False, 'White', None)
-        screen.blit(self.surf,self.rect)
+        screen.blit(self.surf, self.rect)
 
 class Highscore:
     def __init__(self):
@@ -105,70 +65,4 @@ class Highscore:
             file.write(str(current_score))  
 
     def draw(self, screen):
-        screen.blit(self.surf,self.rect)
-        
-class RespawnMenu:
-    def __init__(self, width, height):
-        self.image = pygame.image.load("./resources/ui/game_over_9.png").convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.y = height // 3.5
-        self.rect.x = width // 3
-
-    def update(self, type):
-        if type >= '9':
-            self.image = pygame.image.load("./resources/ui/game_over_9.png").convert_alpha()
-        if type == '8':
-            self.image = pygame.image.load("./resources/ui/game_over_8.png").convert_alpha()
-        if type == '7':
-            self.image = pygame.image.load("./resources/ui/game_over_7.png").convert_alpha()
-        if type == '6':
-            self.image = pygame.image.load("./resources/ui/game_over_6.png").convert_alpha()
-        if type == '5':
-            self.image = pygame.image.load("./resources/ui/game_over_5.png").convert_alpha()
-        if type == '4':
-            self.image = pygame.image.load("./resources/ui/game_over_4.png").convert_alpha()
-        if type == '3':
-            self.image = pygame.image.load("./resources/ui/game_over_3.png").convert_alpha()
-        if type == '2':
-            self.image = pygame.image.load("./resources/ui/game_over_2.png").convert_alpha()
-        if type == '1':            
-            self.image = pygame.image.load("./resources/ui/game_over_1.png").convert_alpha()
-    
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
-
-class SplashScreen:
-    def __init__(self):
-        self.image = pygame.image.load("./resources/ui/splash_screen.png").convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.y = 0
-        self.rect.x = 0
-        self.animation_index = 0
-        self.timer = 0
-
-    def update(self):
-        self.images = [pygame.image.load(img) for img in [
-        "./resources/ui/splash_screen.png", "./resources/ui/splash_screen.png", "./resources/ui/splash_screen.png", 
-        "./resources/ui/splash_screen.png", "./resources/ui/splash_screen.png", "./resources/ui/splash_screen_grey.png",
-        "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", 
-        "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", 
-        "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", 
-        "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_black.png", "./resources/ui/splash_screen_grey.png"]]
-        self.timer += 1
-        if self.timer >= 1:
-            self.timer = 0
-            self.image = self.images[self.animation_index]
-            self.animation_index += 1
-            if self.animation_index == len(self.images):
-                self.animation_index = 0
-
-    def draw(self, screen):
-       screen.blit(self.image, self.rect)
-        
-class Background: 
-    def __init__(self):
-        self.image = pygame.image.load("resources/misc/background.png").convert_alpha()
-        self.rect = self.image.get_rect()
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
+        screen.blit(self.surf, self.rect)

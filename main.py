@@ -4,6 +4,7 @@ from Entities.floaters import *
 from Entities.frogs import *
 from Entities.lilies import *
 from utils import *
+from view import UI
 from random import randint
 import pygame
 import sys
@@ -24,13 +25,9 @@ class Game:
         pygame.display.set_caption('Frogger - Level 1')
         self.level              = 1
         self.clock              = pygame.time.Clock()
-        self.screen             = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.background         = Background()
-        self.ui                 = UI(SCREEN_HEIGHT - BLOCK_SIZE)
-        self.respawn_menu       = RespawnMenu(SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.ui                 = UI(SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE)
         self.current_score      = CurrentScore()
         self.high_score         = Highscore()
-        self.splash_screen      = SplashScreen()
         self.in_start_screen    = True
         self.running            = False
         self.safe_frogs         = 0
@@ -90,11 +87,8 @@ class Game:
                     print("Ordinary lily")
                     self.lilies_group.add(OrdinaryLily(x, y))
 
-    def spawn_timer_bar(self):
-        self.timer_bar = TimerBar(90, SCREEN_HEIGHT - BLOCK_SIZE + 2, SCREEN_WIDTH - 90 - 2, BLOCK_SIZE / 2)
-
     def timer_tick(self, time):
-        self.timer_bar.update(time)
+        self.ui.update_timer(time)
 
     def collision(self):
         self.handle_vehicle_hit() 
@@ -193,7 +187,6 @@ class Game:
     def respawn(self):
         pygame.time.set_timer(self.timer, 30000)
         self.start_time = int(pygame.time.get_ticks() / 1000)
-        self.timer_bar.destroy()
         if self.frog.sprite.carrying_friend():
             self.frog.sprite.set_carry_friend(False)
             if self.friend_frog.sprite.is_safe():
@@ -202,8 +195,7 @@ class Game:
                 self.friend_frog.sprite.inactivate()
         self.frog.sprite.rect.x = SCREEN_WIDTH / 2
         self.frog.sprite.rect.y = SCREEN_HEIGHT - BLOCK_SIZE * 2
-        self.spawn_timer_bar()
-        self.ui.update(str(self.lives_left))
+        self.ui.respawn(self.lives_left)
     
     def reset_game(self):
         self.running = True
@@ -215,7 +207,6 @@ class Game:
             floater.kill()
         for lily in self.lilies_group:
             lily.kill()
-        self.timer_bar.destroy()
         try: 
             self.friend_frog.sprite.kill()
         except Exception as e: 
@@ -226,7 +217,7 @@ class Game:
         self.sprite_generator.spawn_vehicles(self.vehicle_group, self.level)
         for lily in self.lilies_group:
             lily.start_timer()
-        self.spawn_timer_bar()
+        self.ui.reset_timer_bar()
 
     def reset_movements(self):
         self.movementX = [False, False]
@@ -245,37 +236,32 @@ class Game:
     def draw_snake(self):
         for floater in self.floater_group:
             if isinstance(floater, SnakeLog):
-                floater.draw(self.screen)
+                floater.draw(self.ui.get_screen())
                 break
                     
     # Frog must be added last so that it is the most forward object on the display 
     def update_display(self): 
-        self.screen.fill('Black')
-        self.background.draw(self.screen)
+        self.ui.update_display()
         self.vehicle_group.update(SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE, self.vehicle_group)
-        self.vehicle_group.draw(self.screen)
+        self.vehicle_group.draw(self.ui.get_screen())
         self.floater_group.update(SCREEN_WIDTH, self.floater_group, self.friend_frog)
-        self.floater_group.draw(self.screen)
+        self.floater_group.draw(self.ui.get_screen())
         self.draw_snake()
-        self.lilies_group.draw(self.screen) 
+        self.lilies_group.draw(self.ui.get_screen()) 
         self.frog.update(SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE, self.jump_distance, self.movementX, self.movementY)
-        self.frog.draw(self.screen)
+        self.frog.draw(self.ui.get_screen())
         self.friend_frog.update(SCREEN_WIDTH, self.floater_group)
-        self.friend_frog.draw(self.screen)
-        self.ui.draw(self.screen)
-        self.timer_bar.draw2(self.screen)
-        self.current_score.draw(self.screen, self.current_score.score)
-        self.high_score.draw(self.screen)
+        self.friend_frog.draw(self.ui.get_screen())
+        self.current_score.draw(self.ui.get_screen(), self.current_score.score)
+        self.high_score.draw(self.ui.get_screen())
 
     def start_screen(self):
-        self.screen.fill('Black')
-        self.background.draw(self.screen)
-        self.current_score.draw(self.screen, self.current_score.score)
-        self.high_score.draw(self.screen)
-        self.splash_screen.update()
-        self.splash_screen.draw(self.screen)
-        self.spawn_timer_bar()
-        pygame.display.update() 
+        self.ui.draw_start_screen()
+        self.current_score.draw(self.ui.get_screen(), self.current_score.score)
+        self.high_score.draw(self.ui.get_screen())
+        pygame.display.update()  
+
+    def starting_event(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 for lily in self.lilies_group:
@@ -290,18 +276,21 @@ class Game:
                 self.reset_game()
                 self.respawn()
                 self.in_start_screen = False
-                self.running = True     
+                self.running = True    
     
     def run(self):
+        self.start_screen()  
         while True:
             while self.in_start_screen:
-                self.start_screen()  
+                self.ui.update_splash_screen()
+                pygame.display.update()
+                self.starting_event()
             while not self.in_start_screen:
                 for event in pygame.event.get():
                     if event.type == pygame.MOUSEMOTION:
                         mx, my = pygame.mouse.get_pos()
                     if event.type == pygame.MOUSEBUTTONDOWN and not self.running and mx >= 160 and mx <= 220 and my >= 264 and my <= 294:
-                        self.respawn_menu.update("9")
+                        self.ui.update_respawn_menu("9")
                         self.current_score.score = 0
                         self.safe_frogs = 0
                         self.lives_left = 2
@@ -309,8 +298,10 @@ class Game:
                         self.reset_game()
                         self.respawn()
                     if event.type == pygame.MOUSEBUTTONDOWN and not self.running and mx >= 235 and mx <= 300 and my >= 264 and my <= 294:
-                        self.respawn_menu.update("9")
+                        self.ui.update_respawn_menu("9")
+                        self.current_score.score = 0
                         self.in_start_screen = True
+                        self.start_screen()
                     if event.type == pygame.QUIT:
                         for lily in self.lilies_group:
                             lily.kill_thread()
@@ -360,8 +351,7 @@ class Game:
                     self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time
                     self.timer_tick(pygame.time.get_ticks() / 1000 - self.start_time)                  
                     if 10 - self.current_time > 0:
-                        self.respawn_menu.update(str(10 - self.current_time))
-                        self.respawn_menu.draw(self.screen)
+                        self.ui.update_respawn_menu(str(10 - self.current_time), True)
                     else:
                         self.in_start_screen = True
                     pygame.display.update()
