@@ -53,39 +53,46 @@ class Game:
     def spawn_lilies(self, level):
         y = BLOCK_SIZE + BLOCK_SIZE / 4 + 2
         x = 19
+        bonus_active = False
+        croc_active = False
         if level == 1:
-            for i in range(5):
+            for i in range(0,5):
                 x = 19 + i * BLOCK_SIZE * 3
                 random_nbr = randint(1, 14)
-                if random_nbr < 4:
+                if random_nbr < 4 and not bonus_active:
                     print("Bonus lily")
                     self.lilies_group.add(Bonus_Lily(x, y))
+                    bonus_active = True
                 else:
                     print("Ordinary lily")
                     self.lilies_group.add(Ordinary_Lily(x, y))
         if level == 2:
-            for i in range(1, 5):
+            for i in range(0,5):
                 x = 19 + i * BLOCK_SIZE * 3
                 random_nbr = randint(1, 14)
-                if random_nbr < 5:
+                if random_nbr < 5 and not bonus_active and not croc_active:
                     print("Bonus lily")
                     self.lilies_group.add(Bonus_Lily(x, y))
-                elif random_nbr < 11:
+                    bonus_active = True
+                elif random_nbr < 11 and not bonus_active and not croc_active:
                     print("Croc lily")
                     self.lilies_group.add(Crocodile_Lily(x, y))
+                    croc_active = True
                 else:
                     print("Ordinary lily")
                     self.lilies_group.add(Ordinary_Lily(x, y))
         if level >= 3:
-            for i in range(1, 5):
+            for i in range(0,5):
                 x = 19 + i * BLOCK_SIZE * 3
                 random_nbr = randint(1, 14)
-                if random_nbr < 3:
+                if random_nbr < 3 and not croc_active and not bonus_active:
                     print("Bonus lily")
                     self.lilies_group.add(Bonus_Lily(x, y))
-                elif random_nbr < 11:
+                    bonus_active = True
+                elif random_nbr < 11 and not croc_active and not bonus_active:
                     print("Croc lily")
                     self.lilies_group.add(Crocodile_Lily(x, y))
+                    croc_active = True
                 else:
                     print("Ordinary lily")
                     self.lilies_group.add(Ordinary_Lily(x, y))
@@ -349,6 +356,14 @@ class Game:
                         self.lose_life()
 
                 if self.running:
+                    for lily in self.lilies_group:
+                        if lily.test == True:
+                            for lily in self.lilies_group:
+                                lily.test = False
+                                lily.kill()
+                            self.spawn_lilies(self.level)
+                            for lily in self.lilies_group:
+                                lily.start_timer()
                     self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time
                     self.timer_tick(pygame.time.get_ticks() / 1000 - self.start_time)
                     self.collision()

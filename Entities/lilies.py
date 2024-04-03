@@ -65,6 +65,7 @@ class Ordinary_Lily(Lily):
 
     def __init__(self, x, y):
         super().__init__(x, y)
+        self.test = False
 
     def set_image(self): 
         return Lily.LILY_IMG_FILE
@@ -78,10 +79,13 @@ class Bonus_Lily(Lily):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.active = False 
+        self.test = False
 
     def set_image(self): 
+        self.test = False
         if self.active: 
             self.active = False
+            self.test = True
             return Lily.LILY_IMG_FILE
         else:
             self.active = True
@@ -98,6 +102,7 @@ class Crocodile_Lily(Lily):
         super().__init__(x, y)
         self.lurking = False
         self.hunting = False
+        self.test = False
 
     def start_timer(self):
         self.timer = threading.Timer(randint(4, 12), self.update_image)
@@ -126,6 +131,7 @@ class Crocodile_Lily(Lily):
         elif self.hunting:
             self.hunting = False
             self.reset_timer()
+            self.test = True
             return Lily.LILY_IMG_FILE
         else:
             self.lurking = True
