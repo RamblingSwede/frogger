@@ -173,7 +173,7 @@ class Game:
         self.reset_movements()
         self.sprite_generator.spawn_floaters(self.floater_group, self.frog, self.friend_frog, self.level)
         self.sprite_generator.spawn_vehicles(self.vehicle_group, self.level)
-        self.sprite_generator.spawn_lilies(self.lilies_group, self.level)
+        self.last_number = self.sprite_generator.spawn_lilies(self.lilies_group, self.level)
         for lily in self.lilies_group:
             lily.start_timer()
         self.ui.reset_timer_bar()
@@ -301,9 +301,8 @@ class Game:
                 if self.running:
                     for lily in self.lilies_group:
                         if lily.test == True:
-                            for lily in self.lilies_group:
-                                lily.test = False
-                                lily.kill()
+                            lily.test = False
+                            lily.kill()
                             self.sprite_generator.spawn_lilies(self.lilies_group, self.level)
                             for lily in self.lilies_group:
                                 lily.start_timer()
@@ -320,6 +319,9 @@ class Game:
                     if 10 - self.current_time > 0:
                         self.ui.update_respawn_menu(str(10 - self.current_time), True)
                     else:
+                        self.ui.update_respawn_menu("9")
+                        self.current_score.score = 0
                         self.in_start_screen = True
+                        self.start_screen()
                     pygame.display.update()
 Game().run()

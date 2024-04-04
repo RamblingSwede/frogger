@@ -117,43 +117,46 @@ class spriteGenerator():
         bonus_active = False
         croc_active = False
         if level == 1:
-            for i in range(5):
-                x = 19 + i * self.size * 3
-                random_nbr = randint(1, 14)
-                if random_nbr < 4 and not bonus_active:
-                    print("Bonus lily")
-                    bonus_active = True
-                    group.add(BonusLily(x, y))
-                else:
-                    print("Ordinary lily")
-                    group.add(OrdinaryLily(x, y))
+            while bonus_active == False:
+                for i in range(5):
+                    x = 19 + i * self.size * 3 
+                    random_nbr = randint(1, 14)
+                    if random_nbr < 4 and not bonus_active:
+                        print("Bonus lily")
+                        bonus_active = True
+                        group.add(BonusLily(x, y))
+                    else:
+                        print("Ordinary lily")
+                        group.add(OrdinaryLily(x, y))
         if level == 2:
-            for i in range(5):
-                x = 19 + i * self.size * 3
-                random_nbr = randint(1, 14)
-                if random_nbr < 5 and not bonus_active and not croc_active:
-                    print("Bonus lily")
-                    bonus_active = True
-                    group.add(BonusLily(x, y))
-                elif random_nbr < 11 and not bonus_active and not croc_active:
-                    print("Croc lily")
-                    croc_active = True
-                    group.add(CrocodileLily(x, y))
-                else:
-                    print("Ordinary lily")
-                    group.add(OrdinaryLily(x, y))
+            while bonus_active == False and croc_active == False:
+                for i in range(5):
+                    x = 19 + i * self.size * 3
+                    random_nbr = randint(1, 14)
+                    if random_nbr < 5 and not bonus_active and not croc_active:
+                        print("Bonus lily")
+                        bonus_active = True
+                        group.add(BonusLily(x, y))
+                    elif random_nbr < 11 and not bonus_active and not croc_active:
+                        print("Croc lily")
+                        croc_active = True
+                        group.add(CrocodileLily(x, y))
+                    else:
+                        print("Ordinary lily")
+                        group.add(OrdinaryLily(x, y))
         if level >= 3:
-            for i in range(5):
-                x = 19 + i * self.size * 3
-                random_nbr = randint(1, 14)
-                if random_nbr < 3 and not bonus_active and not croc_active:
-                    print("Bonus lily")
-                    bonus_active = True
-                    group.add(BonusLily(x, y))
-                elif random_nbr < 11 and not bonus_active and not croc_active:
-                    print("Croc lily")
-                    croc_active = True
-                    group.add(CrocodileLily(x, y))
-                else:
-                    print("Ordinary lily")
-                    group.add(OrdinaryLily(x, y))
+            while bonus_active == False and croc_active == False:
+                for i in range(5):
+                    x = 19 + i * self.size * 3
+                    random_nbr = randint(1, 14)
+                    if random_nbr < 3 and not bonus_active and not croc_active:
+                        print("Bonus lily")
+                        bonus_active = True
+                        group.add(BonusLily(x, y))
+                    elif random_nbr < 11 and not bonus_active and not croc_active:
+                        print("Croc lily")
+                        croc_active = True
+                        group.add(CrocodileLily(x, y))
+                    else:
+                        print("Ordinary lily")
+                        group.add(OrdinaryLily(x, y))
