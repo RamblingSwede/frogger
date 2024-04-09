@@ -118,14 +118,15 @@ class SpriteController:
                 floater.draw(screen)
                 break
 
-    def unknown_lily_action(self):
-        for lily in self.lilies_group:
-            if lily.test == True:
-                lily.test = False
-                lily.kill()
-                self.sprite_generator.spawn_lilies(self.lilies_group, self.level)
-                for lily in self.lilies_group:
-                    lily.start_timer()
-
     def get_frog(self):
         return self.frog
+    
+    def generate_new_lilies(self, level):
+        ##Runs when a fly or croc has finished its loop, kills the old lily sprite group and generates a fresh one with a new spawn for either a croc or a fly
+        for lily in self.lilies_group:
+            if lily.finished == True:
+                lily.finished = False
+                lily.kill()
+                self.sprite_generator.spawn_lilies(self.lilies_group, level)
+                for lily in self.lilies_group:
+                    lily.start_timer()

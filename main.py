@@ -206,7 +206,7 @@ class Game:
                         self.lose_life()
 
                 if self.running:
-                    self.sprite_controller.unknown_lily_action()
+                    self.sprite_controller.generate_new_lilies(self.level)
                     self.current_time = int(pygame.time.get_ticks() / 1000) - self.start_time
                     self.timer_tick(pygame.time.get_ticks() / 1000 - self.start_time)
                     self.sprite_controller.handle_collisions(self)
