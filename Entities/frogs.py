@@ -4,21 +4,24 @@ import threading
 from Entities.floaters import Log 
 
 class Frog(pygame.sprite.Sprite):
+    IMG_TYPE = ".png"
+
     def __init__(self, image, x, y): 
         super().__init__()
 
-        self.image = pygame.image.load(image).convert_alpha()
+        self.image = pygame.image.load(image + "_up" + self.IMG_TYPE).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.count = 0 
 
-    def update_image(self, image):
-        if image == "default":
+    def update_image(self, direction):
+        if direction == "default":
             return
+        else:
+            self.image = pygame.image.load(self.IMAGE_FILE + '_' + direction + self.IMG_TYPE).convert_alpha()
         x = self.rect.x
         y = self.rect.y
-        self.image = pygame.image.load(image).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -40,13 +43,10 @@ class Frog(pygame.sprite.Sprite):
 
 
 class FriendFrog(Frog):
-    IMAGE_UP    = "./resources/misc/friend_frog_up.png"
-    IMAGE_DOWN  = "./resources/misc/friend_frog_down.png"
-    IMAGE_LEFT  = "./resources/misc/friend_frog_left.png"
-    IMAGE_RIGHT = "./resources/misc/friend_frog_right.png"
+    IMAGE_FILE = "./resources/misc/friend_frog"
 
     def __init__(self, size, frog, log):
-        super().__init__(self.IMAGE_UP, log.get_pos()[0], log.get_pos()[1])
+        super().__init__(self.IMAGE_FILE, log.get_pos()[0], log.get_pos()[1])
         self.size       = size
         self.is_on_log  = True
         self.is_carried = False
@@ -90,18 +90,6 @@ class FriendFrog(Frog):
                 self.right_dir = True
         self.timer = threading.Timer(self.delay, self.jump)
         self.timer.start()
-
-    def set_image(self, direction):
-        if direction == "default":
-            return
-        elif direction == "up":
-            super().update_image(self.IMAGE_UP)
-        elif direction == "down":
-            super().update_image(self.IMAGE_DOWN)
-        elif direction == "left":
-            super().update_image(self.IMAGE_LEFT)
-        elif direction == "right":
-            super().update_image(self.IMAGE_RIGHT)
     
     def set_carried(self): 
         self.is_on_log = False
@@ -136,13 +124,10 @@ class FriendFrog(Frog):
 
 
 class NormalFrog(Frog): 
-    IMAGE_UP    = "./resources/misc/frog_up.png"
-    IMAGE_DOWN  = "./resources/misc/frog_down.png"
-    IMAGE_LEFT  = "./resources/misc/frog_left.png"
-    IMAGE_RIGHT = "./resources/misc/frog_right.png"
+    IMAGE_FILE = "./resources/misc/frog"
 
     def __init__(self, width, height, size):
-        super().__init__(self.IMAGE_UP, width / 2, height - size * 2)
+        super().__init__(self.IMAGE_FILE, width / 2, height - size * 2)
         self.carrying       = False
         self.hop_cooldown   = 20
         self.hop_cooldownX  = self.hop_cooldown
@@ -150,17 +135,14 @@ class NormalFrog(Frog):
 
     def update(self, width, height, size, jump_distance, movementX = [0,0], movementY = [0,0]): 
         self.out_of_bounds(width, height, size)
-        image = "default"
         direction = "default"
         if movementX[0] == True:
-            image = self.IMAGE_LEFT
             direction = "left"
             if self.hop_cooldownX == self.hop_cooldown:
                 self.hop_cooldownX = 0
                 self.rect.x -= jump_distance
             self.hop_cooldownX += 1
         elif movementX[1] == True:
-            image = self.IMAGE_RIGHT
             direction = "right"
             if self.hop_cooldownX == self.hop_cooldown:
                 self.hop_cooldownX = 0
@@ -170,14 +152,12 @@ class NormalFrog(Frog):
             self.velX = 0
             self.hop_cooldownX = self.hop_cooldown
         if movementY[1] == True:
-            image = self.IMAGE_UP
             direction = "up"
             if self.hop_cooldownY == self.hop_cooldown:
                 self.hop_cooldownY = 0
                 self.rect.y -= size
             self.hop_cooldownY += 1
         elif movementY[0] == True:
-            image = self.IMAGE_DOWN
             direction = "down"
             if self.hop_cooldownY == self.hop_cooldown:
                 self.hop_cooldownY = 0
@@ -186,9 +166,9 @@ class NormalFrog(Frog):
         else:
             self.velY = 0
             self.hop_cooldownY = self.hop_cooldown
-        super().update_image(image)
+        super().update_image(direction)
         if self.carrying:
-            self.friend_frog.set_image(direction)
+            self.friend_frog.update_image(direction)
 
     def out_of_bounds(self, width, height, size):
         if self.rect.y > size * 6:
