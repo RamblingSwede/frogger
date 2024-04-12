@@ -48,7 +48,7 @@ class SpriteController:
             return
         try: 
             if self.friend_frog.sprite.hit():
-                self.frog.sprite.set_carry_friend(True)
+                self.frog.sprite.set_carry_friend(True, self.friend_frog.sprite)
                 self.friend_frog.sprite.set_carried()
         except Exception as e: 
             print("Friend frog is no more: ", e)
@@ -69,7 +69,7 @@ class SpriteController:
     
     def handle_frog_respawn(self):
         if self.frog.sprite.carrying_friend():
-            self.frog.sprite.set_carry_friend(False)
+            self.frog.sprite.set_carry_friend(False, self.friend_frog)
             if self.friend_frog.sprite.is_safe():
                 self.friend_frog.sprite.set_safe()
             else:
@@ -94,6 +94,7 @@ class SpriteController:
             lily.kill_thread()
 
     def reset(self, level):
+        print("reset")
         self.sprite_generator.spawn_floaters(self.floater_group, self.frog, self.friend_frog, level)
         self.sprite_generator.spawn_vehicles(self.vehicle_group, level)
         self.last_number = self.sprite_generator.spawn_lilies(self.lilies_group, level)
