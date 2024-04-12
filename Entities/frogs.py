@@ -85,9 +85,11 @@ class FriendFrog(Frog):
             if self.right_dir:
                 self.rect.x = pos[0]
                 self.right_dir = False
+                super().update_image("right")
             else:
                 self.rect.x = pos[0] + self.size
                 self.right_dir = True
+                super().update_image("left")
         self.timer = threading.Timer(self.delay, self.jump)
         self.timer.start()
     
