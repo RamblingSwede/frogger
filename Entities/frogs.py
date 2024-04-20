@@ -16,7 +16,7 @@ class Frog(pygame.sprite.Sprite):
         self.count = 0 
 
     def update_image(self, direction):
-        if direction == "default":
+        if "default" in direction:
             return
         else:
             self.image = pygame.image.load(self.IMAGE_FILE + '_' + direction + self.IMG_TYPE).convert_alpha()
@@ -135,7 +135,7 @@ class NormalFrog(Frog):
         self.hop_cooldownX  = self.hop_cooldown
         self.hop_cooldownY  = self.hop_cooldown
 
-    def update(self, width, height, size, jump_distance, movementX = [0,0], movementY = [0,0]): 
+    def update(self, width, height, size, jump_distance, movementX=[0,0], movementY=[0,0], prepare=True): 
         self.out_of_bounds(width, height, size)
         direction = "default"
         if movementX[0] == True:
@@ -168,9 +168,15 @@ class NormalFrog(Frog):
         else:
             self.velY = 0
             self.hop_cooldownY = self.hop_cooldown
-        super().update_image(direction)
-        if self.carrying:
-            self.friend_frog.update_image(direction)
+        self.animate_jump(direction, prepare)
+
+    def animate_jump(self, direction, prepare):
+        if prepare:
+            super().update_image(direction + "_jump")
+        else:
+            super().update_image(direction)
+            if self.carrying:
+                self.friend_frog.update_image(direction)
 
     def out_of_bounds(self, width, height, size):
         if self.rect.y > size * 6:
